@@ -17,7 +17,7 @@ public class DBConnect {
 
     public DBConnect() {
         try {
-            String url = "jdbc:sqlserver://127.0.0.3:9210;database=Db_RentalPlayStation;user=Pendidikan;password=123;encrypt=true;trustServerCertificate=true;";
+            String url = "jdbc:sqlserver://127.0.0.4:9210;database=Db_RentalPlayStation;user=Pendidikan;password=123;encrypt=true;trustServerCertificate=true;";
             conn = DriverManager.getConnection(url);
             stat = conn.createStatement();
         } catch (Exception e) {
