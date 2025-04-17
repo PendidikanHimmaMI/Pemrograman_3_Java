@@ -102,40 +102,4 @@ public class JenisPlayStation {
     public void setModifby(String modifby) {
         this.modifby = modifby;
     }
-
-    public static class TopJenisPlayStation{
-        private String nama;
-        private Integer jumlahSewa;
-        private Double persen;
-
-        public TopJenisPlayStation(String nama, Integer jumlahSewa, Double persen) {
-            this.nama = nama;
-            this.jumlahSewa = jumlahSewa;
-            this.persen = persen;
-        }
-
-        public Double getPersen() {
-            return persen;
-        }
-
-        public void setPersen(Double persen) {
-            this.persen = persen;
-        }
-
-        public Integer getJumlahSewa() {
-            return jumlahSewa;
-        }
-
-        public void setJumlahSewa(Integer jumlahSewa) {
-            this.jumlahSewa = jumlahSewa;
-        }
-
-        public String getNama() {
-            return nama;
-        }
-
-        public void setNama(String nama) {
-            this.nama = nama;
-        }
-    }
 }

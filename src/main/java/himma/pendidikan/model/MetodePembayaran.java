@@ -79,40 +79,4 @@ public class MetodePembayaran {
     public void setModifby(String modifby) {
         this.modifby = modifby;
     }
-
-    public static class TopMetodePembayaran {
-        private String nama;
-        private Integer jumlahDigunakan;
-        private Double persen;
-
-        public TopMetodePembayaran(String nama, Integer jumlahDigunakan, Double persen) {
-            this.nama = nama;
-            this.jumlahDigunakan = jumlahDigunakan;
-            this.persen = persen;
-        }
-
-        public String getNama() {
-            return nama;
-        }
-
-        public void setNama(String nama) {
-            this.nama = nama;
-        }
-
-        public Integer getJumlahDigunakan() {
-            return jumlahDigunakan;
-        }
-
-        public void setJumlahDigunakan(Integer jumlahDigunakan) {
-            this.jumlahDigunakan = jumlahDigunakan;
-        }
-
-        public Double getPersen() {
-            return persen;
-        }
-
-        public void setPersen(Double persen) {
-            this.persen = persen;
-        }
-    }
 }

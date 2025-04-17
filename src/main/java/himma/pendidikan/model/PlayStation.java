@@ -115,40 +115,4 @@ public class PlayStation {
     public void setModifby(String modifby) {
         this.modifby = modifby;
     }
-
-    public static class TopPlayStation{
-        private String nama;
-        private Integer jumlahSewa;
-        private Double persen;
-
-        public TopPlayStation(String nama, Integer jumlahSewa, Double persen) {
-            this.nama = nama;
-            this.jumlahSewa = jumlahSewa;
-            this.persen = persen;
-        }
-
-        public String getNama() {
-            return nama;
-        }
-
-        public void setNama(String nama) {
-            this.nama = nama;
-        }
-
-        public Integer getJumlahSewa() {
-            return jumlahSewa;
-        }
-
-        public void setJumlahSewa(Integer jumlahSewa) {
-            this.jumlahSewa = jumlahSewa;
-        }
-
-        public Double getPersen() {
-            return persen;
-        }
-
-        public void setPersen(Double persen) {
-            this.persen = persen;
-        }
-    }
 }

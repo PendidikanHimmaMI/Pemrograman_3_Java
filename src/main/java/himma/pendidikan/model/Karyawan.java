@@ -165,33 +165,4 @@ public class Karyawan {
     public void setModifby(String modifby) {
         this.modifby = modifby;
     }
-//    public static class TopKaryawan{
-//        private String nama;
-//        private Integer jumlahTransaksi;
-//        private Double persen;
-//
-//        public TopKaryawan(String nama, Integer jumlahTransaksi, Double persen) {
-//            this.nama = nama;
-//            this.jumlahTransaksi = jumlahTransaksi;
-//            this.persen = persen;
-//        }
-//        public String getNama() {
-//            return nama;
-//        }
-//        public void setNama(String nama) {
-//            this.nama = nama;
-//        }
-//        public Integer getJumlahTransaksi() {
-//            return jumlahTransaksi;
-//        }
-//        public void setJumlahTransaksi(Integer jumlahTransaksi) {
-//            this.jumlahTransaksi = jumlahTransaksi;
-//        }
-//        public Double getPersen() {
-//            return persen;
-//        }
-//        public void setPersen(Double persen) {
-//            this.persen = persen;
-//        }
-//    }
 }
