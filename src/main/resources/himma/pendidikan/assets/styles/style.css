@@ -1,0 +1,6 @@
+.custom-menu-item:hover {
+    -fx-background-color: transparent;
+}
+.custom-menu-item:focused {
+    -fx-background-color: transparent;
+}

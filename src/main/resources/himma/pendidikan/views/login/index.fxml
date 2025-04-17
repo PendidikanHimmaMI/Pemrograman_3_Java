@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<AnchorPane fx:id="login_container" maxWidth="-Infinity" prefHeight="734.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="himma.pendidikan.controller.LoginCtrl">
+   <children>
+      <VBox alignment="TOP_CENTER" prefHeight="734.0" prefWidth="526.0" style="-fx-background-color: #020A7A;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <!-- Logo di atas -->
+            <ImageView fitHeight="118.0" fitWidth="381.0">
+               <image>
+                  <Image url="@../../assets/image/himma_logo.png" />
+               </image>
+               <VBox.margin>
+                  <Insets top="50.0" />
+               </VBox.margin>
+            </ImageView>
+
+                  <!-- Spacer ke tengah -->
+            <Region VBox.vgrow="ALWAYS" />
+
+                  <!-- Gambar di tengah -->
+            <ImageView fitHeight="487.0" fitWidth="273.0">
+               <image>
+                  <Image url="@../../assets/image/children.png" />
+               </image>
+            </ImageView>
+
+                  <!-- Spacer ke bawah -->
+            <Region VBox.vgrow="ALWAYS" />
+
+                  <!-- Label di bawah -->
+            <Label text="Dibuat oleh Himma MI" textFill="WHITE">
+               <VBox.margin>
+                  <Insets bottom="50.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <VBox layoutX="528.0" layoutY="-4.0" prefHeight="720.0" prefWidth="900.0" style="-fx-background-color: transparent;">
+         <children>
+            <Region prefHeight="110.0" prefWidth="599.0" />
+            <VBox prefHeight="576.0" prefWidth="796.0" style="-fx-background-color: #020A7A; -fx-background-radius: 30;">
+               <children>
+                  <Region prefHeight="45.0" prefWidth="596.0" />
+                  <Label text="Masuk" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="36.0" />
+                     </font>
+                  </Label>
+                  <Label text="Nama Pengguna" textFill="WHITE">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfUsername" onAction="#handleSubmit" prefHeight="35.0" prefWidth="596.0" style="-fx-background-radius: 15;" />
+                  <Label layoutX="210.0" layoutY="63.0" text="Kata Sandi" textFill="WHITE">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="94.0" prefWidth="440.0">
+                           <children>
+                              <PasswordField fx:id="pfPassword" onAction="#handleSubmit" prefHeight="35.0" prefWidth="471.0" style="-fx-background-radius: 15 0 0 15;" />
+                              <TextField fx:id="tfPassword" onAction="#handleSubmit" prefHeight="35.0" style="-fx-background-radius: 15 0 0 15;" visible="false" />
+                           </children>
+                        </VBox>
+                        <Button fx:id="handlePw" onAction="#showPw" prefHeight="35.0" prefWidth="58.0" style="-fx-background-radius: 0 12 12 0;">
+                           <graphic>
+                              <FontIcon fx:id="eyeIcon" iconLiteral="fas-eye" iconSize="16" />
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <Region prefHeight="100.0" prefWidth="596.0" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#handleSubmit" prefHeight="40.0" prefWidth="150.0" style="-fx-background-radius: 15;" text="Masuk" textFill="#020a7a">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets left="50.0" right="50.0" />
+               </padding>
+            </VBox>
+            <Region layoutX="210.0" layoutY="10.0" prefHeight="80.0" prefWidth="1196.0" />
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#handleSubmit" prefHeight="40.0" prefWidth="150.0" style="-fx-background-radius: 15; -fx-background-color: red;" text="Keluar" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets left="150.0" right="150.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>
