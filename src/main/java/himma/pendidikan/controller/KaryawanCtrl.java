@@ -63,7 +63,6 @@ public class KaryawanCtrl extends EvenListenerIndex {
             } else if ("edit".equals(page)) {
                 loader = new FXMLLoader(getClass().getResource("/himma/pendidikan/views/master_karyawan/edit.fxml"));
                 KaryawanEditCtrl controller = new KaryawanEditCtrl(); // Buat controller
-                System.out.println("id"+id);
                 controller.setId(id);
                 loader.setController(controller);
             } else {
@@ -151,8 +150,6 @@ public class KaryawanCtrl extends EvenListenerIndex {
     public static class KaryawanCreateCtrl extends EvenListenerCreate {
         @FXML
         ComboBox<String> cbPosisi;
-        @FXML
-        ComboBox<Karyawan> cbCoba;
         @FXML
         Label lbActiveUser;
         @FXML
