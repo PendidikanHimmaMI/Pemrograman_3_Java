@@ -12,6 +12,7 @@ import javafx.scene.layout.*;
 import himma.pendidikan.model.Karyawan;
 import himma.pendidikan.service.impl.*;
 import himma.pendidikan.util.*;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.*;
@@ -35,6 +36,7 @@ public class KaryawanCtrl extends EvenListenerIndex {
     TableColumn<Karyawan, Void> clAksi;
     @FXML
     TableColumn<Karyawan, String> clNama, clPosisi, clNoTelepon, clEmail, clUsername, clStatus;
+    Text asd;
 
     public static KaryawanSrvcImpl karyawanSrvc = new KaryawanSrvcImpl();
     AppCtrl app = AppCtrl.getInstance();
