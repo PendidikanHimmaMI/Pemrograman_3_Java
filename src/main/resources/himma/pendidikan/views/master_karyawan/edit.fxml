@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -23,19 +21,16 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 <AnchorPane fx:id="editPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1260.0" style="-fx-background-color: white;" stylesheets="@../../assets/styles/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-border-color: #020A7A; -fx-border-width: 0 0 2 0;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <padding>
             <Insets bottom="10" left="10" right="10" top="10" />
         </padding>
-        <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #020A7A;" text="PlayStation" />
+        <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Karyawan" />
         <Region HBox.hgrow="ALWAYS" />
         <Label fx:id="lbActiveUser" style="-fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Administrator" />
-        <ImageView fitHeight="24" fitWidth="24">
-            <image>
-                <Image url="@../../assets/image/himma_logo.png" />
-            </image>
-        </ImageView>
+        <FontIcon iconLiteral="fas-user-circle" iconSize="16" />
     </HBox>
     <VBox spacing="10" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
         <AnchorPane prefHeight="262.0" prefWidth="1081.0" style="-fx-background-color: transparent;">
@@ -68,7 +63,7 @@
                                 <children>
                                     <TextField fx:id="tfNama" prefHeight="35.0" prefWidth="300.0" promptText="Isikan Nama" GridPane.rowIndex="1" />
                                     <TextField fx:id="tfNoTelepon" prefHeight="35.0" prefWidth="300.0" promptText="Isikan No Telepon" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                    <ComboBox fx:id="cbPosisi" prefHeight="35.0" prefWidth="300.0" promptText="Pilih Posisi" GridPane.columnIndex="1" GridPane.rowIndex="1"></ComboBox>
+                                    <ComboBox fx:id="cbPosisi" prefHeight="35.0" prefWidth="300.0" promptText="Pilih Posisi" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     <TextField fx:id="tfEmail" prefHeight="35.0" prefWidth="300.0" promptText="Isikan Email" GridPane.rowIndex="3" />
                                     <TextField fx:id="tfUsername" prefHeight="35.0" prefWidth="300.0" promptText="Isikan Username" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <PasswordField fx:id="tfPassword" prefHeight="35.0" prefWidth="300.0" promptText="Isikan Password" GridPane.columnIndex="2" GridPane.rowIndex="3" />
@@ -187,7 +182,7 @@
                     </AnchorPane>
                     <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                         <children>
-                            <Button alignment="CENTER" onAction="#handleBack" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #8FBCDE; -fx-text-fill: #FFFFFF; -fx-background-radius: 12px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);" text="Kembali">
+                            <Button alignment="CENTER" mnemonicParsing="false" onAction="#handleBack" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #8FBCDE; -fx-text-fill: #FFFFFF; -fx-background-radius: 12px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);" text="Kembali">
                                 <font>
                                     <Font size="18.0" />
                                 </font>
@@ -195,7 +190,7 @@
                                     <Cursor fx:constant="HAND" />
                                 </cursor>
                             </Button>
-                            <Button alignment="CENTER" onAction="#handleClear" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #8FBCDE; -fx-text-fill: #808080; -fx-background-radius: 12px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);" text="Batal">
+                            <Button alignment="CENTER" mnemonicParsing="false" onAction="#handleClear" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #8FBCDE; -fx-text-fill: #FFFFFF; -fx-background-radius: 12px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);" text="Bersihkan" textFill="WHITE">
                                 <font>
                                     <Font size="18.0" />
                                 </font>
