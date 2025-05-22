@@ -8,9 +8,11 @@ public abstract class EvenListener {
 
     public abstract void handleClear();
 
+
     public static abstract class EvenListenerIndex extends EvenListener {
         public abstract void handleSearch();
     }
+
 
     public static abstract class EvenListenerCreate extends EvenListener{
         public abstract void handleAddData(ActionEvent e);
@@ -19,6 +21,7 @@ public abstract class EvenListener {
             kry.loadSubPage("index",null);
         };
     }
+
 
     public static abstract class EvenListenerUpdate extends EvenListener{
         public abstract void handleUpdateData(ActionEvent e);
