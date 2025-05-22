@@ -1,14 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="himma.pendidikan.controller.PenyewaanPlayStationCtrl"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="himma.pendidikan.controller.PenyewaanPlayStationCtrl">
+   <children>
+      <Line endX="789.2644653320312" endY="7.62939453125E-6" layoutX="103.0" layoutY="54.0" startX="-100.0" stroke="#020a7a" strokeMiterLimit="50.0" strokeWidth="5.0" />
+      <Text id="myLabel" fill="#020a7a" layoutX="23.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Daftar Playstation">
+         <font>
+            <Font name="Arial Black" size="30.0" />
+         </font>
+      </Text>
+      <TextField layoutX="26.0" layoutY="97.0" prefHeight="54.0" prefWidth="298.0" promptText="Cari..." style="-fx-background-radius: 34; -fx-border-color: #020A7A; -fx-border-radius: 34; -fx-border-width: 2;" />
+      <ComboBox layoutX="726.0" layoutY="97.0" prefHeight="54.0" prefWidth="150.0" promptText="Sorting" style="-fx-background-radius: 34; -fx-background-color: #FFFFFF; -fx-border-color: #020A7A; -fx-border-radius: 34; -fx-border-width: 2;" />
+      <Rectangle fill="#020a7a" height="54.0" layoutX="896.0" layoutY="-1.0" stroke="TRANSPARENT" strokeType="INSIDE" width="360.0" />
+      <Text id="myLabel" fill="WHITE" layoutX="999.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Keranjang">
+         <font>
+            <Font name="Arial Black" size="30.0" />
+         </font>
+      </Text>
+      <ScrollPane hbarPolicy="NEVER" layoutX="896.0" layoutY="58.0" prefHeight="404.0" prefWidth="360.0" style="-fx-background-color: #020A7A;">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="401.0" prefWidth="359.0" style="-fx-background-color: #020A7A;" />
+        </content>
+      </ScrollPane>
+      <VBox layoutX="896.0" layoutY="465.0" prefHeight="375.0" prefWidth="360.0" style="-fx-background-color: #020A7A;" />
+   </children>
 </AnchorPane>

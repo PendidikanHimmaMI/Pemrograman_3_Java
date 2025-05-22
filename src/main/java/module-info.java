@@ -6,6 +6,10 @@ module pendidikan.pemrograman_3_java {
     requires java.sql;
     requires java.desktop;
     requires org.kordamp.ikonli.javafx;
+    requires org.kordamp.ikonli.core;
+    requires org.kordamp.ikonli.fontawesome5;
+
+
 
     opens himma.pendidikan to javafx.fxml;
     opens himma.pendidikan.controller;
