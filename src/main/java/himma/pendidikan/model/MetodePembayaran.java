@@ -10,11 +10,12 @@ public class MetodePembayaran {
 
     public MetodePembayaran() {}
 
-    public MetodePembayaran(String nama, String deskripsi, String status) {
+    public MetodePembayaran(String nama, String deskripsi, String createdby) {
         this.nama = nama;
         this.deskripsi = deskripsi;
-        this.status = status;
+        this.createdby = createdby;
     }
+
 
     public MetodePembayaran(Integer id, String nama, String deskripsi, String modifby) {
         this.id = id;
@@ -31,6 +32,7 @@ public class MetodePembayaran {
         this.createdby = createdby;
         this.modifby = modifby;
     }
+
 
     public Integer getId() {
         return id;
