@@ -40,7 +40,7 @@ public class JenisPlayStationSrvcImpl implements JenisPlayStationSrvc {
             connect.result = connect.pstat.executeQuery();
             while (connect.result.next()) {
                 jenisPlaystationList.add(new TopMasterData(
-                        connect.result.getString("jps_name"),
+                        connect.result.getString("jps_nama"),
                         connect.result.getInt("jumlah_disewa"),
                         connect.result.getDouble("persen")
                 ));

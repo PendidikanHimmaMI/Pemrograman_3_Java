@@ -120,4 +120,92 @@ public class PenyewaanPlaystation {
     public void setCreatedby(String createdby) {
         this.createdby = createdby;
     }
+
+
+    public static class RekapTransaksiBulanan {
+        private Integer totalPenyewaan;
+        private double totalPendapatan;
+
+        public RekapTransaksiBulanan() {
+        }
+
+        public RekapTransaksiBulanan(Integer totalPenyewaan, double totalPendapatan) {
+            this.totalPenyewaan = totalPenyewaan;
+            this.totalPendapatan = totalPendapatan;
+        }
+
+        public Integer getTotalPenyewaan() {
+            return totalPenyewaan;
+        }
+
+        public void setTotalPenyewaan(Integer totalPenyewaan) {
+            this.totalPenyewaan = totalPenyewaan;
+        }
+
+        public double getTotalPendapatan() {
+            return totalPendapatan;
+        }
+
+        public void setTotalPendapatan(double totalPendapatan) {
+            this.totalPendapatan = totalPendapatan;
+        }
+    }
+
+    public static class RekapPendapatanHarian {
+        private Integer tanggal;
+        private double totalPendapatan;
+
+        public RekapPendapatanHarian() {
+        }
+
+        public RekapPendapatanHarian(Integer tanggal, double totalPendapatan) {
+            this.tanggal = tanggal;
+            this.totalPendapatan = totalPendapatan;
+        }
+
+        public Integer getTanggal() {
+            return tanggal;
+        }
+
+        public void setTanggal(Integer tanggal) {
+            this.tanggal = tanggal;
+        }
+
+        public double getTotalPendapatan() {
+            return totalPendapatan;
+        }
+
+        public void setTotalPendapatan(double totalPendapatan) {
+            this.totalPendapatan = totalPendapatan;
+        }
+    }
+
+    public static class RekapTransaksiHarian {
+        private Integer tanggal;
+        private double totalTransaksi;
+
+        public RekapTransaksiHarian() {
+        }
+
+        public RekapTransaksiHarian(Integer tanggal, double totalTransaksi) {
+            this.tanggal = tanggal;
+            this.totalTransaksi = totalTransaksi;
+        }
+
+        public Integer getTanggal() {
+            return tanggal;
+        }
+
+        public void setTanggal(Integer tanggal) {
+            this.tanggal = tanggal;
+        }
+
+        public double getTotalTransaksi() {
+            return totalTransaksi;
+        }
+
+        public void setTotalTransaksi(double totalPendapatan) {
+            this.totalTransaksi = totalPendapatan;
+        }
+    }
 }

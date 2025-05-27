@@ -2,7 +2,11 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -19,59 +23,79 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1260.0" style="-fx-background-color: white;" stylesheets="@../../assets/styles/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="himma.pendidikan.controller.DashboardCtrl">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1260.0" style="-fx-background-color: white;" stylesheets="@../../assets/styles/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-border-color: #020A7A; -fx-border-width: 0 0 2 0;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <padding>
             <Insets bottom="10" left="10" right="10" top="10" />
         </padding>
         <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Beranda" />
         <Region HBox.hgrow="ALWAYS" />
-        <Label fx:id="lbActiveUser" style="-fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Administrator" />
+        <Label fx:id="lbActiveUser" style="-fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Manager" />
         <ImageView fitHeight="24" fitWidth="24">
             <image>
                 <Image url="@../../assets/image/himma_logo.png" />
             </image>
         </ImageView>
     </HBox>
-    <VBox spacing="10" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
-        <AnchorPane prefHeight="262.0" prefWidth="1081.0" style="-fx-background-color: transparent;">
+    <VBox layoutY="58.4" prefHeight="832.0" prefWidth="1260.0" spacing="10" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="58.0">
+        <AnchorPane prefHeight="839.0" prefWidth="1260.0" style="-fx-background-color: transparent;">
          <children>
-            <VBox prefWidth="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <VBox layoutY="3.0" prefHeight="873.0" prefWidth="1260.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
-                  <DatePicker>
+                  <DatePicker fx:id="dpManager">
                      <VBox.margin>
                         <Insets left="13.0" />
                      </VBox.margin>
                   </DatePicker>
-                  <ScrollPane fitToHeight="true" fitToWidth="true">
+                  <HBox prefHeight="43.0" prefWidth="1260.0">
+                     <children>
+                        <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#apply" prefHeight="20.0" prefWidth="85.0" style="-fx-background-color: #020a7a; -fx-text-fill: #FFFFFF; -fx-background-radius: 6px;" text="Apply">
+                           <HBox.margin>
+                              <Insets left="12.0" top="6.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#reset" prefHeight="20.0" prefWidth="85.0" style="-fx-background-color: #020a7a; -fx-text-fill: #FFFFFF; -fx-background-radius: 6px;" text="Reset">
+                           <HBox.margin>
+                              <Insets left="5.0" top="6.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="809.0" prefWidth="1260.0">
                      <content>
-                        <GridPane hgap="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="20.0">
+                        <GridPane hgap="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="778.0" prefWidth="1258.0" vgap="20.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                           <rowConstraints>
-                            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="200.0" vgrow="ALWAYS" />
-                            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" vgrow="ALWAYS" />
-                            <RowConstraints minHeight="200.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="139.99999389648437" prefHeight="139.99999389648437" vgrow="ALWAYS" />
+                            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="170.53325805664062" vgrow="ALWAYS" />
+                            <RowConstraints maxHeight="223.46669311523442" minHeight="87.19996948242192" prefHeight="188.26674194335942" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="195.79997558593743" minHeight="10.0" prefHeight="195.79997558593743" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Pane prefHeight="200.0" prefWidth="534.0" style="-fx-background-color: #020a7a; -fx-background-radius: 12;">
+                              <Pane prefHeight="158.0" prefWidth="610.0" style="-fx-background-color: #020a7a; -fx-background-radius: 12;">
                                  <children>
-                                    <Text fill="WHITE" layoutX="27.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Pendapatan">
+                                    <Text fill="WHITE" layoutX="27.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Pendapatan">
                                        <font>
-                                          <Font name="System Bold" size="20.0" />
+                                          <Font name="System Bold" size="25.0" />
                                        </font>
                                     </Text>
-                                    <Text fx:id="txtTotalPlaystation" fill="WHITE" layoutX="27.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-">
+                                    <Text fx:id="txtTotalPendapatan" fill="WHITE" layoutX="27.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-">
                                        <font>
                                           <Font name="System Bold" size="40.0" />
                                        </font>
                                     </Text>
-                                    <ImageView layoutX="478.0" layoutY="35.0">
+                                    <ImageView fitHeight="58.0" fitWidth="60.0" layoutX="494.0" layoutY="41.0">
                                        <image>
-                                          <Image url="@../../assets/image/playstation.png" />
+                                          <Image url="@../../assets/image/pendapatan.png" />
                                        </image>
                                     </ImageView>
                                  </children>
@@ -81,27 +105,81 @@
                               </Pane>
                               <Pane prefHeight="200.0" prefWidth="540.0" style="-fx-background-color: #020a7a; -fx-background-radius: 12;" GridPane.columnIndex="1">
                                  <children>
-                                    <Text fill="WHITE" layoutX="29.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Penyewaan">
+                                    <Text fill="WHITE" layoutX="29.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Penyewaan">
                                        <font>
-                                          <Font name="System Bold" size="20.0" />
+                                          <Font name="System Bold" size="25.0" />
                                        </font>
                                     </Text>
-                                    <Text fx:id="txtTotalJenisPlaystation" fill="WHITE" layoutX="29.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-">
+                                    <Text fx:id="txtTotalPenyewaan" fill="WHITE" layoutX="29.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-">
                                        <font>
                                           <Font name="System Bold" size="40.0" />
                                        </font>
                                     </Text>
-                                    <ImageView layoutX="516.0" layoutY="32.0">
+                                    <ImageView fitHeight="67.0" fitWidth="68.0" layoutX="488.0" layoutY="42.0">
                                        <image>
-                                          <Image url="@../../assets/image/jenis_playstation.png" />
+                                          <Image url="@../../assets/image/penyewaan.png" />
                                        </image>
                                     </ImageView>
                                  </children>
                               </Pane>
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                 <children>
+                                    <PieChart fx:id="pcTopPs" prefHeight="174.0" prefWidth="381.0" />
+                                    <VBox fx:id="vbTopPs" prefHeight="163.0" prefWidth="234.0">
+                                       <HBox.margin>
+                                          <Insets top="10.0" />
+                                       </HBox.margin></VBox>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                    <PieChart fx:id="pcJenisPs" prefHeight="174.0" prefWidth="396.0" />
+                                    <VBox fx:id="vbJenisPs" prefHeight="163.0" prefWidth="231.0">
+                                       <HBox.margin>
+                                          <Insets top="10.0" />
+                                       </HBox.margin></VBox>
+                                 </children>
+                              </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                                  <children>
-                                    <PieChart />
-                                    <VBox prefHeight="200.0" prefWidth="100.0" />
+                                    <PieChart fx:id="pcPembayaran" prefHeight="162.0" prefWidth="414.0" />
+                                    <VBox fx:id="vbPembayaran" prefHeight="142.0" prefWidth="266.0">
+                                       <HBox.margin>
+                                          <Insets top="10.0" />
+                                       </HBox.margin></VBox>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="pc" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <children>
+                                    <PieChart fx:id="pcKaryawan" prefHeight="153.0" prefWidth="392.0" />
+                                    <VBox fx:id="vbKaryawan" prefHeight="145.0" prefWidth="228.0">
+                                       <HBox.margin>
+                                          <Insets top="10.0" />
+                                       </HBox.margin></VBox>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                                 <children>
+                                    <BarChart fx:id="bcPendapatan" prefHeight="154.0" prefWidth="611.0">
+                                      <xAxis>
+                                        <CategoryAxis side="BOTTOM" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis side="LEFT" />
+                                      </yAxis>
+                                    </BarChart>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                 <children>
+                                    <BarChart fx:id="bcTransaksi" prefHeight="154.0" prefWidth="610.0">
+                                       <xAxis>
+                                          <CategoryAxis side="BOTTOM" />
+                                       </xAxis>
+                                       <yAxis>
+                                          <NumberAxis side="LEFT" />
+                                       </yAxis>
+                                    </BarChart>
                                  </children>
                               </HBox>
                            </children>
@@ -114,7 +192,7 @@
                         </GridPane>
                      </content>
                      <cursor>
-                        <Cursor fx:constant="NONE" />
+                        <Cursor fx:constant="DEFAULT" />
                      </cursor>
                   </ScrollPane>
                </children>
