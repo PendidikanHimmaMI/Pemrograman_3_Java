@@ -47,7 +47,7 @@ public class LoginCtrl {
 
         pfPassword.setVisible(!show);
         pfPassword.setManaged(!show);
-        eyeIcon.setIconLiteral(show ? "fas-eye-slash" : "fas-eye");
+        eyeIcon.setIconLiteral(show ? "fa-eye-slash" : "fa-eye");
     }
 
     public void handleSubmit(ActionEvent e){
