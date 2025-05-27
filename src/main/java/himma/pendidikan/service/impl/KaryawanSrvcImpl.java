@@ -84,7 +84,7 @@ public class KaryawanSrvcImpl implements KaryawanSrvc{
     }
 
     @Override
-    public Karyawan getDataById(Integer id) {
+    public Karyawan getDataById(Integer id)  {
         try {
             String query = "SELECT * FROM rps_getByIdKaryawan(?)";
             connect.pstat = connect.conn.prepareStatement(query);

@@ -10,7 +10,6 @@ import java.util.List;
 
 public class PenyewaanPlayStationSrvcImpl implements PenyewaanPlayStationSrvc {
     DBConnect connect = new DBConnect();
-
     @Override
     public PenyewaanPlaystation resultPentewaan(ResultSet rs) throws SQLException {
         return null;
@@ -18,12 +17,12 @@ public class PenyewaanPlayStationSrvcImpl implements PenyewaanPlayStationSrvc {
 
     @Override
     public List<PenyewaanPlaystation> getAllData() {
-        return null;
+        return List.of();
     }
 
     @Override
     public List<PenyewaanPlaystation> getAllData(String search, String status, Integer kry_id, Integer mpb_id, String sortColumn, String sortOrder) {
-        return null;
+        return List.of();
     }
 
     @Override
