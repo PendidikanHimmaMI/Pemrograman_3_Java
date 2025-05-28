@@ -77,6 +77,7 @@ public class KaryawanCtrl extends EvenListenerIndex {
 
     public void loadSubPage(String page, Integer id) {
         try {
+
             FXMLLoader loader;
             Parent pane;
             if ("add".equals(page)) {
@@ -90,6 +91,7 @@ public class KaryawanCtrl extends EvenListenerIndex {
             } else {
                 loader = new FXMLLoader(getClass().getResource("/himma/pendidikan/views/master_karyawan/index.fxml"));
             }
+
             pane = loader.load();
             app.getContentPane().getChildren().clear();
             app.getContentPane().getChildren().setAll(pane);
@@ -356,6 +358,7 @@ public class KaryawanCtrl extends EvenListenerIndex {
                 karyawanCtrl.loadSubPage("index",null);
             }
         }
+
 
         @Override
         public void handleBack() {

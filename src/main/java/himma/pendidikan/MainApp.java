@@ -15,11 +15,12 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader splashLoader = new FXMLLoader(getClass().getResource("/himma/pendidikan/views/login/index.fxml"));
+//        FXMLLoader splashLoader = new FXMLLoader(getClass().getResource("/himma/pendidikan/views/master_karyawan/index.fxml"));
         Scene splashScene = new Scene(splashLoader.load());
 //        stage.setMinWidth(screenWidth-5);
 //        stage.setMinHeight(screenHeight-25);
         stage.setScene(splashScene);
-        stage.setMaximized(true); // auto mengikuti ukuran layar
+        stage.setMaximized(true); // auto mengikuti ukuran laya
         stage.show();
     }
 
