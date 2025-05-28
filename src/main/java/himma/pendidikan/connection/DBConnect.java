@@ -24,23 +24,9 @@ public class DBConnect {
             System.out.println("Error saat connect database: " + e.getMessage());
         }
     }
-
-    public static void main(String[] args) {
-        DBConnect db = new DBConnect();
-        KaryawanSrvcImpl karyawanSrvc = new KaryawanSrvcImpl();
-
-        List<TopMasterData> topList = karyawanSrvc.getTop5Karyawan(2025, 4);
-
-        if (topList.isEmpty()) {
-            System.out.println("Tidak ada data ditemukan.");
-        } else {
-            for (TopMasterData k : topList) {
-                System.out.println("Nama: " + k.getNama());
-                System.out.println("Jumlah Transaksi: " + k.getJumlah());
-                System.out.println("Persen: " + k.getPersen() + "%");
-                System.out.println("-----------------------------");
-            }
-        }
-        System.out.println("Connected to database");
-    }
+//
+//    public static void main(String[] args) {
+//        DBConnect db = new DBConnect();
+//        System.out.println("Connected to database");
+//    }
 }

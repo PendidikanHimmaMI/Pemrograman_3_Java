@@ -6,12 +6,16 @@ import javafx.beans.property.*;
 import javafx.collections.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
+import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import himma.pendidikan.model.Karyawan;
 import himma.pendidikan.service.impl.*;
 import himma.pendidikan.util.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
 import java.util.*;
@@ -19,6 +23,8 @@ import java.util.*;
 import static javafx.scene.control.Alert.AlertType.*;
 
 public class KaryawanCtrl extends EvenListenerIndex {
+    @FXML
+    Pagination pgTabel;
     @FXML
     Button btnTambahData;
     @FXML
@@ -36,16 +42,32 @@ public class KaryawanCtrl extends EvenListenerIndex {
     @FXML
     TableColumn<Karyawan, String> clNama, clPosisi, clNoTelepon, clEmail, clUsername, clStatus;
 
-    public static KaryawanSrvcImpl karyawanSrvc = new KaryawanSrvcImpl();
     AppCtrl app = AppCtrl.getInstance();
+    public static KaryawanSrvcImpl karyawanSrvc = new KaryawanSrvcImpl();
+    private final int rowsPerPage = 15;
+    private List<Karyawan> fullDataList;
+    private String lastSearch, lastStatus, lastPosisi, lastSortColumn, lastSortOrder;
 
     public KaryawanCtrl() {}
 
     public void initialize() {
-        lbActiveUser.setText(Session.getCurrentUser().getPosisi());
+        lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
         handleClick();
         loadData(null,"Aktif", null, "kry_id", "ASC");
     }
+
+    private <T> void setAlignmentByType(TableColumn<Karyawan, T> column, Pos alignment) {
+        column.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.toString());
+                setAlignment(alignment);
+            }
+        });
+    }
+
+
 
     public void handleClick(){
         btnTambahData.setOnAction(event -> {
@@ -63,8 +85,7 @@ public class KaryawanCtrl extends EvenListenerIndex {
                 loader.setController(new KaryawanCreateCtrl());
             } else if ("edit".equals(page)) {
                 loader = new FXMLLoader(getClass().getResource("/himma/pendidikan/views/master_karyawan/edit.fxml"));
-                KaryawanEditCtrl controller = new KaryawanEditCtrl(); // Buat controller
-                System.out.println("id"+id);
+                KaryawanEditCtrl controller = new KaryawanEditCtrl();
                 controller.setId(id);
                 loader.setController(controller);
             } else {
@@ -81,10 +102,27 @@ public class KaryawanCtrl extends EvenListenerIndex {
     }
 
     public void loadData(String search, String status, String posisi, String sortColumn, String sortOrder){
-        List<Karyawan> karyawanList = karyawanSrvc.getAllData(search,status, posisi, sortColumn, sortOrder);
-        ObservableList<Karyawan> data = FXCollections.observableArrayList(karyawanList);
+        lastSearch = search;
+        lastStatus = status;
+        lastPosisi = posisi;
+        lastSortColumn = sortColumn;
+        lastSortOrder = sortOrder;
 
-        clNo.setCellValueFactory(col -> new ReadOnlyObjectWrapper<>(tbKaryawan.getItems().indexOf(col.getValue()) + 1));
+        fullDataList = karyawanSrvc.getAllData(search, status, posisi, sortColumn, sortOrder);
+        int pageCount = (int) Math.ceil((double) fullDataList.size() / rowsPerPage);
+        pgTabel.setPageCount(pageCount == 0 ? 1 : pageCount);
+        pgTabel.setCurrentPageIndex(0);
+        pgTabel.setPageFactory(this::createPage);
+    }
+
+    private Node createPage(int pageIndex) {
+        int fromIndex = pageIndex * rowsPerPage;
+        int toIndex = Math.min(fromIndex + rowsPerPage, fullDataList.size());
+
+        List<Karyawan> pageData = fullDataList.subList(fromIndex, toIndex);
+        ObservableList<Karyawan> data = FXCollections.observableArrayList(pageData);
+
+        clNo.setCellValueFactory(col -> new ReadOnlyObjectWrapper<>(data.indexOf(col.getValue()) + 1 + (pageIndex * rowsPerPage)));
         clNama.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNama()));
         clPosisi.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPosisi()));
         clNoTelepon.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNoTelepon()));
@@ -92,17 +130,31 @@ public class KaryawanCtrl extends EvenListenerIndex {
         clUsername.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUsername()));
         clStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
 
+        setAlignmentByType(clNo, Pos.CENTER_RIGHT);
+        setAlignmentByType(clNama, Pos.CENTER_LEFT);
+        setAlignmentByType(clPosisi, Pos.CENTER_LEFT);
+        setAlignmentByType(clNoTelepon, Pos.CENTER_LEFT);
+        setAlignmentByType(clEmail, Pos.CENTER_LEFT);
+        setAlignmentByType(clUsername, Pos.CENTER_LEFT);
+
         clAksi.setCellFactory(param -> new TableCell<>() {
-            final Button btnEdit = new Button("Edit");
-            final Button btnDelete = new Button("Hapus");
+            final Button btnEdit = new Button();
+            final Button btnDelete = new Button();
             final HBox pane = new HBox(btnEdit, btnDelete);
+
             {
                 pane.setSpacing(10);
-                btnEdit.setStyle("-fx-background-color: orange; -fx-text-fill: white;");
-                btnDelete.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+                pane.setAlignment(Pos.CENTER);
+
+                FontIcon editIcon = new FontIcon("fas-pencil-alt");
+                editIcon.setIconSize(16);
+                editIcon.setIconColor(Color.WHITE);
+                btnEdit.setGraphic(editIcon);
+                btnEdit.setStyle("-fx-background-color: orange;");
                 btnEdit.setCursor(Cursor.HAND);
                 btnDelete.setCursor(Cursor.HAND);
             }
+
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
@@ -110,33 +162,57 @@ public class KaryawanCtrl extends EvenListenerIndex {
                     setGraphic(null);
                     return;
                 }
+
                 Karyawan karyawan = getTableView().getItems().get(getIndex());
                 String nama = karyawan.getNama();
                 String currentStatus = karyawan.getStatus();
                 boolean isAktif = "Aktif".equals(currentStatus);
-                btnDelete.setText(isAktif ? "Hapus" : "Pulihkan");
-                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green") + "; -fx-text-fill: white;");
+
+                FontIcon deleteIcon = new FontIcon(isAktif ? "fas-toggle-on" : "fas-toggle-off");
+                deleteIcon.setIconSize(16);
+                deleteIcon.setIconColor(Color.WHITE);
+
+                btnDelete.setGraphic(deleteIcon);
+                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green")+";");
                 btnEdit.setOnAction(e -> loadSubPage("edit", karyawan.getId()));
                 btnDelete.setOnAction(e -> {
                     String actionText = isAktif ? "menonaktifkan" : "mengaktifkan";
                     boolean confirmed = new SwalAlert().showAlert(
-                        CONFIRMATION,
-                    "Konfirmasi",
-                "Apakah anda yakin ingin " + actionText + " karyawan dengan nama: " + nama + "?",
-            true
+                            CONFIRMATION,
+                            "Konfirmasi",
+                            "Apakah anda yakin ingin " + actionText + " karyawan dengan nama: " + nama + "?",
+                            true
                     );
                     if (confirmed) {
                         karyawanSrvc.setStatus(karyawan.getId());
-                        loadData(search,status, posisi, sortColumn, sortOrder);
+                        loadData(lastSearch, lastStatus, lastPosisi, lastSortColumn, lastSortOrder);
                     }
                 });
+
                 setGraphic(pane);
             }
         });
+//        for (TableColumn<Karyawan, ?> col : tbKaryawan.getColumns()) {
+//            col.setText(col.getText() + " ▲");
+//        }
+
         tbKaryawan.setItems(data);
+        clNama.setSortType(TableColumn.SortType.ASCENDING);
+        tbKaryawan.getSortOrder().add(clNama);
+        tbKaryawan.sort();
+        tbKaryawan.setPrefHeight(650);
+
+        tbKaryawan.setFixedCellSize(30);
+        tbKaryawan.setMinHeight(650);
+        Node parent = tbKaryawan.getParent();
+        if (parent instanceof VBox) {
+            VBox.setVgrow(tbKaryawan, Priority.ALWAYS);
+        }
+        return tbKaryawan;
     }
 
-//    @Override
+
+    //    @Override
     public void handleSearch() {
         String search = tfSearch.getText();
         String status = cbFilterStatus.getSelectionModel().getSelectedItem();
@@ -154,8 +230,6 @@ public class KaryawanCtrl extends EvenListenerIndex {
         @FXML
         ComboBox<String> cbPosisi;
         @FXML
-        ComboBox<Karyawan> cbCoba;
-        @FXML
         Label lbActiveUser;
         @FXML
         TextArea taAlamat;
@@ -170,7 +244,8 @@ public class KaryawanCtrl extends EvenListenerIndex {
         @FXML
         public void initialize() {
             lbActiveUser.setText(Session.getCurrentUser().getPosisi());
-            Dropdown.setDropdown(cbPosisi, List.of("Admin", "Manager", "Staff"));
+            Dropdown.setDropdown(cbPosisi, List.of("Admin", "Manager", "Kasir"));
+
             v.setNumbers(tfNoTelepon);
             v.setLetters(tfNama);
         }
@@ -232,9 +307,9 @@ public class KaryawanCtrl extends EvenListenerIndex {
 
         @FXML
         public void initialize() {
-            lbActiveUser.setText(Session.getCurrentUser().getPosisi());
+            lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
             loadData();
-            Dropdown.setDropdown(cbPosisi, List.of("Admin", "Manager", "Staff"));
+            Dropdown.setDropdown(cbPosisi, List.of("Admin", "Manager", "Kasir"));
             v.setNumbers(tfNoTelepon);
             v.setLetters(tfNama);
         }
