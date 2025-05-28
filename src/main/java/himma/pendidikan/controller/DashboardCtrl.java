@@ -40,6 +40,8 @@ public class DashboardCtrl {
         txtTotalPlaystation.setText(summaryTabelList.get(1).getTotal().toString());
         txtTotalKaryawan.setText(summaryTabelList.get(2).getTotal().toString());
         txtTotalMetodePembayaran.setText(summaryTabelList.get(3).getTotal().toString());
+
+        System.out.println(summaryTabelList.get(3).getTotal().toString());
     }
 
     public void loadSubPage() {
@@ -51,13 +53,16 @@ public class DashboardCtrl {
             if ("Kasir".equals(role)) {
                 System.out.println("KASIR");
                 loader = new FXMLLoader(getClass().getResource("/himma/pendidikan/views/dashboard/kasir.fxml"));
-                loader.setController(new KaryawanCtrl.KaryawanCreateCtrl());
+                DashboardKasirCtrl controller = new DashboardKasirCtrl();
+//                loader.setController(new KaryawanCtrl.KaryawanCreateCtrl());
+                loader.setController(controller);
             } else if ("Manager".equals(role)) {
                 System.out.println("MANAGER");
                 loader = new FXMLLoader(getClass().getResource("/himma/pendidikan/views/dashboard/manager.fxml"));
                 DashboardManagerCtrl controller = new DashboardManagerCtrl(); // Buat controller
                 loader.setController(controller);
-            } else{
+            }
+            else{
                 System.out.println("ADMIN");
                 loader = new FXMLLoader(getClass().getResource("/himma/pendidikan/views/dashboard/index.fxml"));
             }
@@ -334,11 +339,14 @@ public class DashboardCtrl {
             int bulan = today.getMonthValue();
 
             PenyewaanPlaystation.RekapTransaksiBulanan rekapTransaksi = getRekapPenyewaanBulanan(tahun, bulan);
+            System.out.println(tahun);
+            System.out.println(bulan);
 
             List<TopMasterData> top5Ps = playStationSrvc.getTop5PlayStation(tahun, bulan);
             Chart.pieChart(pcTopPs, top5Ps, "Top 5 Playstation", vbTopPs);
             List<TopMasterData> metodePembayaran = metodePembayaranSrvc.getTop5MetodePembayaran(tahun, bulan);
             Chart.pieChart(pcPembayaran, metodePembayaran, "Top 5 Metode Pembayaran", vbPembayaran);
+
             txtTotalPenyewaan.setText(String.valueOf(rekapTransaksi.getTotalPenyewaan()));
             txtTotalPendapatan.setText(String.valueOf(rekapTransaksi.getTotalPendapatan()));
         }
