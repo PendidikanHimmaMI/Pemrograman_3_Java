@@ -12,6 +12,7 @@ public class Dropdown {
         comboBox.setItems(items);
     }
 
+
     public static <T> void setDropdown(ComboBox<T> comboBox, List<T> list, Function<T, String> labelFunction) {
         ObservableList<T> items = FXCollections.observableArrayList(list);
         comboBox.setItems(items);

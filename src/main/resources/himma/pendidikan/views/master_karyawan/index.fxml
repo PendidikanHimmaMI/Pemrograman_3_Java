@@ -26,9 +26,9 @@
             <Insets bottom="10" left="10" right="10" top="10" />
         </padding>
         <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #020A7A;" text="PlayStation" />
-        <Region HBox.hgrow="ALWAYS" />
+        <Region prefHeight="35.0" prefWidth="862.0" HBox.hgrow="ALWAYS" />
         <Label fx:id="lbActiveUser" style="-fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Administrator" />
-        <ImageView fitHeight="24" fitWidth="24">
+        <ImageView fitHeight="33.0" fitWidth="31.0">
             <image>
                 <Image url="@../../assets/image/himma_logo.png" />
             </image>
