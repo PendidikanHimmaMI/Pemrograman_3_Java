@@ -84,12 +84,12 @@
                                                         <Font name="System Bold" size="20.0" />
                                                     </font>
                                                 </Text>
-                                                <Text fx:id="txtTotalPlaystation" fill="WHITE" layoutX="27.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-">
+                                                <Text fx:id="txtTotalPendapatan" fill="WHITE" layoutX="27.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-">
                                                     <font>
                                                         <Font name="System Bold" size="40.0" />
                                                     </font>
                                                 </Text>
-                                                <ImageView layoutX="478.0" layoutY="35.0">
+                                                <ImageView layoutX="478.0" layoutY="61.0">
                                                     <image>
                                                         <Image url="@../../assets/image/pendapatan.png" />
                                                     </image>
@@ -106,12 +106,12 @@
                                                         <Font name="System Bold" size="20.0" />
                                                     </font>
                                                 </Text>
-                                                <Text fx:id="txtTotalJenisPlaystation" fill="WHITE" layoutX="29.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-">
+                                                <Text fx:id="txtTotalPenyewaan" fill="WHITE" layoutX="29.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-">
                                                     <font>
                                                         <Font name="System Bold" size="40.0" />
                                                     </font>
                                                 </Text>
-                                                <ImageView layoutX="516.0" layoutY="32.0">
+                                                <ImageView layoutX="516.0" layoutY="57.0">
                                                     <image>
                                                         <Image url="@../../assets/image/penyewaan.png" />
                                                     </image>
@@ -126,8 +126,8 @@
                                         </HBox>
                                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                             <children>
-                                                <PieChart fx:id="pcStatusPenyewaan" />
-                                                <VBox fx:id="vbStatusPenyewaan" prefHeight="200.0" prefWidth="100.0" />
+                                                <PieChart fx:id="pcPembayaran" />
+                                                <VBox fx:id="vbPembayaran" prefHeight="200.0" prefWidth="100.0" />
                                             </children>
                                         </HBox>
                                     </children>
