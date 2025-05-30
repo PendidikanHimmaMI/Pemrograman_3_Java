@@ -33,6 +33,21 @@
                 <Image url="@../../assets/image/himma_logo.png" />
             </image>
         </ImageView>
+
+        <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #020A7A;" text="PlayStation" />
+        <Region prefHeight="35.0" prefWidth="862.0" HBox.hgrow="ALWAYS" />
+        <Label fx:id="lbActiveUser" style="-fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Administrator" />
+        <ImageView fitHeight="33.0" fitWidth="31.0">
+            <image>
+                <Image url="@../../assets/image/himma_logo.png" />
+            </image>
+        </ImageView>
+
+        <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Karyawan" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Label fx:id="lbActiveUser" style="-fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Administrator" />
+        <FontIcon iconLiteral="fas-user-circle" iconSize="16" />
+
     </HBox>
     <VBox spacing="10" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
         <AnchorPane prefHeight="262.0" prefWidth="1081.0" style="-fx-background-color: transparent;">
