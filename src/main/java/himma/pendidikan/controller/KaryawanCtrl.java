@@ -203,7 +203,7 @@ public class KaryawanCtrl extends EvenListenerIndex {
         tbKaryawan.setPrefHeight(650);
 
         tbKaryawan.setFixedCellSize(30);
-        tbKaryawan.setMinHeight(650);
+        tbKaryawan.setMinHeight(651);
         Node parent = tbKaryawan.getParent();
         if (parent instanceof VBox) {
             VBox.setVgrow(tbKaryawan, Priority.ALWAYS);
