@@ -117,7 +117,7 @@
             <Region layoutX="210.0" layoutY="10.0" prefHeight="80.0" prefWidth="1196.0" />
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#handleSubmit" prefHeight="40.0" prefWidth="150.0" style="-fx-background-radius: 15; -fx-background-color: red;" text="Keluar" textFill="WHITE">
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#handleExit" prefHeight="40.0" prefWidth="150.0" style="-fx-background-radius: 15; -fx-background-color: red;" text="Keluar" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>

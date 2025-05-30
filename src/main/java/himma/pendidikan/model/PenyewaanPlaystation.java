@@ -6,6 +6,8 @@ public class PenyewaanPlaystation {
     private Integer id;
     private Karyawan karyawan;
     private MetodePembayaran metodePembayaran;
+    private PlayStation playStation;
+    private JenisPlayStation jenisPlayStation;
     private String namaPenyewa;
     private String noTeleponPenyewa;
     private Date tanggalSewa;
@@ -13,7 +15,14 @@ public class PenyewaanPlaystation {
     private String status;
     private String createdby;
 
+
+
     public PenyewaanPlaystation() {
+    }
+
+    public PenyewaanPlaystation(PlayStation playStation, JenisPlayStation jenisPlayStation) {
+        this.playStation = playStation;
+        this.jenisPlayStation = jenisPlayStation;
     }
 
     public PenyewaanPlaystation(Karyawan karyawan, MetodePembayaran metodePembayaran, String namaPenyewa, String noTeleponPenyewa, Date tanggalSewa, Double totalHarga, String createdby) {
