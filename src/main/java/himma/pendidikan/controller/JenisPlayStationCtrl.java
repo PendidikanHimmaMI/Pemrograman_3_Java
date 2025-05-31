@@ -3,16 +3,20 @@ package himma.pendidikan.controller;
 import himma.pendidikan.component.Dropdown;
 import himma.pendidikan.controller.event.EvenListener.*;
 import himma.pendidikan.model.JenisPlayStation;
+import himma.pendidikan.model.JenisPlayStation;
 import himma.pendidikan.service.JenisPlayStationSrvc;
 import javafx.beans.property.*;
 import javafx.collections.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
+import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import himma.pendidikan.service.impl.*;
 import himma.pendidikan.util.*;
+import javafx.scene.paint.Color;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
 import java.util.*;
@@ -21,6 +25,8 @@ import static javafx.scene.control.Alert.AlertType.*;
 
 
 public class JenisPlayStationCtrl extends EvenListenerIndex {
+    @FXML
+    Pagination pgTabel;
     @FXML
     Button btnTambahData;
     @FXML
@@ -40,15 +46,31 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
     @FXML
     TableColumn<JenisPlayStation, Integer> clTahunRilis, clMaxPemain;
 
-    public static JenisPlayStationSrvcImpl jenisPlaystationSrvc = new JenisPlayStationSrvcImpl();
     static AppCtrl app = AppCtrl.getInstance();
+    public static JenisPlayStationSrvcImpl jenisPlayStationSrvc = new JenisPlayStationSrvcImpl();
+    private final int rowsPerPage = 15;
+    private List<JenisPlayStation> fullDataList;
+    private String lastSearch, lastStatus,  lastSortColumn, lastSortOrder;
+
+
 
     public JenisPlayStationCtrl() {}
 
     public void initialize() {
-        lbActiveUser.setText(Session.getCurrentUser().getPosisi());
+        lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
         handleClick();
         loadData(null,"Aktif",  "jps_id", "ASC");
+    }
+
+    private <T> void setAlignmentByType(TableColumn<JenisPlayStation, T> column, Pos alignment) {
+        column.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.toString());
+                setAlignment(alignment);
+            }
+        });
     }
 
     public void handleClick(){
@@ -82,32 +104,58 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
         }
     }
 
-    public void loadData(String search, String status, String sortColumn, String sortOrder){
-        List<JenisPlayStation> jenisPlayStationList = jenisPlaystationSrvc.getAllData(search,status, sortColumn, sortOrder);
-        ObservableList<JenisPlayStation> data = FXCollections.observableArrayList(jenisPlayStationList);
+    public void loadData(String search, String status,  String sortColumn, String sortOrder){
+        lastSearch = search;
+        lastStatus = status;
+        lastSortColumn = sortColumn;
+        lastSortOrder = sortOrder;
 
-        clNo.setCellValueFactory(col -> new ReadOnlyObjectWrapper<>(tbJenisPlayStation.getItems().indexOf(col.getValue()) + 1));
+        fullDataList = jenisPlayStationSrvc.getAllData(search, status,  sortColumn, sortOrder);
+        int pageCount = (int) Math.ceil((double) fullDataList.size() / rowsPerPage);
+        pgTabel.setPageCount(pageCount == 0 ? 1 : pageCount);
+        pgTabel.setCurrentPageIndex(0);
+        pgTabel.setPageFactory(this::createPage);
+    }
+
+    private Node createPage(int pageIndex) {
+        int fromIndex = pageIndex * rowsPerPage;
+        int toIndex = Math.min(fromIndex + rowsPerPage, fullDataList.size());
+
+        List<JenisPlayStation> pageData = fullDataList.subList(fromIndex, toIndex);
+        ObservableList<JenisPlayStation> data = FXCollections.observableArrayList(pageData);
+
+        clNo.setCellValueFactory(col -> new ReadOnlyObjectWrapper<>(data.indexOf(col.getValue()) + 1 + (pageIndex * rowsPerPage)));
         clNama.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNama()));
-
-        clTahunRilis.setCellValueFactory(cellData ->
-                new ReadOnlyObjectWrapper<>(cellData.getValue().getTahunLiris())
-        );    clMaxPemain.setCellValueFactory(cellData ->
-                new ReadOnlyObjectWrapper<>(cellData.getValue().getMaxPemain())
-        );
+        clTahunRilis.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTahunLiris()).asObject());
+        clMaxPemain.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getMaxPemain()).asObject());
         clDeskripsi.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDeskripsi()));
         clStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
 
+        setAlignmentByType(clNo, Pos.CENTER_RIGHT);
+        setAlignmentByType(clNama, Pos.CENTER_LEFT);
+        setAlignmentByType(clTahunRilis, Pos.CENTER_RIGHT);
+        setAlignmentByType(clMaxPemain, Pos.CENTER_RIGHT);
+        setAlignmentByType(clDeskripsi, Pos.CENTER_LEFT);
+
+
         clAksi.setCellFactory(param -> new TableCell<>() {
-            final Button btnEdit = new Button("Edit");
-            final Button btnDelete = new Button("Hapus");
+            final Button btnEdit = new Button();
+            final Button btnDelete = new Button();
             final HBox pane = new HBox(btnEdit, btnDelete);
+
             {
                 pane.setSpacing(10);
-                btnEdit.setStyle("-fx-background-color: orange; -fx-text-fill: white;");
-                btnDelete.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+                pane.setAlignment(Pos.CENTER);
+
+                FontIcon editIcon = new FontIcon("fas-pencil-alt");
+                editIcon.setIconSize(16);
+                editIcon.setIconColor(Color.WHITE);
+                btnEdit.setGraphic(editIcon);
+                btnEdit.setStyle("-fx-background-color: orange;");
                 btnEdit.setCursor(Cursor.HAND);
                 btnDelete.setCursor(Cursor.HAND);
             }
+
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
@@ -115,12 +163,18 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
                     setGraphic(null);
                     return;
                 }
+
                 JenisPlayStation jenisPlayStation = getTableView().getItems().get(getIndex());
                 String nama = jenisPlayStation.getNama();
                 String currentStatus = jenisPlayStation.getStatus();
                 boolean isAktif = "Aktif".equals(currentStatus);
-                btnDelete.setText(isAktif ? "Hapus" : "Pulihkan");
-                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green") + "; -fx-text-fill: white;");
+
+                FontIcon deleteIcon = new FontIcon(isAktif ? "fas-toggle-on" : "fas-toggle-off");
+                deleteIcon.setIconSize(16);
+                deleteIcon.setIconColor(Color.WHITE);
+
+                btnDelete.setGraphic(deleteIcon);
+                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green")+";");
                 btnEdit.setOnAction(e -> loadSubPage("edit", jenisPlayStation.getId()));
                 btnDelete.setOnAction(e -> {
                     String actionText = isAktif ? "menonaktifkan" : "mengaktifkan";
@@ -131,15 +185,33 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
                             true
                     );
                     if (confirmed) {
-                        jenisPlaystationSrvc.setStatus(jenisPlayStation.getId());
-                        loadData(search,status, sortColumn, sortOrder);
+                        jenisPlayStationSrvc.setStatus(jenisPlayStation.getId());
+                        loadData(lastSearch, lastStatus,  lastSortColumn, lastSortOrder);
                     }
                 });
+
                 setGraphic(pane);
             }
         });
+//        for (TableColumn<Karyawan, ?> col : tbKaryawan.getColumns()) {
+//            col.setText(col.getText() + " ▲");
+//        }
+
         tbJenisPlayStation.setItems(data);
+        clTahunRilis.setSortType(TableColumn.SortType.DESCENDING);
+        tbJenisPlayStation.getSortOrder().add(clTahunRilis);
+        tbJenisPlayStation.sort();
+        tbJenisPlayStation.setPrefHeight(650);
+
+        tbJenisPlayStation.setFixedCellSize(30);
+        tbJenisPlayStation.setMinHeight(650);
+        Node parent = tbJenisPlayStation.getParent();
+        if (parent instanceof VBox) {
+            VBox.setVgrow(tbJenisPlayStation, Priority.ALWAYS);
+        }
+        return tbJenisPlayStation;
     }
+
 
     //    @Override
     public void handleSearch() {
@@ -187,12 +259,12 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
             String deskripsi = tfDeskripsi.getText();
             String createdBy = Session.getCurrentUser().getNama();
             JenisPlayStation jpls = new JenisPlayStation(nama, tahunRilis, maxPemain, deskripsi,  createdBy);
-            if(jenisPlaystationSrvc.saveData(jpls)){
+            if(jenisPlayStationSrvc.saveData(jpls)){
                 jenisPlayStationCtrl.loadSubPage("index",null);
             }
         }
 
-//        @Override
+        //        @Override
         public void handleBack() {
             loadSubPage("index",null);
         }
@@ -225,7 +297,7 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
         @Override
         public void loadData() {
             if(id!=null){
-                JenisPlayStation jpls = jenisPlaystationSrvc.getDataById(id);
+                JenisPlayStation jpls = jenisPlayStationSrvc.getDataById(id);
                 if(jpls!=null){
                     tfNama.setText(jpls.getNama());
                     tfTahunRilis.setText(jpls.getTahunLiris().toString());
@@ -252,7 +324,7 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
             String modifby = Session.getCurrentUser().getNama();
 //            System.out.println(modifby);
             JenisPlayStation jpls = new JenisPlayStation(id,nama, tahunRilis, maxPemain, deskripsi,null,  modifby);
-            if(jenisPlaystationSrvc.updateData(jpls)){
+            if(jenisPlayStationSrvc.updateData(jpls)){
                 JenisPlayStationCtrl.loadSubPage("index",null);
             }
         }

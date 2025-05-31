@@ -62,46 +62,6 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
-<<<<<<< HEAD
-
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-controls</artifactId>
-      <version>21</version>
-    </dependency>
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-fxml</artifactId>
-      <version>21</version>
-    </dependency>
-
-    <!-- Ikonli for JavaFX -->
-    <dependency>
-=======
-    <dependency>
-      <groupId>org.kordamp.ikonli</groupId>
-      <artifactId>ikonli-core</artifactId>
-      <version>12.3.1</version>
-    </dependency>
-    <dependency>
->>>>>>> 9f1e58c1c586fdf8b95f2b5b5b41b635466b0c02
-      <groupId>org.kordamp.ikonli</groupId>
-      <artifactId>ikonli-javafx</artifactId>
-      <version>12.3.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.kordamp.ikonli</groupId>
-<<<<<<< HEAD
-      <artifactId>ikonli-fontawesome-pack</artifactId> <!-- contoh pack, bisa ganti -->
-      <version>12.3.1</version>
-    </dependency>
-
-
-=======
-      <artifactId>ikonli-fontawesome5-pack</artifactId>
-      <version>12.3.1</version>
-    </dependency>
->>>>>>> 9f1e58c1c586fdf8b95f2b5b5b41b635466b0c02
   </dependencies>
 
   <build>

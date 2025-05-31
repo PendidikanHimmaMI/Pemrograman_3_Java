@@ -88,7 +88,7 @@
                         </VBox>
                         <Button fx:id="handlePw" onAction="#showPw" prefHeight="35.0" prefWidth="58.0" style="-fx-background-radius: 0 12 12 0;">
                            <graphic>
-                              <FontIcon fx:id="eyeIcon" iconLiteral="fa-eye" iconSize="16" />
+                              <FontIcon fx:id="eyeIcon" iconLiteral="fas-eye" iconSize="16" />
                            </graphic>
                            <cursor>
                               <Cursor fx:constant="HAND" />

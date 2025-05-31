@@ -47,7 +47,7 @@ public class LoginCtrl {
 
         pfPassword.setVisible(!show);
         pfPassword.setManaged(!show);
-        eyeIcon.setIconLiteral(show ? "fa-eye-slash" : "fa-eye");
+        eyeIcon.setIconLiteral(show ? "fas-eye-slash" : "fas-eye");
     }
 
     public void handleSubmit(ActionEvent e){
@@ -68,7 +68,7 @@ public class LoginCtrl {
             login_container.getChildren().removeAll();
             login_container.getChildren().setAll(root);
         }catch (RuntimeException ex){
-            alert.showAlert(AlertType.ERROR, "ERROR", ex.getMessage(), false);
+            alert.showAlert(AlertType.ERROR, "ERRORara", ex.getMessage(), false);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
