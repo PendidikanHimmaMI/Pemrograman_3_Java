@@ -254,13 +254,39 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
         @Override
         public void handleAddData(ActionEvent e) {
             String nama = tfNama.getText();
-            Integer tahunRilis = Integer.valueOf(tfTahunRilis.getText());
-            Integer maxPemain = Integer.valueOf(tfMaxPemain.getText());
+            String tahunRilisStr = tfTahunRilis.getText();
+            String maxPemainStr = tfMaxPemain.getText();
             String deskripsi = tfDeskripsi.getText();
             String createdBy = Session.getCurrentUser().getNama();
-            JenisPlayStation jpls = new JenisPlayStation(nama, tahunRilis, maxPemain, deskripsi,  createdBy);
-            if(jenisPlayStationSrvc.saveData(jpls)){
-                jenisPlayStationCtrl.loadSubPage("index",null);
+
+            if (tahunRilisStr.isEmpty()) {
+                new SwalAlert().showAlert(ERROR, "Validasi", "Tahun rilis tidak boleh kosong.", false);
+                return;
+            }
+
+            if (maxPemainStr.isEmpty()) {
+                new SwalAlert().showAlert(ERROR, "Validasi", "Max pemain tidak boleh kosong.", false);
+                return;
+            }
+
+            Integer tahunRilis, maxPemain;
+            try {
+                tahunRilis = Integer.parseInt(tahunRilisStr);
+            } catch (NumberFormatException ex) {
+                new SwalAlert().showAlert(ERROR, "Validasi", "Tahun rilis harus berupa angka.", false);
+                return;
+            }
+
+            try {
+                maxPemain = Integer.parseInt(maxPemainStr);
+            } catch (NumberFormatException ex) {
+                new SwalAlert().showAlert(ERROR, "Validasi", "Max pemain harus berupa angka.", false);
+                return;
+            }
+
+            JenisPlayStation jpls = new JenisPlayStation(nama, tahunRilis, maxPemain, deskripsi, createdBy);
+            if (jenisPlayStationSrvc.saveData(jpls)) {
+                jenisPlayStationCtrl.loadSubPage("index", null);
             }
         }
 
@@ -318,14 +344,39 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
         @Override
         public void handleUpdateData(ActionEvent e) {
             String nama = tfNama.getText();
-            Integer tahunRilis = Integer.valueOf(tfTahunRilis.getText());
-            Integer maxPemain = Integer.valueOf(tfMaxPemain.getText());
+            String tahunRilisStr = tfTahunRilis.getText();
+            String maxPemainStr = tfMaxPemain.getText();
             String deskripsi = tfDeskripsi.getText();
             String modifby = Session.getCurrentUser().getNama();
-//            System.out.println(modifby);
-            JenisPlayStation jpls = new JenisPlayStation(id,nama, tahunRilis, maxPemain, deskripsi,null,  modifby);
-            if(jenisPlayStationSrvc.updateData(jpls)){
-                JenisPlayStationCtrl.loadSubPage("index",null);
+
+            if (tahunRilisStr.isEmpty()) {
+                new SwalAlert().showAlert(ERROR, "Validasi", "Tahun rilis tidak boleh kosong.", false);
+                return;
+            }
+
+            if (maxPemainStr.isEmpty()) {
+                new SwalAlert().showAlert(ERROR, "Validasi", "Max pemain tidak boleh kosong.", false);
+                return;
+            }
+
+            Integer tahunRilis, maxPemain;
+            try {
+                tahunRilis = Integer.parseInt(tahunRilisStr);
+            } catch (NumberFormatException ex) {
+                new SwalAlert().showAlert(ERROR, "Validasi", "Tahun rilis harus berupa angka.", false);
+                return;
+            }
+
+            try {
+                maxPemain = Integer.parseInt(maxPemainStr);
+            } catch (NumberFormatException ex) {
+                new SwalAlert().showAlert(ERROR, "Validasi", "Max pemain harus berupa angka.", false);
+                return;
+            }
+
+            JenisPlayStation jpls = new JenisPlayStation(id, nama, tahunRilis, maxPemain, deskripsi, null, modifby);
+            if (jenisPlayStationSrvc.updateData(jpls)) {
+                JenisPlayStationCtrl.loadSubPage("index", null);
             }
         }
 
