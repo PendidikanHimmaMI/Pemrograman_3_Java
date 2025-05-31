@@ -259,13 +259,8 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
             String deskripsi = tfDeskripsi.getText();
             String createdBy = Session.getCurrentUser().getNama();
 
-            if (tahunRilisStr.isEmpty()) {
-                new SwalAlert().showAlert(ERROR, "Validasi", "Tahun rilis tidak boleh kosong.", false);
-                return;
-            }
-
-            if (maxPemainStr.isEmpty()) {
-                new SwalAlert().showAlert(ERROR, "Validasi", "Max pemain tidak boleh kosong.", false);
+            if (nama.isEmpty() || tahunRilisStr.isEmpty() || maxPemainStr.isEmpty() ) {
+                new SwalAlert().showAlert(ERROR, "Validasi", "Semua data harus diisi.", false);
                 return;
             }
 
@@ -283,6 +278,8 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
                 new SwalAlert().showAlert(ERROR, "Validasi", "Max pemain harus berupa angka.", false);
                 return;
             }
+
+
 
             JenisPlayStation jpls = new JenisPlayStation(nama, tahunRilis, maxPemain, deskripsi, createdBy);
             if (jenisPlayStationSrvc.saveData(jpls)) {
@@ -349,13 +346,8 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
             String deskripsi = tfDeskripsi.getText();
             String modifby = Session.getCurrentUser().getNama();
 
-            if (tahunRilisStr.isEmpty()) {
-                new SwalAlert().showAlert(ERROR, "Validasi", "Tahun rilis tidak boleh kosong.", false);
-                return;
-            }
-
-            if (maxPemainStr.isEmpty()) {
-                new SwalAlert().showAlert(ERROR, "Validasi", "Max pemain tidak boleh kosong.", false);
+            if (nama.isEmpty() || tahunRilisStr.isEmpty() || maxPemainStr.isEmpty()) {
+                new SwalAlert().showAlert(ERROR, "Validasi", "Semua data harus diisi.", false);
                 return;
             }
 
