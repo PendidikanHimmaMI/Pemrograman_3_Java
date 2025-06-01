@@ -50,8 +50,11 @@ public class Chart {
                 }
             });
 
+            pieChart.setMinSize(200, 200);
+            pieChart.setMaxSize(400, 400);
+
             // Buat legend
-            HBox legendItem = new HBox(5);
+            HBox legendItem = new HBox(15);
             Pane colorPane = new Pane();
             colorPane.setPrefSize(50, 10);
             colorPane.setStyle("-fx-background-color: " + hexColor + ";");
