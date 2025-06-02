@@ -248,7 +248,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
         if (Parent instanceof VBox) {
             VBox.setVgrow(tbPlayStation, Priority.ALWAYS);
         }
-        return new Label(""); // atau return null; juga tidak masalah
+        return new Label("");
     }
 
     @Override
