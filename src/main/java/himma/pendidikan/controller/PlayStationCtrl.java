@@ -18,20 +18,30 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.*;
 
 import static javafx.scene.control.Alert.AlertType.CONFIRMATION;
 
 public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
+
+    @FXML
+    Pagination pgTabel;
 
     @FXML
     private Button btnTambahData;
@@ -49,7 +59,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
     private TableColumn<PlayStation, Integer> clNo;
 
     @FXML
-    private TableColumn<PlayStation, String > clMerk;
+    private TableColumn<PlayStation, String> clMerk;
 
     @FXML
     private TableColumn<PlayStation, String> clHarga;
@@ -67,23 +77,39 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
 
     @FXML
     private TextField tfSearch;
+
     public static PlayStationSrvcImpl playStationSrvc = new PlayStationSrvcImpl();
     AppCtrl app = AppCtrl.getInstance();
+    private final int rowsPerPage = 15;
+    private List<PlayStation> fullDataList;
+    private String lastSearch, lastStatus, lastPosisi, lastSortColumn, lastSortOrder;
 
-    public PlayStationCtrl(){}
+
+    public PlayStationCtrl() {
+    }
 
     public void initialize() {
         lbActiveUser.setText(Session.getCurrentUser().getPosisi());
         handleClick();
-        loadData(null,"Aktif", null, "pst_id", "ASC");
+        loadData(null, "Aktif", null, "pst_id", "ASC");
     }
 
+    private <T> void setAlignmentByType(TableColumn<PlayStation, T> column, Pos alignment) {
+        column.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.toString());
+                setAlignment(alignment);
+            }
+        });
+    }
 
-    public void handleClick(){
+    public void handleClick() {
         btnTambahData.setOnAction(event -> {
-            loadSubPage("add",null);
- });}
-
+            loadSubPage("add", null);
+        });
+    }
 
 
     public void loadSubPage(String page, Integer id) {
@@ -96,7 +122,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
             } else if ("edit".equals(page)) {
                 loader = new FXMLLoader(getClass().getResource("/himma/pendidikan/views/master_play_station/edit.fxml"));
                 PlaytationEditCtrl controller = new PlaytationEditCtrl();// Buat controller
-                System.out.println("id"+id);
+                System.out.println("id" + id);
                 controller.setId(id);
                 loader.setController(controller);
             } else {
@@ -111,11 +137,32 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
         }
     }
 
-    public void loadData(String search, String status,String idJenisPlayStation, String sortColumn, String sortOrder){
-        List<PlayStation> playStationList = playStationSrvc.getAllData(search ,status ,idJenisPlayStation, sortColumn, sortOrder);
-        ObservableList<PlayStation> data = FXCollections.observableArrayList(playStationList);
+    public void loadData(String search, String status, String posisi, String sortColumn, String sortOrder) {
+        lastSearch = search;
+        lastStatus = status;
+        lastPosisi = posisi;
+        lastSortColumn = sortColumn;
+        lastSortOrder = sortOrder;
 
-        clNo.setCellValueFactory(col -> new ReadOnlyObjectWrapper<>(tbPlayStation.getItems().indexOf(col.getValue()) + 1));
+        fullDataList = playStationSrvc.getAllData(search, status, posisi, sortColumn, sortOrder);
+        int pageCount = (int) Math.ceil((double) fullDataList.size() / rowsPerPage);
+        pgTabel.setPageCount(pageCount == 0 ? 1 : pageCount);
+        pgTabel.setCurrentPageIndex(0);
+        pgTabel.setPageFactory(this::createPage);
+    }
+
+    private Node createPage(int pageIndex) {
+        int fromIndex = pageIndex * rowsPerPage;
+        int toIndex = Math.min(fromIndex + rowsPerPage, fullDataList.size());
+
+        List<PlayStation> pageData = fullDataList.subList(fromIndex, toIndex);
+        ObservableList<PlayStation> data = FXCollections.observableArrayList(pageData);
+
+        clNo.setCellValueFactory(col -> {
+            int indexInPage = tbPlayStation.getItems().indexOf(col.getValue());
+            int globalIndex = pageIndex * rowsPerPage + indexInPage + 1;
+            return new ReadOnlyObjectWrapper<>(globalIndex);
+        });
         clMerk.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMerkPs()));
         clSerialNumber.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSerialNumber()));
         clJnsPS.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getJenisPlaystation()));
@@ -128,17 +175,33 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
 
         clStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
 
+        tbPlayStation.setItems(data);
+        setAlignmentByType(clNo, Pos.CENTER);
+        setAlignmentByType(clMerk, Pos.CENTER_LEFT);
+        setAlignmentByType(clSerialNumber, Pos.CENTER_LEFT);
+        setAlignmentByType(clJnsPS, Pos.CENTER_LEFT);
+        setAlignmentByType(clHarga, Pos.CENTER_RIGHT);
+        setAlignmentByType(clStatus, Pos.CENTER_RIGHT);
+        setAlignmentByType(clAksi, Pos.CENTER);
+
         clAksi.setCellFactory(param -> new TableCell<>() {
-            final Button btnEdit = new Button("Edit");
-            final Button btnDelete = new Button("Hapus");
+            final Button btnEdit = new Button();
+            final Button btnDelete = new Button();
             final HBox pane = new HBox(btnEdit, btnDelete);
+
             {
                 pane.setSpacing(10);
-                btnEdit.setStyle("-fx-background-color: orange; -fx-text-fill: white;");
-                btnDelete.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+                pane.setAlignment(Pos.CENTER);
+
+                FontIcon editIcon = new FontIcon("fas-pencil-alt");
+                editIcon.setIconSize(16);
+                editIcon.setIconColor(Color.WHITE);
+                btnEdit.setGraphic(editIcon);
+                btnEdit.setStyle("-fx-background-color: orange;");
                 btnEdit.setCursor(Cursor.HAND);
                 btnDelete.setCursor(Cursor.HAND);
             }
+
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
@@ -150,27 +213,44 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
                 String serialNumber = playStation.getSerialNumber();
                 String currentStatus = playStation.getStatus();
                 boolean isAktif = "Aktif".equals(currentStatus);
-                btnDelete.setText(isAktif ? "Hapus" : "Pulihkan");
-                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green") + "; -fx-text-fill: white;");
+
+                FontIcon deleteIcon = new FontIcon(isAktif ? "fas-toggle-on" : "fas-toggle-off");
+                deleteIcon.setIconSize(16);
+                deleteIcon.setIconColor(Color.WHITE);
+
+                btnDelete.setGraphic(deleteIcon);
+                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green") + ";");
                 btnEdit.setOnAction(e -> loadSubPage("edit", playStation.getIdPS()));
                 btnDelete.setOnAction(e -> {
                     String actionText = isAktif ? "menonaktifkan" : "mengaktifkan";
                     boolean confirmed = new SwalAlert().showAlert(
                             CONFIRMATION,
                             "Konfirmasi",
-                            "Apakah anda yakin ingin " + actionText + " playstation dengan kode: " + serialNumber + "?",
+                            "Apakah anda yakin ingin " + actionText + " Playstation dengan kode: " + serialNumber + "?",
                             true
                     );
                     if (confirmed) {
                         playStationSrvc.setStatus(playStation.getIdPS());
-                        loadData(search,status, idJenisPlayStation,sortColumn, sortOrder);
+                        loadData(lastSearch, lastStatus, lastPosisi, lastSortColumn, lastSortOrder);
                     }
                 });
                 setGraphic(pane);
             }
         });
         tbPlayStation.setItems(data);
+        clNo.setSortType(TableColumn.SortType.ASCENDING);
+        tbPlayStation.getSortOrder().add(clNo);
+        tbPlayStation.sort();
+
+        tbPlayStation.setFixedCellSize(30);;
+        tbPlayStation.setMinHeight(650);
+        Node Parent = tbPlayStation.getParent();
+        if (Parent instanceof VBox) {
+            VBox.setVgrow(tbPlayStation, Priority.ALWAYS);
+        }
+        return new Label("");
     }
+
     @Override
     public void handleSearch() {
         String search = tfSearch.getText();
