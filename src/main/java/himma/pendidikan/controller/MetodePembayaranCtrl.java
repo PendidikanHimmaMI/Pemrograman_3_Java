@@ -2,6 +2,7 @@ package himma.pendidikan.controller;
 
 import himma.pendidikan.component.Dropdown;
 import himma.pendidikan.controller.event.EvenListener.*;
+import himma.pendidikan.model.Karyawan;
 import javafx.beans.property.*;
 import javafx.collections.*;
 import javafx.event.ActionEvent;
@@ -13,7 +14,9 @@ import javafx.scene.layout.*;
 import himma.pendidikan.model.MetodePembayaran;
 import himma.pendidikan.service.impl.*;
 import himma.pendidikan.util.*;
-import javafx.scene.text.Font;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 
 import java.io.IOException;
@@ -22,6 +25,8 @@ import java.util.*;
 import static javafx.scene.control.Alert.AlertType.*;
 
 public class MetodePembayaranCtrl extends EvenListenerIndex {
+    @FXML
+    Pagination pgTabel;
     @FXML
     Button btnTambahData;
     @FXML
@@ -41,18 +46,27 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
 
     public static MetodePembayaranSrvcImpl metodePembayaranSrvc = new MetodePembayaranSrvcImpl();
     AppCtrl app = AppCtrl.getInstance();
+    private final int rowsPerPage = 15;
+    private List<MetodePembayaran> fullDataList;
+    private String lastSearch, lastStatus, lastPosisi, lastSortColumn, lastSortOrder;
 
     public MetodePembayaranCtrl() {}
 
     public void initialize() {
-        Font font = Font.loadFont(
-                getClass().getResource("/assets/fonts/Poppins-Bold.ttf").toExternalForm(),
-                12
-        );
-
         lbActiveUser.setText(Session.getCurrentUser().getPosisi());
         handleClick();
         loadData(null,"Aktif", "mpb_id", "ASC");
+    }
+
+    private <T> void setAlignmentByType(TableColumn<MetodePembayaran, T> column, Pos alignment) {
+        column.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.toString());
+                setAlignment(alignment);
+            }
+        });
     }
 
     public void handleClick(){
@@ -85,23 +99,47 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
         }
     }
 
-    public void loadData(String search, String status, String sortColumn, String sortOrder){
-        List<MetodePembayaran> metodePembayaranList = metodePembayaranSrvc.getAllData(search,status, sortColumn, sortOrder);
-        ObservableList<MetodePembayaran> data = FXCollections.observableArrayList(metodePembayaranList);
+    public void loadData(String search, String status, String sortColumn, String sortOrder) {
+        lastSearch = search;
+        lastStatus = status;
+        lastSortColumn = sortColumn;
+        lastSortOrder = sortOrder;
+
+        fullDataList = metodePembayaranSrvc.getAllData(search, status, sortColumn, sortOrder);
+        int pageCount = (int) Math.ceil((double) fullDataList.size() / rowsPerPage);
+        pgTabel.setPageCount(pageCount == 0 ? 1 : pageCount);
+        pgTabel.setCurrentPageIndex(0);
+        pgTabel.setPageFactory(this::createPage);
+    }
+    public Node createPage(int pageIndex){
+        int fromIndex = pageIndex * rowsPerPage;
+        int toIndex = Math.min(fromIndex + rowsPerPage, fullDataList.size());
+
+        List<MetodePembayaran> pageData = fullDataList.subList(fromIndex, toIndex);
+        ObservableList<MetodePembayaran> data = FXCollections.observableArrayList(pageData);
 
         clNo.setCellValueFactory(col -> new ReadOnlyObjectWrapper<>(tbMetodePembayaran.getItems().indexOf(col.getValue()) + 1));
         clNama.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNama()));
         clDeskripsi.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDeskripsi()));
         clStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
 
+        setAlignmentByType(clNo, Pos.CENTER_RIGHT);
+        setAlignmentByType(clNama, Pos.CENTER_LEFT);
+        setAlignmentByType(clDeskripsi, Pos.CENTER_LEFT);
+
         clAksi.setCellFactory(param -> new TableCell<>() {
-            final Button btnEdit = new Button("Edit");
-            final Button btnDelete = new Button("Hapus");
+            final Button btnEdit = new Button();
+            final Button btnDelete = new Button();
             final HBox pane = new HBox(btnEdit, btnDelete);
             {
                 pane.setSpacing(10);
-                btnEdit.setStyle("-fx-background-color: orange; -fx-text-fill: white;");
-                btnDelete.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+                pane.setAlignment(Pos.CENTER);
+
+                FontIcon editIcon = new FontIcon("fas-pencil-alt");
+                editIcon.setIconSize(16);
+                editIcon.setIconColor(Color.WHITE);
+                btnEdit.setGraphic(editIcon);
+                btnEdit.setStyle("-fx-background-color: orange;");
                 btnEdit.setCursor(Cursor.HAND);
                 btnDelete.setCursor(Cursor.HAND);
             }
@@ -116,8 +154,13 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
                 String nama = metodePembayaran.getNama();
                 String currentStatus = metodePembayaran.getStatus();
                 boolean isAktif = "Aktif".equals(currentStatus);
-                btnDelete.setText(isAktif ? "Hapus" : "Pulihkan");
-                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green") + "; -fx-text-fill: white;");
+
+                FontIcon deleteIcon = new FontIcon(isAktif ? "fas-toggle-on" : "fas-toggle-off");
+                deleteIcon.setIconSize(16);
+                deleteIcon.setIconColor(Color.WHITE);
+
+                btnDelete.setGraphic(deleteIcon);
+                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green")+";");
                 btnEdit.setOnAction(e -> loadSubPage("edit", metodePembayaran.getId()));
                 if(currentStatus.equals("Tidak Aktif")) {
                     btnEdit.setVisible(false);
@@ -133,13 +176,25 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
                     );
                     if (confirmed) {
                         metodePembayaranSrvc.setStatus(metodePembayaran.getId());
-                        loadData(search,status, sortColumn, sortOrder);
+                        loadData(lastSearch, lastStatus, lastSortColumn, lastSortOrder);
                     }
                 });
                 setGraphic(pane);
             }
         });
         tbMetodePembayaran.setItems(data);
+        clNama.setSortType(TableColumn.SortType.ASCENDING);
+        tbMetodePembayaran.getSortOrder().add(clNama);
+        tbMetodePembayaran.sort();
+        tbMetodePembayaran.setPrefHeight(650);
+
+        tbMetodePembayaran.setFixedCellSize(30);
+        tbMetodePembayaran.setMinHeight(650);
+        Node parent = tbMetodePembayaran.getParent();
+        if (parent instanceof VBox) {
+            VBox.setVgrow(tbMetodePembayaran, Priority.ALWAYS);
+        }
+        return tbMetodePembayaran;
     }
 
     //    @Override

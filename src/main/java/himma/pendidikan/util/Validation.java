@@ -23,6 +23,16 @@ public class Validation {
         }
     }
 
+    public Double getDouble(ResultSet rs, String columnName){
+        try{
+            rs.findColumn(columnName);
+            return rs.getDouble(columnName);
+        }catch (SQLException e)
+        {
+            return null;
+        }
+    }
+
     public static void setLetters(TextField textField) {
         textField.textProperty().addListener((obs, oldText, newText) -> {
             if (!newText.matches("[a-zA-Z\\s]*")) {

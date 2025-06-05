@@ -173,6 +173,10 @@ public class KaryawanCtrl extends EvenListenerIndex {
                 btnDelete.setGraphic(deleteIcon);
                 btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green")+";");
                 btnEdit.setOnAction(e -> loadSubPage("edit", karyawan.getId()));
+                if(currentStatus.equals("Tidak Aktif")) {
+                    btnEdit.setVisible(false);
+                    btnDelete.setAlignment(Pos.CENTER);
+                }
                 btnDelete.setOnAction(e -> {
                     String actionText = isAktif ? "menonaktifkan" : "mengaktifkan";
                     boolean confirmed = new SwalAlert().showAlert(
@@ -241,9 +245,8 @@ public class KaryawanCtrl extends EvenListenerIndex {
 
         @FXML
         public void initialize() {
-            lbActiveUser.setText(Session.getCurrentUser().getPosisi());
-            Dropdown.setDropdown(cbPosisi, List.of("Admin", "Manager", "Kasir"));
-
+            lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
+            Dropdown.setDropdown(cbPosisi, List.of("Admin", "Manager", "Staff"));
             v.setNumbers(tfNoTelepon);
             v.setLetters(tfNama);
         }
@@ -307,7 +310,7 @@ public class KaryawanCtrl extends EvenListenerIndex {
         public void initialize() {
             lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
             loadData();
-            Dropdown.setDropdown(cbPosisi, List.of("Admin", "Manager", "Kasir"));
+            Dropdown.setDropdown(cbPosisi, List.of("Admin", "Manager", "Staff"));
             v.setNumbers(tfNoTelepon);
             v.setLetters(tfNama);
         }

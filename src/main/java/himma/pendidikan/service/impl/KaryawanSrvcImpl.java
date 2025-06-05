@@ -19,15 +19,15 @@ public class KaryawanSrvcImpl implements KaryawanSrvc{
     @Override
     public Karyawan resultKaryawan(ResultSet rs) throws SQLException {
         return new Karyawan(
-        v.getInt(rs,"kry_id"),
-        v.getString(rs,"kry_nama"),
-        v.getString(rs,"kry_posisi"),
-        v.getString(rs,"kry_alamat"),
-        v.getString(rs,"kry_no_hp"),
-        v.getString(rs,"kry_email"),
-        v.getString(rs,"kry_username"),
-        v.getString(rs,"kry_password"),
-        v.getString(rs,"kry_status"));
+                v.getInt(rs,"kry_id"),
+                v.getString(rs,"kry_nama"),
+                v.getString(rs,"kry_posisi"),
+                v.getString(rs,"kry_alamat"),
+                v.getString(rs,"kry_no_hp"),
+                v.getString(rs,"kry_email"),
+                v.getString(rs,"kry_username"),
+                v.getString(rs,"kry_password"),
+                v.getString(rs,"kry_status"));
     }
 
     @Override

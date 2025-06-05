@@ -14,6 +14,8 @@ import himma.pendidikan.service.impl.*;
 import himma.pendidikan.util.Session;
 import himma.pendidikan.util.SwalAlert;
 import org.kordamp.ikonli.javafx.FontIcon;
+import javafx.stage.Stage;
+import javafx.scene.Node;
 
 import java.io.IOException;
 
@@ -68,9 +70,14 @@ public class LoginCtrl {
             login_container.getChildren().removeAll();
             login_container.getChildren().setAll(root);
         }catch (RuntimeException ex){
-            alert.showAlert(AlertType.ERROR, "ERROR", ex.getMessage(), false);
+            alert.showAlert(AlertType.ERROR, "ERRORara", ex.getMessage(), false);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    public void handleExit(ActionEvent e){
+        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        stage.close();
     }
 }
