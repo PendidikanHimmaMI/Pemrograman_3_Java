@@ -1,8 +1,12 @@
 package himma.pendidikan.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class PenyewaanPlaystation {
+    private Date ppsCreatedDate;
+    private  Integer kryId;
+    private Integer mpbId;
     private Integer id;
     private Karyawan karyawan;
     private MetodePembayaran metodePembayaran;
@@ -17,7 +21,20 @@ public class PenyewaanPlaystation {
 
 
 
-    public PenyewaanPlaystation() {
+    public PenyewaanPlaystation(Integer ppsId, Integer kryId, String kryNama, Integer mpbId, String mpbNama, String ppsNamaPenyewa, String ppsNoHpPenyewa, java.sql.Date ppsTanggalTransaksi, Double ppsTotalHarga, String ppsStatus, String ppsCreatedBy, Timestamp ppsCreatedDate) {
+    }
+
+    public PenyewaanPlaystation(Integer ppsId, Integer kryId, Integer mpbId, String ppsNamaPenyewa, String ppsNoHpPenyewa, Date ppsTanggalTransaksi, Double ppsTotalHarga, String ppsStatus, String ppsCreatedBy, Date ppsCreatedDate) {
+        this.id = ppsId;
+        this.kryId = kryId;
+        this.mpbId = mpbId;
+        this.namaPenyewa = ppsNamaPenyewa;
+        this.noTeleponPenyewa = ppsNoHpPenyewa;
+        this.tanggalSewa = ppsTanggalTransaksi;
+        this.totalHarga = ppsTotalHarga;
+        this.status = ppsStatus;
+        this.createdby = ppsCreatedBy;
+        this.ppsCreatedDate = ppsCreatedDate;
     }
 
     public PenyewaanPlaystation(PlayStation playStation, JenisPlayStation jenisPlayStation) {
@@ -56,6 +73,47 @@ public class PenyewaanPlaystation {
         this.totalHarga = totalHarga;
         this.status = status;
         this.createdby = createdby;
+    }
+
+
+    public Date getPpsCreatedDate() {
+        return ppsCreatedDate;
+    }
+
+    public void setPpsCreatedDate(Date ppsCreatedDate) {
+        this.ppsCreatedDate = ppsCreatedDate;
+    }
+
+    public Integer getKryId() {
+        return kryId;
+    }
+
+    public void setKryId(Integer kryId) {
+        this.kryId = kryId;
+    }
+
+    public Integer getMpbId() {
+        return mpbId;
+    }
+
+    public void setMpbId(Integer mpbId) {
+        this.mpbId = mpbId;
+    }
+
+    public PlayStation getPlayStation() {
+        return playStation;
+    }
+
+    public void setPlayStation(PlayStation playStation) {
+        this.playStation = playStation;
+    }
+
+    public JenisPlayStation getJenisPlayStation() {
+        return jenisPlayStation;
+    }
+
+    public void setJenisPlayStation(JenisPlayStation jenisPlayStation) {
+        this.jenisPlayStation = jenisPlayStation;
     }
 
     public Integer getId() {

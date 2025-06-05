@@ -1,103 +1,127 @@
 package himma.pendidikan.model;
 
 public class PlayStation {
-    private Integer id;
-    private JenisPlayStation jenisPlayStation;
-    private String nama;
-    private Integer tahunLiris;
-    private Integer maxPemain;
-    private String deskripsi;
+    private Integer idPS;
+    private String jenisPlaystation;
+    private String serialNumber;
+    private String merkPs;
+    private Double hargaPS;
     private String status;
     private String createdby;
     private String modifby;
+    private Integer idJenisPlaystation;
 
-    public PlayStation() {}
-
-    public PlayStation(JenisPlayStation jenisPlayStation, String nama, Integer tahunLiris, Integer maxPemain, String deskripsi, String createdby) {
-        this.jenisPlayStation = jenisPlayStation;
-        this.nama = nama;
-        this.tahunLiris = tahunLiris;
-        this.maxPemain = maxPemain;
-        this.deskripsi = deskripsi;
-        this.createdby = createdby;
+    public PlayStation() {
     }
 
-    public PlayStation(Integer id, JenisPlayStation jenisPlayStation, String nama, Integer tahunLiris, Integer maxPemain, String deskripsi, String modifby) {
-        this.id = id;
-        this.jenisPlayStation = jenisPlayStation;
-        this.nama = nama;
-        this.tahunLiris = tahunLiris;
-        this.maxPemain = maxPemain;
-        this.deskripsi = deskripsi;
-        this.modifby = modifby;
-    }
-
-    public PlayStation(Integer id, JenisPlayStation jenisPlayStation, String nama, Integer tahunLiris, Integer maxPemain, String deskripsi, String status, String createdby, String modifby) {
-        this.id = id;
-        this.jenisPlayStation = jenisPlayStation;
-        this.nama = nama;
-        this.tahunLiris = tahunLiris;
-        this.maxPemain = maxPemain;
-        this.deskripsi = deskripsi;
+    public PlayStation(Integer idPS, Integer idJenisPS, String jenisPlaystation, String serialNumber, String merkPs, Double hargaPS, String status, String createdby) {
+        this.idPS = idPS;
+        this.idJenisPlaystation = idJenisPS;  // Menyimpan ID jenis PS
+        this.jenisPlaystation = jenisPlaystation;
+        this.serialNumber = serialNumber;
+        this.merkPs = merkPs;
+        this.hargaPS = hargaPS;
         this.status = status;
         this.createdby = createdby;
+    }
+    public PlayStation(Integer idPS, String jenisPlaystation, String serialNumber, String merkPs, Double hargaPS, String status, String createdby) {
+        this.idPS = idPS;
+        this.jenisPlaystation = jenisPlaystation;
+        this.serialNumber = serialNumber;
+        this.merkPs = merkPs;
+        this.hargaPS = hargaPS;
+        this.status = status;
+        this.createdby = createdby;
+    }
+
+    public PlayStation(String modifby, String status, Double hargaPS, String merkPs, String serialNumber,  String jenisPlaystation, Integer idPS) {
+        this.modifby = modifby;
+        this.status = status;
+        this.hargaPS = hargaPS;
+        this.merkPs = merkPs;
+        this.serialNumber = serialNumber;
+        this.jenisPlaystation = jenisPlaystation;
+        this.idPS = idPS;
+    }
+
+    public PlayStation(Integer IdJenisPS,String jenisPlaystation, String serialNumber, String merkPs, Double hargaPS, String modifby,Integer idPS) {
+        this.idPS = idPS;
+        this.idJenisPlaystation = IdJenisPS;
+        this.jenisPlaystation = jenisPlaystation;
+        this.serialNumber = serialNumber;
+        this.merkPs = merkPs;
+        this.hargaPS = hargaPS;
         this.modifby = modifby;
     }
 
-    public Integer getId() {
-        return id;
+    public PlayStation(String jenisPlaystation, String serialNumber, String merkPs, Double hargaPS, String createdby) {
+        this.jenisPlaystation = jenisPlaystation;
+        this.serialNumber = serialNumber;
+        this.merkPs = merkPs;
+        this.hargaPS = hargaPS;
+        this.createdby = createdby;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public PlayStation(String status){
+        this.status = status;
     }
 
-    public JenisPlayStation getJenisPlayStation() {
-        return jenisPlayStation;
+    public Integer getIdJenisPlaystation() {
+        return idJenisPlaystation;
     }
 
-    public void setJenisPlayStation(JenisPlayStation jenisPlayStation) {
-        this.jenisPlayStation = jenisPlayStation;
+    public void setIdJenisPlaystation(Integer idJenisPlaystation) {
+        this.idJenisPlaystation = idJenisPlaystation;
     }
 
-    public String getNama() {
-        return nama;
+    public Integer getIdPS() {
+        return idPS;
     }
 
-    public void setNama(String nama) {
-        this.nama = nama;
+    public void setIdPS(Integer idPS) {
+        this.idPS = idPS;
     }
 
-    public Integer getTahunLiris() {
-        return tahunLiris;
+    public String getJenisPlaystation() {
+        return jenisPlaystation;
     }
 
-    public void setTahunLiris(Integer tahunLiris) {
-        this.tahunLiris = tahunLiris;
+    public void setString(String jenisPlaystation) {
+        this.jenisPlaystation = jenisPlaystation;
     }
 
-    public Integer getMaxPemain() {
-        return maxPemain;
+
+    public String getSerialNumber() {
+        return serialNumber;
     }
 
-    public void setMaxPemain(Integer maxPemain) {
-        this.maxPemain = maxPemain;
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
-    public String getDeskripsi() {
-        return deskripsi;
+    public String getMerkPs() {
+        return merkPs;
     }
 
-    public void setDeskripsi(String deskripsi) {
-        this.deskripsi = deskripsi;
+    public void setMerkPs(String merkPs) {
+        this.merkPs = merkPs;
+    }
+
+    public Double getHargaPS() {
+        return hargaPS;
+    }
+
+    public void setHargaPS(Double hargaPS) {
+        this.hargaPS = hargaPS;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public String setStatus(String status) {
         this.status = status;
+        return status;
     }
 
     public String getCreatedby() {
