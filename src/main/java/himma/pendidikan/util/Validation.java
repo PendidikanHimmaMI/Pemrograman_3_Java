@@ -22,13 +22,11 @@ public class Validation {
             return null;
         }
     }
-
-    public Double getDouble(ResultSet rs, String columnName){
-        try{
+    public Double getDouble(ResultSet rs, String columnName) {
+        try {
             rs.findColumn(columnName);
             return rs.getDouble(columnName);
-        }catch (SQLException e)
-        {
+        } catch (SQLException e) {
             return null;
         }
     }
@@ -63,5 +61,23 @@ public class Validation {
                 textField.setText(oldText);
             }
         });
+    }
+
+    public Date getDate(ResultSet rs, String columnName) {
+        try {
+            rs.findColumn(columnName);
+            return rs.getDate(columnName);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public Timestamp getTimestamp(ResultSet rs, String columnName) {
+        try {
+            rs.findColumn(columnName);
+            return rs.getTimestamp(columnName);
+        } catch (SQLException e) {
+            return null;
+        }
     }
 }

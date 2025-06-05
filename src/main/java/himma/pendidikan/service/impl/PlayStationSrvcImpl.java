@@ -31,18 +31,19 @@ public class PlayStationSrvcImpl implements PlayStationSrvc {
 
     @Override
     public List<PlayStation> getAllData() {
-        return getAllData(null, null, null, "pst_id", "ASC");
+        return List.of();
     }
 
+
     @Override
-    public List<PlayStation> getAllData(String search, String status, String idJenisPlayStation, String sortColumn, String sortOrder) {
+    public List<PlayStation> getAllData(String search, String status, Integer idJenisPlayStation, String sortColumn, String sortOrder) {
         List<PlayStation> playStationList = new ArrayList<>();
         try {
             String query = "EXEC rps_getListPlayStation ?, ?, ?, ?, ?";
             connect.pstat = connect.conn.prepareStatement(query);
             connect.pstat.setString(1, search);
             connect.pstat.setString(2, status);
-            connect.pstat.setString(3, idJenisPlayStation);
+            connect.pstat.setInt(3, idJenisPlayStation);
             connect.pstat.setString(4, sortColumn);
             connect.pstat.setString(5, sortOrder);
 
