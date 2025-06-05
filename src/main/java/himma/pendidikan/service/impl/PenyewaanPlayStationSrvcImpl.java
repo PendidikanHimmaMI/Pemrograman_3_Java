@@ -24,32 +24,37 @@ public class PenyewaanPlayStationSrvcImpl implements PenyewaanPlayStationSrvc {
     SwalAlert swal = new SwalAlert();
     @Override
     public PenyewaanPlaystation resultPenyewaan(ResultSet rs) throws SQLException {
-//        PlayStation playStation = new PlayStation(
-//                v.getInt(rs, "pst_id"),
-//                v.getString(rs, "pst_serial_number"),
-//                v.getString(rs, "pst_merk"),
-//                v.getString(rs, "pst_harga_per_jam"),
-//                v.getString(rs, "pst_status"),
-//                v.getString(rs, "pst_created_by"),
-//                v.getString(rs, "pst_created_date"),
-//                v.getString(rs, "pst_updated_by"),
-//                v.getString(rs, "pst_modif_by"),
-//                v.getString(rs, "pst_modif_date")
-//        );
-//        JenisPlayStation jenisPlayStation = new JenisPlayStation(
-//                v.getInt(rs, "jps_id"),
-//                v.getString(rs, "jps_nama"),
-//                null,
-//                v.getInt(rs, "jps_max_pemain"),
-//                null,
-//                null,
-//                null
-//        );
+        PlayStation playStation = new PlayStation(
+                v.getInt(rs, "pst_id"),
+                v.getString(rs, "jps_nama"),
+                v.getString(rs, "pst_serial_number"),
+                v.getString(rs, "pst_merk"),
+                v.getDouble(rs, "pst_harga_per_jam"),
+                v.getString(rs, "pst_status"),
+                v.getString(rs, "pst_created_by")
+        );
+        JenisPlayStation jenisPlayStation = new JenisPlayStation(
+                v.getInt(rs, "jps_id"),
+                v.getString(rs, "jps_nama"),
+                null,
+                v.getInt(rs, "jps_max_pemain"),
+                null,
+                null,
+                null
+        );
         return new PenyewaanPlaystation(
-
-
-
-
+                v.getInt(rs, "pps_id"),
+                v.getInt(rs, "kry_id"),
+                v.getString(rs, "kry_nama"),
+                v.getInt(rs, "mpb_id"),
+                v.getString(rs, "mpb_nama"),
+                v.getString(rs, "pps_nama_penyewa"),
+                v.getString(rs, "pps_no_hp_penyewa"),
+                v.getDate(rs, "pps_tanggal_transaksi"),
+                v.getDouble(rs, "pps_total_harga"),
+                v.getString(rs, "pps_status"),
+                v.getString(rs, "pps_created_by"),
+                v.getTimestamp(rs, "pps_created_date")
         );
     }
 
@@ -87,4 +92,6 @@ public class PenyewaanPlayStationSrvcImpl implements PenyewaanPlayStationSrvc {
     public boolean saveData(PenyewaanPlaystation penyewaanPlaystation) {
         return false;
     }
+
+
 }

@@ -1,12 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.CustomMenuItem?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -18,8 +37,33 @@
             <Font name="Arial Black" size="30.0" />
          </font>
       </Text>
-      <TextField fx:id="tfSearch" layoutX="26.0" layoutY="97.0" prefHeight="54.0" prefWidth="298.0" promptText="Cari..." style="-fx-background-radius: 34; -fx-border-color: #020A7A; -fx-border-radius: 34; -fx-border-width: 2;" />
-      <ComboBox layoutX="726.0" layoutY="97.0" prefHeight="54.0" prefWidth="150.0" promptText="Sorting" style="-fx-background-radius: 34; -fx-background-color: #FFFFFF; -fx-border-color: #020A7A; -fx-border-radius: 34; -fx-border-width: 2;" />
+      <TextField fx:id="tfSearch" layoutX="26.0" layoutY="97.0" onAction="#handleSearch" prefHeight="54.0" prefWidth="298.0" promptText="Cari..." style="-fx-background-radius: 34; -fx-border-color: #020A7A; -fx-border-radius: 34; -fx-border-width: 2;" />
+      <MenuButton layoutX="672.0" layoutY="103.0" prefHeight="42.0" prefWidth="96.0" style="-fx-background-color: white; -fx-border-color: #020A7A; -fx-border-radius: 10px;" text="Filter">
+         <items>
+            <CustomMenuItem hideOnClick="false" styleClass="custom-menu-item">
+               <content>
+                  <VBox spacing="10" style="-fx-padding: 10;">
+                     <Label style="-fx-font-weight: bold; -fx-text-fill: #000000;" text="Filter berdasarkan Status" />
+                     <ComboBox fx:id="cbFilterStatus" prefWidth="200">
+                        <items>
+                           <FXCollections fx:factory="observableArrayList">
+                              <String fx:value="Aktif" />
+                              <String fx:value="Tidak Aktif" />
+                           </FXCollections>
+                        </items>
+                     </ComboBox>
+                     <Button onAction="#handleClear" prefWidth="200" style="-fx-background-color: #043F57; -fx-text-fill: cyan; -fx-font-weight: bold;" text="Clear" />
+                  </VBox>
+               </content>
+            </CustomMenuItem>
+         </items>
+         <font>
+            <Font size="13.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </MenuButton>
       <Rectangle fill="#020a7a" height="54.0" layoutX="887.0" layoutY="-1.0" stroke="TRANSPARENT" strokeType="INSIDE" width="366.0" />
       <Text id="myLabel" fill="WHITE" layoutX="999.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Keranjang">
          <font>
@@ -27,10 +71,53 @@
          </font>
       </Text>
       <VBox layoutX="886.0" layoutY="469.0" prefHeight="366.0" prefWidth="366.0" style="-fx-background-color: #020A7A;" />
-      <ScrollPane hbarPolicy="NEVER" layoutX="887.0" layoutY="58.0" prefHeight="404.0" prefWidth="366.0" style="-fx-background-color: #020A7A;">
+      <ScrollPane fx:id="scrollCart" layoutX="887.0" layoutY="58.0" prefHeight="404.0" prefWidth="366.0" style="-fx-background-color: #020A7A;">
          <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="402.0" prefWidth="366.0" style="-fx-background-color: #020A7A;" />
+            <VBox fx:id="cartContent" prefWidth="366.0" style="-fx-background-color: #020A7A;" />
          </content>
       </ScrollPane>
+      <VBox layoutX="886.0" layoutY="469.0" spacing="10" prefWidth="366.0" style="-fx-background-color: #020A7A; -fx-padding: 20;">
+         <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Label text="Total Bayar:" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+            <Label fx:id="labelTotalBayar" text="Rp. 0,00" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+         </HBox>
+
+         <TextField fx:id="tfPhone" promptText="Nomor Telepon"
+                    style="-fx-background-radius: 30; -fx-background-color: white; -fx-prompt-text-fill: #b0b0b0; -fx-font-size: 13px;" />
+
+         <TextField fx:id="tfCustomerName" promptText="Nama Pelanggan"
+                    style="-fx-background-radius: 30; -fx-background-color: white; -fx-prompt-text-fill: #b0b0b0; -fx-font-size: 13px;" />
+
+         <Label text="Metode Pembayaran" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+         <ComboBox fx:id="cbMetodePembayaran" promptText="Cash"
+                   style="-fx-background-radius: 30; -fx-background-color: white;" prefWidth="150.0">
+            <items>
+               <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Cash" />
+                  <String fx:value="QRIS" />
+                  <String fx:value="Transfer" />
+               </FXCollections>
+            </items>
+         </ComboBox>
+
+         <Label text="Tunai" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+         <TextField fx:id="tfUangBayar"
+                    style="-fx-background-radius: 30; -fx-background-color: white; -fx-prompt-text-fill: #b0b0b0;" />
+
+         <Label text="Kembalian" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+         <TextField fx:id="tfKembalian" editable="false" style="-fx-background-radius: 30; -fx-background-color: white;" />
+
+         <Button mnemonicParsing="false" onAction="#handleAddData" fx:id="btnBayar" text="Bayar" prefWidth="320.0" prefHeight="40.0"
+                 style="-fx-background-color: white; -fx-background-radius: 20; -fx-text-fill: #020A7A; -fx-font-weight: bold;" />
+      </VBox>
+
+
+      <ScrollPane fx:id="scrollCard" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutX="26.0" layoutY="170.0" prefHeight="600.0" prefWidth="750.0">
+         <content>
+            <FlowPane fx:id="flowCards" hgap="20" prefWidth="700.0" vgap="20" />
+         </content>
+      </ScrollPane>
+
+
    </children>
 </AnchorPane>
