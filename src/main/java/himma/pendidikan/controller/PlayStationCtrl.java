@@ -1,6 +1,5 @@
 package himma.pendidikan.controller;
 
-public class PlayStationCtrl {
 import himma.pendidikan.component.Dropdown;
 import himma.pendidikan.connection.DBConnect;
 import himma.pendidikan.controller.event.EvenListener;
@@ -417,7 +416,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
             loadData();
             loadDataJenisPS();
             v.setNumbers(tfHarga);
-       }
+        }
 
 
         @Override
@@ -447,7 +446,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
                     cbJenisPS.setValue(pst.getJenisPlaystation());
                 }
             }
-       }
+        }
 
         @Override
         public void handleClear() {
