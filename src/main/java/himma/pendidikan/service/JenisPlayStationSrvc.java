@@ -11,8 +11,8 @@ public interface JenisPlayStationSrvc {
     List<JenisPlayStation> getAllData();
     List<JenisPlayStation> getAllData(String search, String status, String sortColumn, String sortOrder);
     List<TopMasterData> getTop5JenisPlayStation(Integer tahun, Integer bulan);
-    JenisPlayStation getDataById(Integer id);
-    boolean saveData(JenisPlayStation jenisPlayStation);
+     JenisPlayStation getDataById(Integer id);
+     boolean saveData(JenisPlayStation jenisPlayStation);
     boolean updateData(JenisPlayStation jenisPlayStation);
-    boolean setStatus(Integer id);
+     boolean setStatus(Integer id);
 }
