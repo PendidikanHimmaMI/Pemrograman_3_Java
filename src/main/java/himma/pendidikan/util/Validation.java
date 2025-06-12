@@ -54,4 +54,31 @@ public class Validation {
             }
         });
     }
+
+    public Double getDouble(ResultSet rs, String columnName) {
+        try {
+            rs.findColumn(columnName);
+            return rs.getDouble(columnName);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public Date getDate(ResultSet rs, String columnName) {
+        try {
+            rs.findColumn(columnName);
+            return rs.getDate(columnName);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public Timestamp getTimestamp(ResultSet rs, String columnName) {
+        try {
+            rs.findColumn(columnName);
+            return rs.getTimestamp(columnName);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
 }
