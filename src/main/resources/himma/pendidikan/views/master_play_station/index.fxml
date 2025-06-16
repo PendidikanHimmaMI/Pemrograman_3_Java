@@ -22,6 +22,7 @@
 
 <?import javafx.scene.layout.HBox?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.scene.control.Pagination?>
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1260.0" style="-fx-background-color: white;" stylesheets="@../../assets/styles/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="himma.pendidikan.controller.PlayStationCtrl">
         <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-border-color: #020A7A; -fx-border-width: 0 0 2 0;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <padding>
@@ -63,7 +64,7 @@
                                                     </items>
                                                 </ComboBox>
                                                 <Label style="-fx-font-weight: bold; -fx-text-fill: #000000;" text="Filter berdasarkan Posisi" />
-                                                <ComboBox fx:id="cbFilterPosisi" prefWidth="200">
+                                                <ComboBox fx:id="cbFilterJenisPlayStation" prefWidth="200">
                                                     <items>
                                                         <FXCollections fx:factory="observableArrayList">
                                                             <String fx:value="Admin" />
@@ -87,6 +88,7 @@
                         </HBox>
                         <AnchorPane maxHeight="1.7976931348623157E308" prefHeight="433.0" prefWidth="1060.0" style="-fx-background-color: #020A7A; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);" VBox.vgrow="ALWAYS">
                             <children>
+                                <Pagination fx:id="pgTabel" maxPageIndicatorCount="10" pageCount="1" prefHeight="680.0" prefWidth="1235.0" style="-fx-background-color: #FFFFFF;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                 <TableView fx:id="tbPlayStation" fixedCellSize="10.0" layoutX="8.0" layoutY="19.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="524.0" prefWidth="1223.0" style="-fx-background-color: white; -fx-border-color: transparent; -fx-table-cell-border-color: transparent;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columns>
                                         <TableColumn fx:id="clNo" prefWidth="75.0" text="No" />

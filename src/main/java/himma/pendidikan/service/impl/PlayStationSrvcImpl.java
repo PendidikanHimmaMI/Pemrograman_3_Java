@@ -43,7 +43,7 @@ public class PlayStationSrvcImpl implements PlayStationSrvc {
             connect.pstat = connect.conn.prepareStatement(query);
             connect.pstat.setString(1, search);
             connect.pstat.setString(2, status);
-            connect.pstat.setInt(3, idJenisPlayStation);
+            connect.pstat.setObject(3, idJenisPlayStation, java.sql.Types.INTEGER);
             connect.pstat.setString(4, sortColumn);
             connect.pstat.setString(5, sortOrder);
 
