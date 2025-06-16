@@ -103,7 +103,6 @@ public class PlayStationSrvcImpl implements PlayStationSrvc {
 
     @Override
     public boolean saveData(PlayStation playStation) {
-
         try {
             String query = "{call rps_createPlayStation(?, ?, ?, ?, ?)}";
             connect.cstat = connect.conn.prepareCall(query);
@@ -153,7 +152,6 @@ public class PlayStationSrvcImpl implements PlayStationSrvc {
             connect.cstat = connect.conn.prepareCall(query);
             connect.cstat.setInt(1, id);
             connect.cstat.executeUpdate();
-
             connect.cstat.close();
             swal.showAlert(INFORMATION,"Berhasil", "Status berhasil diubah",false);
             return true;

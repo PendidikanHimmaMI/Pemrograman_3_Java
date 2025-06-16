@@ -17,4 +17,6 @@ public interface PlayStationSrvc {
     boolean saveData(PlayStation playStation);
     boolean updateData(PlayStation playStation);
     boolean setStatus(Integer id);
+
+    List<PlayStation> getAllData(String search, String status, String idJenisPlayStation, String sortColumn, String sortOrder);
 }
