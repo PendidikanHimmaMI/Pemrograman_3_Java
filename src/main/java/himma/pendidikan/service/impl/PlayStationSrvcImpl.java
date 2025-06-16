@@ -7,51 +7,43 @@ import himma.pendidikan.service.PlayStationSrvc;
 import himma.pendidikan.util.SwalAlert;
 import himma.pendidikan.util.Validation;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+import java.sql.*;
+import java.util.*;
 
 import static javafx.scene.control.Alert.AlertType.*;
 
 public class PlayStationSrvcImpl implements PlayStationSrvc {
-
     DBConnect connect = new DBConnect();
     Validation v = new Validation();
     SwalAlert swal = new SwalAlert();
-
     @Override
     public PlayStation resultPlayStation(ResultSet rs) throws SQLException {
         return new PlayStation(
-                v.getInt(rs, "pst_id"),
-                v.getString(rs, "jps_nama"),
-                v.getString(rs, "pst_serial_number"),
-                v.getString(rs, "pst_merk"),
-                v.getDouble(rs, "pst_harga_per_jam"),
-                v.getString(rs, "pst_status"),
-                v.getString(rs, "pst_created_by")
-        );
+                v.getInt(rs,"pst_id"),
+                v.getString(rs,"jps_nama"),
+                v.getString(rs,"pst_serial_number"),
+                v.getString(rs,"pst_merk"),
+                v.getDouble(rs,"pst_harga_per_jam"),
+                v.getString(rs,"pst_status"),
+                v.getString(rs,"pst_created_by"));
     }
 
     @Override
     public List<PlayStation> getAllData() {
-        return getAllData(null, null,(Integer) null, "pst_id", "ASC");
-    }
-
-    @Override
-    public List<PlayStation> getAllData(String search, String status, Integer idJenisPlayStation, String sortColumn, String sortOrder) {
         return List.of();
     }
 
+
     @Override
-    public List<PlayStation> getAllData(String search, String status, String idJenisPlayStation, String sortColumn, String sortOrder) {
+    public List<PlayStation> getAllData(String search, String status, Integer idJenisPlayStation, String sortColumn, String sortOrder) {
         List<PlayStation> playStationList = new ArrayList<>();
         try {
             String query = "EXEC rps_getListPlayStation ?, ?, ?, ?, ?";
             connect.pstat = connect.conn.prepareStatement(query);
             connect.pstat.setString(1, search);
             connect.pstat.setString(2, status);
-            connect.pstat.setString(3, idJenisPlayStation);
+            connect.pstat.setObject(3, idJenisPlayStation, java.sql.Types.INTEGER);
             connect.pstat.setString(4, sortColumn);
             connect.pstat.setString(5, sortOrder);
 
@@ -61,7 +53,7 @@ public class PlayStationSrvcImpl implements PlayStationSrvc {
             }
             connect.result.close();
             connect.pstat.close();
-        } catch (SQLException e) {
+        }catch (SQLException e){
             e.printStackTrace();
         }
         return playStationList;
@@ -70,7 +62,7 @@ public class PlayStationSrvcImpl implements PlayStationSrvc {
     @Override
     public List<TopMasterData> getTop5PlayStation(Integer tahun, Integer bulan) {
         List<TopMasterData> playStationList = new ArrayList<>();
-        try {
+        try{
             String query = "SELECT * FROM fn_Top5PlaystationPalingSeringDisewa(?, ?)";
             connect.pstat = connect.conn.prepareStatement(query);
             connect.pstat.setInt(1, tahun);
@@ -85,7 +77,7 @@ public class PlayStationSrvcImpl implements PlayStationSrvc {
             }
             connect.result.close();
             connect.pstat.close();
-        } catch (SQLException e) {
+        }catch (SQLException e){
             e.printStackTrace();
         }
         return playStationList;
@@ -131,10 +123,13 @@ public class PlayStationSrvcImpl implements PlayStationSrvc {
 
     @Override
     public boolean updateData(PlayStation playStation) {
+
+        System.out.println(playStation.getIdPS());
+
         try {
             String query = "{call rps_updatePlayStation(?, ?, ?, ?, ?, ?)}";
             connect.cstat = connect.conn.prepareCall(query);
-            connect.cstat.setInt(1, playStation.getIdPS());
+            connect.cstat.setInt(1,playStation.getIdPS());
             connect.cstat.setInt(2, playStation.getIdJenisPlaystation());
             connect.cstat.setString(3, playStation.getSerialNumber());
             connect.cstat.setString(4, playStation.getMerkPs());
@@ -158,10 +153,11 @@ public class PlayStationSrvcImpl implements PlayStationSrvc {
             connect.cstat.setInt(1, id);
             connect.cstat.executeUpdate();
             connect.cstat.close();
-            swal.showAlert(INFORMATION, "Berhasil", "Status berhasil diubah", false);
+            swal.showAlert(INFORMATION,"Berhasil", "Status berhasil diubah",false);
             return true;
-        } catch (SQLException e) {
-            swal.showAlert(ERROR, "Gagal", e.getMessage(), false);
+        }
+        catch (SQLException e){
+            swal.showAlert(ERROR,"Gagal", e.getMessage(),false);
             return false;
         }
     }

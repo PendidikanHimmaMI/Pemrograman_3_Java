@@ -9,7 +9,6 @@
 <?import javafx.scene.control.CustomMenuItem?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -21,184 +20,96 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="565.6" prefWidth="1097.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="himma.pendidikan.controller.PlayStationCtrl">
-   <children>
-      <VBox layoutX="10.0" layoutY="120.0" spacing="10.0"
-            AnchorPane.topAnchor="120.0"
-            AnchorPane.leftAnchor="10.0"
-            AnchorPane.rightAnchor="10.0"
-            AnchorPane.bottomAnchor="10.0">
-         <children>
-            <TableView fx:id="tbPlayStation"
-                       fixedCellSize="30.0"
-                       VBox.vgrow="ALWAYS"
-                       style="-fx-background-color: white; -fx-border-color: transparent; -fx-table-cell-border-color: transparent;">
-               <columns>
-                  <TableColumn fx:id="clNo" prefWidth="75.0" text="No" />
-                  <TableColumn fx:id="clJnsPS" prefWidth="75.0" text="Jenis_PlayStation" />
-                  <TableColumn fx:id="clSerialNumber" prefWidth="75.0" text="Serial_Number" />
-                  <TableColumn fx:id="clMerk" prefWidth="75.0" text="Merk_PlayStation" />
-                  <TableColumn fx:id="clHarga" prefWidth="75.0" text="Harga_PerJam" />
-                  <TableColumn fx:id="clStatus" prefWidth="75.0" text="Status" />
-                  <TableColumn fx:id="clAksi" prefWidth="75.0" text="Aksi" />
-               </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-               <placeholder>
-                  <Label style="-fx-text-fill: gray; -fx-font-size: 16px; -fx-font-style: italic;" text="🔍 Data not found" />
-               </placeholder>
-            </TableView>
-
-            <Pagination fx:id="pgTabel"
-                        prefHeight="35.0"
-                        maxHeight="Infinity"
-                        style="-fx-background-color: #FFFFFF;" />
-         </children>
-      </VBox>
-      <Button fx:id="btnTambahData" layoutX="26.0" layoutY="78.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #020A7A; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10px;" text="Tambah Data" textAlignment="CENTER">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Button>
-      <TextField fx:id="tfSearch" layoutX="143.0" layoutY="78.0" onAction="#handleSearch" prefHeight="30.0" prefWidth="884.0" promptText="Cari..." style="-fx-background-radius: 20; -fx-padding: 5 10;" />
-      <MenuButton layoutX="1058.0" layoutY="79.0" prefHeight="29.0" prefWidth="89.0" style="-fx-background-color: white; -fx-border-color: #020A7A; -fx-border-radius: 10px;" text="Filter">
-         <items>
-            <CustomMenuItem hideOnClick="false" styleClass="custom-menu-item">
-               <content>
-                  <VBox spacing="10" style="-fx-padding: 10;">
-                     <children>
-                        <Label style="-fx-font-weight: bold; -fx-text-fill: #000000;" text="Filter berdasarkan Status" />
-                        <ComboBox fx:id="cbFilterStatus" prefWidth="200">
-                           <items>
-                              <FXCollections fx:factory="observableArrayList">
-                                 <String fx:value="Aktif" />
-                                 <String fx:value="Tidak Aktif" />
-                              </FXCollections>
-                           </items>
-                        </ComboBox>
-                        <Button onAction="#handleClear" prefWidth="200" style="-fx-background-color: #043F57; -fx-text-fill: cyan; -fx-font-weight: bold;" text="Clear" />
-                     </children>
-                  </VBox>
-               </content>
-            </CustomMenuItem>
-         </items>
-         <font>
-            <Font size="13.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </MenuButton>
-      <Label layoutX="26.0" layoutY="14.0" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #020A7A;" text="PlayStation" />
-      <Region layoutX="164.0" layoutY="14.0" prefHeight="35.0" prefWidth="866.0" />
-      <Label fx:id="lbActiveUser" layoutX="1086.0" layoutY="23.0" style="-fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Administrator" />
-      <ImageView fitHeight="33.0" fitWidth="31.0" layoutX="1188.0" layoutY="15.0">
-         <image>
-            <Image url="@../../assets/image/himma_logo.png" />
-         </image>
-      </ImageView>
-      <Line endX="1128.60009765625" endY="-7.62939453125E-6" layoutX="115.0" layoutY="57.0" startX="-115.00001525878906" startY="-7.62939453125E-6" />
-   </children>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1260.0" style="-fx-background-color: white;" stylesheets="@../../assets/styles/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="himma.pendidikan.controller.KaryawanCtrl">
-    <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-border-color: #020A7A; -fx-border-width: 0 0 2 0;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <padding>
-            <Insets bottom="10" left="10" right="10" top="10" />
-        </padding>
-        <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #020A7A;" text="PlayStation" />
-        <Region HBox.hgrow="ALWAYS" />
-        <Label fx:id="lbActiveUser" style="-fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Administrator" />
-        <ImageView fitHeight="24" fitWidth="24">
-            <image>
-                <Image url="@../../assets/image/himma_logo.png" />
-            </image>
-        </ImageView>
-    </HBox>
-    <VBox spacing="10" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
-        <AnchorPane prefHeight="262.0" prefWidth="1081.0" style="-fx-background-color: transparent;">
-            <children>
-                <VBox spacing="10" style="-fx-background-color: #FFFFFF;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                    <padding>
-                        <Insets bottom="10" left="10" right="10" top="10" />
-                    </padding>
-                    <HBox alignment="CENTER_LEFT" spacing="10">
-                        <Button fx:id="btnTambahData" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #020A7A; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10px;" text="Tambah Data" textAlignment="CENTER">
-                            <cursor>
-                                <Cursor fx:constant="HAND" />
-                            </cursor>
-                            <font>
-                                <Font name="System Bold" size="12.0" />
-                            </font></Button>
-                        <TextField fx:id="tfSearch" onAction="#handleSearch" prefHeight="30.0" prefWidth="814.0" promptText="Cari..." style="-fx-background-radius: 20; -fx-padding: 5 10;" />
-                        <MenuButton style="-fx-background-color: white; -fx-border-color: #020A7A; -fx-border-radius: 10px;" text="Filter">
-                            <items>
-                                <CustomMenuItem hideOnClick="false" styleClass="custom-menu-item">
-                                    <content>
-                                        <VBox spacing="10" style="-fx-padding: 10;">
-                                            <Label style="-fx-font-weight: bold; -fx-text-fill: #000000;" text="Filter berdasarkan Status" />
-                                            <ComboBox fx:id="cbFilterStatus" prefWidth="200">
-                                                <items>
-                                                    <FXCollections fx:factory="observableArrayList">
-                                                        <String fx:value="Aktif" />
-                                                        <String fx:value="Tidak Aktif" />
-                                                    </FXCollections>
-                                                </items>
-                                            </ComboBox>
-                                            <Label style="-fx-font-weight: bold; -fx-text-fill: #000000;" text="Filter berdasarkan Posisi" />
-                                            <ComboBox fx:id="cbFilterPosisi" prefWidth="200">
-                                                <items>
-                                                    <FXCollections fx:factory="observableArrayList">
-                                                        <String fx:value="Admin" />
-                                                        <String fx:value="Kasir" />
-                                                        <String fx:value="Manager" />
-                                                    </FXCollections>
-                                                </items>
-                                            </ComboBox>
-                                            <Button onAction="#handleClear" prefWidth="200" style="-fx-background-color: #043F57; -fx-text-fill: cyan; -fx-font-weight: bold;" text="Clear" />
-                                        </VBox>
-                                    </content>
-                                </CustomMenuItem>
-                            </items>
-                            <font>
-                                <Font size="13.0" />
-                            </font>
-                            <cursor>
-                                <Cursor fx:constant="HAND" />
-                            </cursor>
-                        </MenuButton>
-                    </HBox>
-                    <AnchorPane maxHeight="1.7976931348623157E308" prefHeight="433.0" prefWidth="1060.0" style="-fx-background-color: #020A7A; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);" VBox.vgrow="ALWAYS">
-                        <children>
-                            <TableView fx:id="tbKaryawan" fixedCellSize="0.0" maxHeight="1.7976931348623157E308" style="-fx-background-color: white; -fx-border-color: transparent; -fx-table-cell-border-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                <columns>
-                                    <TableColumn fx:id="clNo" prefWidth="75.0" text="No" />
-                                    <TableColumn fx:id="clNama" prefWidth="75.0" text="Nama" />
-                                    <TableColumn fx:id="clPosisi" prefWidth="75.0" text="Posisi" />
-                                    <TableColumn fx:id="clNoTelepon" prefWidth="75.0" text="No Telepon" />
-                                    <TableColumn fx:id="clEmail" prefWidth="75.0" text="Email" />
-                                    <TableColumn fx:id="clUsername" prefWidth="75.0" text="Username" />
-                                    <TableColumn fx:id="clStatus" prefWidth="75.0" text="Status" />
-                                    <TableColumn fx:id="clAksi" prefWidth="75.0" text="Aksi" />
-                                </columns>
-                                <columnResizePolicy>
-                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                </columnResizePolicy>
-                                <placeholder>
-                                    <Label style="-fx-text-fill: gray; -fx-font-size: 16px; -fx-font-style: italic;" text="🔍 Data not found" />
-                                </placeholder>
-                            </TableView>
-                        </children>
-                    </AnchorPane>
-                </VBox>
-            </children>
-        </AnchorPane>
-    </VBox>
-</AnchorPane>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.scene.control.Pagination?>
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1260.0" style="-fx-background-color: white;" stylesheets="@../../assets/styles/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="himma.pendidikan.controller.PlayStationCtrl">
+        <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-border-color: #020A7A; -fx-border-width: 0 0 2 0;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #020A7A;" text="PlayStation" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="lbActiveUser" style="-fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Administrator" />
+            <FontIcon iconLiteral="fas-user-circle" iconSize="16" />
+        </HBox>
+        <VBox spacing="10" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+            <AnchorPane prefHeight="262.0" prefWidth="1081.0" style="-fx-background-color: transparent;">
+                <children>
+                    <VBox spacing="10" style="-fx-background-color: #FFFFFF;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                        <padding>
+                            <Insets bottom="10" left="10" right="10" top="10" />
+                        </padding>
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Button fx:id="btnTambahData" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #020A7A; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10px;" text="Tambah Data" textAlignment="CENTER">
+                                <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                </cursor>
+                                <font>
+                                    <Font name="System Bold" size="12.0" />
+                                </font></Button>
+                            <TextField fx:id="tfSearch" onAction="#handleSearch" prefHeight="30.0" prefWidth="814.0" promptText="Cari..." style="-fx-background-radius: 20; -fx-padding: 5 10;" />
+                            <MenuButton style="-fx-background-color: white; -fx-border-color: #020A7A; -fx-border-radius: 10px;" text="Filter">
+                                <items>
+                                    <CustomMenuItem hideOnClick="false" styleClass="custom-menu-item">
+                                        <content>
+                                            <VBox spacing="10" style="-fx-padding: 10;">
+                                                <Label style="-fx-font-weight: bold; -fx-text-fill: #000000;" text="Filter berdasarkan Status" />
+                                                <ComboBox fx:id="cbFilterStatus" prefWidth="200">
+                                                    <items>
+                                                        <FXCollections fx:factory="observableArrayList">
+                                                            <String fx:value="Aktif" />
+                                                            <String fx:value="Tidak Aktif" />
+                                                        </FXCollections>
+                                                    </items>
+                                                </ComboBox>
+                                                <Label style="-fx-font-weight: bold; -fx-text-fill: #000000;" text="Filter berdasarkan Posisi" />
+                                                <ComboBox fx:id="cbFilterJenisPlayStation" prefWidth="200">
+                                                    <items>
+                                                        <FXCollections fx:factory="observableArrayList">
+                                                            <String fx:value="Admin" />
+                                                            <String fx:value="Kasir" />
+                                                            <String fx:value="Manager" />
+                                                        </FXCollections>
+                                                    </items>
+                                                </ComboBox>
+                                                <Button onAction="#handleClear" prefWidth="200" style="-fx-background-color: #043F57; -fx-text-fill: cyan; -fx-font-weight: bold;" text="Clear" />
+                                            </VBox>
+                                        </content>
+                                    </CustomMenuItem>
+                                </items>
+                                <font>
+                                    <Font size="13.0" />
+                                </font>
+                                <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                </cursor>
+                            </MenuButton>
+                        </HBox>
+                        <AnchorPane maxHeight="1.7976931348623157E308" prefHeight="433.0" prefWidth="1060.0" style="-fx-background-color: #020A7A; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);" VBox.vgrow="ALWAYS">
+                            <children>
+                                <Pagination fx:id="pgTabel" maxPageIndicatorCount="10" pageCount="1" prefHeight="680.0" prefWidth="1235.0" style="-fx-background-color: #FFFFFF;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                <TableView fx:id="tbPlayStation" fixedCellSize="10.0" layoutX="8.0" layoutY="19.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="524.0" prefWidth="1223.0" style="-fx-background-color: white; -fx-border-color: transparent; -fx-table-cell-border-color: transparent;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <columns>
+                                        <TableColumn fx:id="clNo" prefWidth="75.0" text="No" />
+                                        <TableColumn fx:id="clJnsPS" prefWidth="75.0" text="Jenis_PlayStation" />
+                                        <TableColumn fx:id="clSerialNumber" prefWidth="75.0" text="Serial_Number" />
+                                        <TableColumn fx:id="clMerk" prefWidth="75.0" text="Merk_PlayStation" />
+                                        <TableColumn fx:id="clHarga" prefWidth="75.0" text="Harga_PerJam" />
+                                        <TableColumn fx:id="clStatus" prefWidth="75.0" text="Status" />
+                                        <TableColumn fx:id="clAksi" prefWidth="75.0" text="Aksi" />
+                                    </columns>
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                    </columnResizePolicy>
+                                    <placeholder>
+                                        <Label style="-fx-text-fill: gray; -fx-font-size: 16px; -fx-font-style: italic;" text="🔍 Data not found" />
+                                    </placeholder>
+                                </TableView>
+                            </children>
+                        </AnchorPane>
+                    </VBox>
+                </children>
+            </AnchorPane>
+        </VBox>
+    </AnchorPane>

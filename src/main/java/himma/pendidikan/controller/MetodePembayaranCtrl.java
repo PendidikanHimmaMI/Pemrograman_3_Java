@@ -46,7 +46,7 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
 
     public static MetodePembayaranSrvcImpl metodePembayaranSrvc = new MetodePembayaranSrvcImpl();
     AppCtrl app = AppCtrl.getInstance();
-    private final int rowsPerPage = 21;
+    private final int rowsPerPage = 15;
     private List<MetodePembayaran> fullDataList;
     private String lastSearch, lastStatus, lastPosisi, lastSortColumn, lastSortOrder;
 
@@ -154,8 +154,13 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
                 String nama = metodePembayaran.getNama();
                 String currentStatus = metodePembayaran.getStatus();
                 boolean isAktif = "Aktif".equals(currentStatus);
-                btnDelete.setText(isAktif ? "Hapus" : "Pulihkan");
-                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green") + "; -fx-text-fill: white;");
+
+                FontIcon deleteIcon = new FontIcon(isAktif ? "fas-toggle-on" : "fas-toggle-off");
+                deleteIcon.setIconSize(16);
+                deleteIcon.setIconColor(Color.WHITE);
+
+                btnDelete.setGraphic(deleteIcon);
+                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green")+";");
                 btnEdit.setOnAction(e -> loadSubPage("edit", metodePembayaran.getId()));
                 if(currentStatus.equals("Tidak Aktif")) {
                     btnEdit.setVisible(false);
