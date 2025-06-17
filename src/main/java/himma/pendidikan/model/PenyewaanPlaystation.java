@@ -42,16 +42,6 @@ public class PenyewaanPlaystation {
         this.jenisPlayStation = jenisPlayStation;
     }
 
-    public PenyewaanPlaystation(Karyawan karyawan, MetodePembayaran metodePembayaran, String namaPenyewa, String noTeleponPenyewa, Date tanggalSewa, Double totalHarga, String createdby) {
-        this.karyawan = karyawan;
-        this.metodePembayaran = metodePembayaran;
-        this.namaPenyewa = namaPenyewa;
-        this.noTeleponPenyewa = noTeleponPenyewa;
-        this.tanggalSewa = tanggalSewa;
-        this.totalHarga = totalHarga;
-        this.createdby = createdby;
-    }
-
     public PenyewaanPlaystation(Integer id, Karyawan karyawan, MetodePembayaran metodePembayaran, String namaPenyewa, String noTeleponPenyewa, Date tanggalSewa, Double totalHarga, String status) {
         this.id = id;
         this.karyawan = karyawan;
@@ -73,6 +63,17 @@ public class PenyewaanPlaystation {
         this.totalHarga = totalHarga;
         this.status = status;
         this.createdby = createdby;
+    }
+
+    public PenyewaanPlaystation(int karId, int mpbId, String nama, String telepon, Date tanggal, Double totalHarga, String createdBy, Date createDate) {
+        this.kryId = karId;
+        this.mpbId = mpbId;
+        this.namaPenyewa = nama;
+        this.noTeleponPenyewa = telepon;
+        this.tanggalSewa = tanggal;
+        this.totalHarga = totalHarga;
+        this.createdby = createdBy;
+        this.ppsCreatedDate = createDate;
     }
 
 

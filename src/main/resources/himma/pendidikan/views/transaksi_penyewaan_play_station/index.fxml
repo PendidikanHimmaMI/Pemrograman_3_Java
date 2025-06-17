@@ -87,14 +87,7 @@
                      <Insets right="100.0" />
                   </HBox.margin>
                </Label>
-               <ComboBox fx:id="cbMetodePembayaran" prefHeight="26.0" prefWidth="103.0" promptText="Cash" style="-fx-background-radius: 30; -fx-background-color: white;">
-                  <items>
-                     <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="Cash" />
-                        <String fx:value="QRIS" />
-                        <String fx:value="Transfer" />
-                     </FXCollections>
-                  </items>
+               <ComboBox id="cbMetodePembayaran" fx:id="cbMetodePembayaran" prefHeight="26.0" prefWidth="103.0" promptText="Pilih Metode Pembayaran" style="-fx-background-radius: 30; -fx-background-color: white;">
                </ComboBox>
             </children>
          </HBox>
@@ -119,7 +112,7 @@
             </children>
          </HBox>
 
-         <Button fx:id="btnBayar" mnemonicParsing="false" prefHeight="40.0" prefWidth="320.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-text-fill: #020A7A; -fx-font-weight: bold;" text="Bayar">
+         <Button onAction="#handleAddData" fx:id="btnBayar" mnemonicParsing="false" prefHeight="40.0" prefWidth="320.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-text-fill: #020A7A; -fx-font-weight: bold;" text="Bayar">
             <VBox.margin>
                <Insets top="10.0" />
             </VBox.margin></Button>
