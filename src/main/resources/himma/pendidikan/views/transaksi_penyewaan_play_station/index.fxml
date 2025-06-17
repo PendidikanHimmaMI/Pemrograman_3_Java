@@ -78,11 +78,10 @@
          </HBox>
 
          <TextField fx:id="tfPhone" promptText="Nomor Telepon" style="-fx-background-radius: 30; -fx-background-color: white; -fx-prompt-text-fill: #b0b0b0; -fx-font-size: 13px;" />
-
          <TextField fx:id="tfCustomerName" promptText="Nama Pelanggan" style="-fx-background-radius: 30; -fx-background-color: white; -fx-prompt-text-fill: #b0b0b0; -fx-font-size: 13px;" />
          <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="326.0">
             <children>
-      
+
                <Label style="-fx-text-fill: white; -fx-font-weight: bold;" text="Metode Pembayaran">
                   <HBox.margin>
                      <Insets right="100.0" />
@@ -94,7 +93,6 @@
          </HBox>
          <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="326.0">
             <children>
-      
                <Label style="-fx-text-fill: white; -fx-font-weight: bold;" text="Tunai">
                   <HBox.margin>
                      <Insets right="140.0" />
@@ -105,7 +103,6 @@
          </HBox>
          <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="326.0">
             <children>
-      
                <Label style="-fx-text-fill: white; -fx-font-weight: bold;" text="Kembalian">
                   <HBox.margin>
                      <Insets right="110.0" />
@@ -127,7 +124,5 @@
             <FlowPane fx:id="flowCards" hgap="20" prefWidth="700.0" vgap="20" />
          </content>
       </ScrollPane>
-
-
    </children>
 </AnchorPane>

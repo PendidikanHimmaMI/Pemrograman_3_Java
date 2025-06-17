@@ -176,6 +176,10 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
                 btnDelete.setGraphic(deleteIcon);
                 btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green")+";");
                 btnEdit.setOnAction(e -> loadSubPage("edit", jenisPlayStation.getId()));
+                if(currentStatus.equals("Tidak Aktif")) {
+                    btnEdit.setVisible(false);
+                    btnDelete.setAlignment(Pos.CENTER);
+                }
                 btnDelete.setOnAction(e -> {
                     String actionText = isAktif ? "menonaktifkan" : "mengaktifkan";
                     boolean confirmed = new SwalAlert().showAlert(

@@ -13,6 +13,7 @@ import himma.pendidikan.util.Session;
 import himma.pendidikan.util.Validation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -78,7 +79,7 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
         flowCards.getChildren().clear();
         PlayStationSrvc srv = new PlayStationSrvcImpl();
 
-        List<PlayStation> list = srv.getAllData(search, status, (String) null, "pst_id", "ASC");
+        List<PlayStation> list = srv.getAllData(search, status, (Integer) null, "pst_id", "ASC");
         System.out.println("Data loaded: " + list.size());
 
         for (PlayStation ps : list) {
@@ -93,7 +94,7 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
         card.setAlignment(Pos.TOP_LEFT);
         card.setStyle("-fx-background-color: #020A7A; -fx-background-radius:12; -fx-padding:10;");
         card.setPrefSize(350, 350);
-
+        card.setCursor(Cursor.HAND);
         Label title = new Label( ps.getSerialNumber());
         title.setStyle("-fx-font-size:20; -fx-font-weight:bold; -fx-text-fill:white;");
         Label jenis = new Label("- " + ps.getJenisPlaystation());
@@ -185,11 +186,13 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
                         setStyle("-fx-background-color:#FC1F1F; -fx-text-fill: #020A7A; -fx-font-size: 14px; -fx-background-radius: 6;");
                         setOnAction(ev -> {
                             cart.remove(ps);
+
                             cartDetails.removeIf(d -> d.getPst_id() == ps.getIdPS());
                             updateCartUI();
                         });
                     }}
             );
+
             timeBox.setAlignment(Pos.CENTER_LEFT);
 
             item.getChildren().addAll(lblTitle, timeBox, lblPrice);

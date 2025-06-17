@@ -101,7 +101,7 @@
                                         </padding>
                                     </TextFlow>
                                     <TextFlow GridPane.rowIndex="2">
-                                        <Text fill="WHITE" text="Email ">
+                                        <Text fill="WHITE" text="Deskripsi ">
                                             <font>
                                                 <Font name="System Bold" size="16.0" />
                                             </font>
