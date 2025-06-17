@@ -1,6 +1,8 @@
 package himma.pendidikan.controller;
 
 import himma.pendidikan.connection.DBConnect;
+import himma.pendidikan.controller.event.EvenListener.*;
+import himma.pendidikan.model.DetailPenyewaanPlaystation;
 import himma.pendidikan.model.MetodePembayaran;
 import himma.pendidikan.model.PenyewaanPlaystation;
 import himma.pendidikan.model.PlayStation;
@@ -22,18 +24,16 @@ import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
-public class PenyewaanPlayStationCtrl {
+public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
 
     @FXML private VBox cartContent;
     @FXML private Label labelTotalBayar;
     @FXML private ComboBox<String> cbFilterStatus;
-    @FXML private ComboBox<MetodePembayaran> cbMetodePembayaran;
     @FXML private FlowPane flowCards;
     @FXML private ScrollPane scrollPane;
     @FXML private TextField tfSearch;
@@ -42,15 +42,23 @@ public class PenyewaanPlayStationCtrl {
     @FXML private TextField tfCustomerName;
     @FXML private TextField tfKembalian;
     @FXML private Button btnBayar;
+    @FXML ComboBox<String> cbMetodePembayaran;
+
+    private Map<String, Integer> metodePembayaranMap = new HashMap<>();
 
     private final DBConnect connect = new DBConnect();
     private final Validation v = new Validation();
     private final List<PlayStation> cart = new ArrayList<>();
     private final NumberFormat rupiahFormat = NumberFormat.getCurrencyInstance(new Locale("in", "ID"));
+    public static PenyewaanPlayStationSrvcImpl penyewaanPlayStationSrvc = new PenyewaanPlayStationSrvcImpl();
+    public PenyewaanPlayStationCtrl() {}
+    private List<DetailPenyewaanPlaystation> cartDetails = new ArrayList<>();
+
 
     @FXML
     public void initialize() {
         loadPlayStationCards(null, null);
+        loadDataMetodePembayaran();
         btnBayar.setOnAction(this::handleAddData);
         tfUangBayar.setOnAction(e -> updateTotal());
     }
@@ -110,7 +118,10 @@ public class PenyewaanPlayStationCtrl {
 
     private void updateCartUI() {
         cartContent.getChildren().clear();
+        cartDetails.clear(); // clear old data before repopulating
+
         for (PlayStation ps : cart) {
+//            System.out.println(ps.getIdPS() + " id");
             VBox item = new VBox(8);
             item.setStyle("-fx-background-color:#020A7A; -fx-background-radius:12; -fx-padding:10;");
             item.setPrefWidth(350);
@@ -123,39 +134,47 @@ public class PenyewaanPlayStationCtrl {
             tfMulai.setPromptText("HH:mm");
             tfSelesai.setPromptText("HH:mm");
 
-
             Label lblPrice = new Label("Rp. 0");
             lblPrice.setId("priceLabel");
             lblPrice.setStyle("-fx-text-fill:white; -fx-font-weight:bold;");
 
-            Runnable calc = () -> {
+            LocalDate today = LocalDate.now();
+
+            Runnable updateCartDetail = () -> {
                 try {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-                    LocalTime start = LocalTime.parse(tfMulai.getText(), formatter);
-                    LocalTime end = LocalTime.parse(tfSelesai.getText(), formatter);
+                    LocalTime startTime = LocalTime.parse(tfMulai.getText(), formatter);
+                    LocalTime endTime = LocalTime.parse(tfSelesai.getText(), formatter);
+                    LocalDateTime mulai = LocalDateTime.of(today, startTime);
+                    LocalDateTime selesai = LocalDateTime.of(today, endTime);
 
-                    long minutes = Duration.between(start, end).toMinutes();
-                    if (minutes < 0) minutes = 0; // Avoid negative durations
+                    long minutes = Duration.between(mulai, selesai).toMinutes();
+                    if (minutes < 0) minutes = 0;
 
                     double hours = minutes / 60.0;
                     double price = hours * ps.getHargaPS();
 
                     lblPrice.setText(rupiahFormat.format(price));
+
+                    // Update or replace the detail in cartDetails
+//                    System.out.println(ps.getIdPS());
+//                    System.out.println(mulai);
+                    cartDetails.removeIf(d -> d.getPst_id() == ps.getIdPS());
+                    cartDetails.add(new DetailPenyewaanPlaystation(ps.getIdPS(), mulai, selesai, price));
+                    System.out.println(cartDetails.get(0).getId()+" ID");
                 } catch (Exception e) {
-                    lblPrice.setText(rupiahFormat.format(0)); // reset on invalid input
+                    lblPrice.setText(rupiahFormat.format(0));
+                    cartDetails.removeIf(d -> d.getPst_id() == ps.getIdPS());
                 } finally {
-                    updateTotal(); // Always update total
+                    updateTotal();
                 }
             };
 
-
-            tfMulai.textProperty().addListener((o, oldV, newV) -> calc.run());
-            tfSelesai.textProperty().addListener((o, oldV, newV) -> calc.run());
-
+            tfMulai.textProperty().addListener((obs, oldVal, newVal) -> updateCartDetail.run());
+            tfSelesai.textProperty().addListener((obs, oldVal, newVal) -> updateCartDetail.run());
 
             Label lblMulai = new Label("Mulai");
             lblMulai.setStyle("-fx-text-fill: white;");
-
             Label lblSelesai = new Label("Selesai");
             lblSelesai.setStyle("-fx-text-fill: white;");
 
@@ -165,16 +184,21 @@ public class PenyewaanPlayStationCtrl {
                     new Button("–") {{
                         setStyle("-fx-background-color:#FC1F1F; -fx-text-fill: #020A7A; -fx-font-size: 14px; -fx-background-radius: 6;");
                         setOnAction(ev -> {
-                        cart.remove(ps);
-                        updateCartUI();
-                    });}});
+                            cart.remove(ps);
+                            cartDetails.removeIf(d -> d.getPst_id() == ps.getIdPS());
+                            updateCartUI();
+                        });
+                    }}
+            );
             timeBox.setAlignment(Pos.CENTER_LEFT);
 
             item.getChildren().addAll(lblTitle, timeBox, lblPrice);
             cartContent.getChildren().add(item);
         }
+
         updateTotal();
     }
+
 
     private void updateTotal() {
         double total = cartContent.getChildren().stream().mapToDouble(node -> {
@@ -186,20 +210,67 @@ public class PenyewaanPlayStationCtrl {
             return 0.0;
         }).sum();
         labelTotalBayar.setText(rupiahFormat.format(total));
+        tfUangBayar.getText();
+
+        String akhirText = labelTotalBayar.getText().replaceAll("[^\\d,]", "").replace(",", ".");
+        String bayarText = tfUangBayar.getText().replaceAll("[^\\d,]", "").replace(",", ".");
+
+        if (!akhirText.isEmpty() && !bayarText.isEmpty()) {
+            double akhir = Double.parseDouble(akhirText);
+            double bayar = Double.parseDouble(bayarText);
+            double kembalian = bayar - akhir;
+
+            tfKembalian.setText(rupiahFormat.format(kembalian));
+        } else {
+            tfKembalian.setText("Input belum lengkap");
+        }
     }
 
-    private void handleAddData(ActionEvent event) {
+    private void loadDataMetodePembayaran() {
         try {
+            DBConnect db = new DBConnect();
+            ResultSet rs = db.stat.executeQuery("SELECT mpb_id, mpb_nama FROM rps_msmetodepembayaran");
+
+            cbMetodePembayaran.getItems().clear();
+            metodePembayaranMap.clear(); // clear old data
+
+            while (rs.next()) {
+                int id = rs.getInt("mpb_id");
+                String nama = rs.getString("mpb_nama");
+
+                cbMetodePembayaran.getItems().add(nama);
+                metodePembayaranMap.put(nama, id);
+            }
+            rs.close();
+            db.stat.close();
+            db.conn.close();
+        } catch (SQLException e) {
+            System.out.println("Gagal load data Metode Pembayaran: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleAddData(ActionEvent e) {
+        try {
+            String TotalHarga = labelTotalBayar.getText().replaceAll("[^\\d,]", "").replace(",", ".");
             int karId = Session.getCurrentUser().getId();
+            String selectedNama = cbMetodePembayaran.getValue();
+            int mpbId = metodePembayaranMap.get(selectedNama);
             String nama = tfCustomerName.getText();
             String telepon = tfPhone.getText();
+            Double totalHarga = Double.parseDouble(TotalHarga) ;
             java.sql.Date tanggal = java.sql.Date.valueOf(LocalDate.now());
-            String createdBy = Session.getCurrentUser().getNama();
+            String createdBy = Session.getCurrentUser().getPosisi();
             java.sql.Date createDate = tanggal;
 
-            showAlert("Penyewaan berhasil!");
-            cart.clear();
-            updateCartUI();
+            PenyewaanPlaystation pps = new PenyewaanPlaystation(karId, mpbId, nama, telepon,tanggal, totalHarga, createdBy, createDate);
+//            System.out.println(cartDetails.);
+            if(penyewaanPlayStationSrvc.saveData(pps, cartDetails)){
+                showAlert("Penyewaan berhasil!");
+                cart.clear();
+                updateCartUI();
+            }
+
         } catch (Exception ex) {
             ex.printStackTrace();
             showAlert("Terjadi error saat menyimpan data.");

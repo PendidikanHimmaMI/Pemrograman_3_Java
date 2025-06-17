@@ -70,7 +70,7 @@ public class LoginCtrl {
             login_container.getChildren().removeAll();
             login_container.getChildren().setAll(root);
         }catch (RuntimeException ex){
-            alert.showAlert(AlertType.ERROR, "ERRORara", ex.getMessage(), false);
+            alert.showAlert(AlertType.ERROR, "ERROR", ex.getMessage(), false);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
