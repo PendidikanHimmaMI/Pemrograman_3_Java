@@ -2,7 +2,7 @@ package himma.pendidikan.model;
 
 public class PlayStation {
     private Integer idPS;
-    private String jenisPlaystation;
+    private JenisPlayStation jenisPlaystation;
     private String serialNumber;
     private String merkPs;
     private Double hargaPS;
@@ -14,7 +14,7 @@ public class PlayStation {
     public PlayStation() {
     }
 
-    public PlayStation(Integer idPS, Integer idJenisPS, String jenisPlaystation, String serialNumber, String merkPs, Double hargaPS, String status, String createdby) {
+    public PlayStation(Integer idPS, Integer idJenisPS, String JenisPlayStation, String serialNumber, String merkPs, Double hargaPS, String status, String createdby) {
         this.idPS = idPS;
         this.idJenisPlaystation = idJenisPS;  // Menyimpan ID jenis PS
         this.jenisPlaystation = jenisPlaystation;
@@ -24,7 +24,7 @@ public class PlayStation {
         this.status = status;
         this.createdby = createdby;
     }
-    public PlayStation(Integer idPS, String jenisPlaystation, String serialNumber, String merkPs, Double hargaPS, String status, String createdby) {
+    public PlayStation(Integer idPS, JenisPlayStation jenisPlaystation, String serialNumber, String merkPs, Double hargaPS, String status, String createdby) {
         this.idPS = idPS;
         this.jenisPlaystation = jenisPlaystation;
         this.serialNumber = serialNumber;
@@ -34,7 +34,7 @@ public class PlayStation {
         this.createdby = createdby;
     }
 
-    public PlayStation(String modifby, String status, Double hargaPS, String merkPs, String serialNumber,  String jenisPlaystation, Integer idPS) {
+    public PlayStation(String modifby, String status, Double hargaPS, String merkPs, String serialNumber,  JenisPlayStation jenisPlaystation, Integer idPS) {
         this.modifby = modifby;
         this.status = status;
         this.hargaPS = hargaPS;
@@ -44,7 +44,7 @@ public class PlayStation {
         this.idPS = idPS;
     }
 
-    public PlayStation(Integer IdJenisPS,String jenisPlaystation, String serialNumber, String merkPs, Double hargaPS, String modifby,Integer idPS) {
+    public PlayStation(Integer IdJenisPS,JenisPlayStation jenisPlaystation, String serialNumber, String merkPs, Double hargaPS, String modifby,Integer idPS) {
         this.idPS = idPS;
         this.idJenisPlaystation = IdJenisPS;
         this.jenisPlaystation = jenisPlaystation;
@@ -54,7 +54,7 @@ public class PlayStation {
         this.modifby = modifby;
     }
 
-    public PlayStation(String jenisPlaystation, String serialNumber, String merkPs, Double hargaPS, String createdby) {
+    public PlayStation(JenisPlayStation jenisPlaystation, String serialNumber, String merkPs, Double hargaPS, String createdby) {
         this.jenisPlaystation = jenisPlaystation;
         this.serialNumber = serialNumber;
         this.merkPs = merkPs;
@@ -79,11 +79,11 @@ public class PlayStation {
         this.idPS = idPS;
     }
 
-    public String getJenisPlaystation() {
+    public JenisPlayStation getJenisPlaystation() {
         return jenisPlaystation;
     }
 
-    public void setString(String jenisPlaystation) {
+    public void setString(JenisPlayStation jenisPlaystation) {
         this.jenisPlaystation = jenisPlaystation;
     }
 

@@ -81,7 +81,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
     private Integer lastidJeniPlayStation;
     private List<PlayStation> fullDataList;
     public static PlayStationSrvcImpl playStationSrvc = new PlayStationSrvcImpl();
-    public JenisPlayStationSrvcImpl jenisPlayStationSrvc = new JenisPlayStationSrvcImpl();
+    public static JenisPlayStationSrvcImpl jenisPlayStationSrvc = new JenisPlayStationSrvcImpl();
     AppCtrl app = AppCtrl.getInstance();
 
     private final int rowsPerPage = 15;
@@ -89,7 +89,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
     public PlayStationCtrl(){}
 
     public void initialize() {
-        lbActiveUser.setText(Session.getCurrentUser().getPosisi());
+        lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
         List<JenisPlayStation> jenisPlayStationList = jenisPlayStationSrvc.getAllData(null, "Aktif", "jps_id", "ASC");
         Dropdown.setDropdown(cbFilterJenisPlayStation, jenisPlayStationList, JenisPlayStation::getNama);
         handleClick();
@@ -168,7 +168,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
         });
         clMerk.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMerkPs()));
         clSerialNumber.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSerialNumber()));
-        clJnsPS.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getJenisPlaystation()));
+        clJnsPS.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getJenisPlaystation().getNama()));
 
         clHarga.setCellValueFactory(cellData -> {
             Double harga = cellData.getValue().getHargaPS();
@@ -268,9 +268,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
 
     public static class PlaytationCreateCtrl extends EvenListenerCreate {
         @FXML
-        ComboBox<String> cbJenisPS;
-        @FXML
-        ComboBox<PlayStation> cbCoba;
+        ComboBox<JenisPlayStation> cbJenisPS;
         @FXML
         Label lbActiveUser;
         @FXML
@@ -289,42 +287,26 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
 
         @FXML
         public void initialize() {
-            lbActiveUser.setText(Session.getCurrentUser().getPosisi());
+            List<JenisPlayStation> list = jenisPlayStationSrvc.getAllData(null,"Aktif", "jps_id", "ASC");
+            lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
             handleClickBack();
-            loadDataJenisPS();
+            v.setNumbers(tfHarga);
+            Dropdown.setDropdown(cbJenisPS,list, k -> k.getNama());
         }
-
-        private void loadDataJenisPS() {
-            try {
-                DBConnect db = new DBConnect();
-                ResultSet rs = db.stat.executeQuery("SELECT jps_nama FROM rps_msjenisplaystation");
-
-                cbJenisPS.getItems().clear();
-                while (rs.next()) {
-                    String jenisPS = rs.getString("jps_nama");
-                    cbJenisPS.getItems().add(jenisPS);
-                }
-                rs.close();
-                db.stat.close();
-                db.conn.close();
-            } catch (SQLException e) {
-                System.out.println("Gagal load data jenis PS: " + e.getMessage());
-            }
-        }
-
 
         @Override
         public void handleAddData(ActionEvent e) {
             String merk = tfMerk.getText();
-            String jenisPS = cbJenisPS.getValue();
+            JenisPlayStation selectedJenis = cbJenisPS.getValue();
+            Integer jenisPS = (selectedJenis != null) ? selectedJenis.getId() : null;
+            Double harga = tfHarga.getText().isEmpty() ? null : Double.parseDouble(tfHarga.getText());
+
             String serialNumber = tfSerialNumber.getText();
-            Double harga = Double.valueOf(tfHarga.getText());
             String createdBy = Session.getCurrentUser().getNama();
 
-            Integer idJenisPS = playStationCtrl.getIdJenisFromDatabase( jenisPS);
-            if(idJenisPS != null){
-                PlayStation playStation = new PlayStation(null, idJenisPS, jenisPS, serialNumber, merk, harga, "Aktif", createdBy);
-
+            System.out.println(harga);
+            if(jenisPS != null){
+                PlayStation playStation = new PlayStation(null, jenisPS, null, serialNumber, merk, harga, "Aktif", createdBy);
                 if(playStationSrvc.saveData(playStation)){
                     playStationCtrl.loadSubPage("index",null);
                 }
@@ -352,32 +334,9 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
         }
     }
 
-    private Integer getIdJenisFromDatabase(String jenisPlaystation) {
-        try {
-            DBConnect db = new DBConnect();
-            String query = "SELECT jps_id FROM rps_msjenisplaystation WHERE jps_nama = ?";
-            PreparedStatement ps = db.conn.prepareStatement(query);
-            ps.setString(1, jenisPlaystation);
-
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("jps_id");  // Mengembalikan ID jenis PlayStation
-            }
-
-            rs.close();
-            ps.close();
-            db.conn.close();
-        } catch (SQLException e) {
-            System.out.println("Error saat mengambil ID jenis: " + e.getMessage());
-        }
-        return null;  // Jika ID tidak ditemukan
-    }
-
     public static class PlaytationEditCtrl extends EvenListenerUpdate {
         @FXML
-        ComboBox<String> cbJenisPS;
-        @FXML
-        ComboBox<PlayStation> cbCoba;
+        ComboBox<JenisPlayStation> cbJenisPS;
         @FXML
         Label lbActiveUser;
         @FXML
@@ -393,45 +352,27 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
             this.id = id;
         }
 
-        private void loadDataJenisPS() {
-            try {
-                DBConnect db = new DBConnect();
-                ResultSet rs = db.stat.executeQuery("SELECT jps_nama FROM rps_msjenisplaystation");
-
-                cbJenisPS.getItems().clear();
-                while (rs.next()) {
-                    String jenisPS = rs.getString("jps_nama");
-                    cbJenisPS.getItems().add(jenisPS);
-                }
-                rs.close();
-                db.stat.close();
-                db.conn.close();
-            } catch (SQLException e) {
-                System.out.println("Gagal load data jenis PS: " + e.getMessage());
-            }
-        }
-
         @FXML
         public void initialize() {
-            lbActiveUser.setText(Session.getCurrentUser().getPosisi());
+            List<JenisPlayStation> list = jenisPlayStationSrvc.getAllData(null,"Aktif", "jps_id", "ASC");
+            lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
             handleClickBack();
-            loadData();
-            loadDataJenisPS();
             v.setNumbers(tfHarga);
+            Dropdown.setDropdown(cbJenisPS,list, k -> k.getNama());
+            loadData();
         }
 
 
         @Override
         public void handleUpdateData(ActionEvent e) {
             String merk = tfMerk.getText();
-            String jenisPS = cbJenisPS.getValue();
+            JenisPlayStation selectedJenis = cbJenisPS.getValue();
+            Integer jenisPS = (selectedJenis != null) ? selectedJenis.getId() : null;
+            Double harga = tfHarga.getText().isEmpty() ? null : Double.parseDouble(tfHarga.getText());
             String serialNumber = tfSerialNumber.getText();
-            Double harga = Double.valueOf(tfHarga.getText());
             String updateby = Session.getCurrentUser().getNama();
-            System.out.println(Session.getCurrentUser().getNama());
-            Integer idJenisPS = playStationCtrl.getIdJenisFromDatabase(jenisPS);
-            if(idJenisPS != null){
-                PlayStation playStation = new PlayStation(idJenisPS, jenisPS, serialNumber, merk, harga, updateby,id);
+            if(jenisPS != null){
+                PlayStation playStation = new PlayStation(jenisPS, null, serialNumber, merk, harga, updateby,id);
                 if(playStationSrvc.updateData(playStation)){
                     playStationCtrl.loadSubPage("index",null);
                 }
@@ -444,8 +385,13 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
                 if(pst != null){
                     tfMerk.setText(pst.getMerkPs());
                     tfSerialNumber.setText(pst.getSerialNumber());
-                    tfHarga.setText(String.valueOf(pst.getHargaPS()));
-                    cbJenisPS.setValue(pst.getJenisPlaystation());
+                    tfHarga.setText(pst.getHargaPS().toString());
+                    for (JenisPlayStation jenis : cbJenisPS.getItems()) {
+                        if (jenis.getNama().equals(pst.getJenisPlaystation().getNama())) {
+                            cbJenisPS.setValue(jenis);
+                            break;
+                        }
+                    }
                 }
             }
         }

@@ -28,17 +28,7 @@
         <padding>
             <Insets bottom="10" left="10" right="10" top="10" />
         </padding>
-
         <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Metode Pembayaran" />
-        <Region prefHeight="35.0" prefWidth="862.0" HBox.hgrow="ALWAYS" />
-        <Label fx:id="lbActiveUser" style="-fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Administrator" />
-        <ImageView fitHeight="33" fitWidth="31">
-            <image>
-                <Image url="@../../assets/image/himma_logo.png" />
-            </image>
-        </ImageView>
-
-        <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Karyawan" />
         <Region HBox.hgrow="ALWAYS" />
         <Label fx:id="lbActiveUser" style="-fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Administrator" />
         <FontIcon iconLiteral="fas-user-circle" iconSize="16" />

@@ -28,7 +28,7 @@
             <padding>
                 <Insets bottom="10" left="10" right="10" top="10" />
             </padding>
-            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #020A7A;" text="PlayStation" />
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Play Station" />
             <Region HBox.hgrow="ALWAYS" />
             <Label fx:id="lbActiveUser" style="-fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Administrator" />
             <FontIcon iconLiteral="fas-user-circle" iconSize="16" />
@@ -63,7 +63,7 @@
                                                         </FXCollections>
                                                     </items>
                                                 </ComboBox>
-                                                <Label style="-fx-font-weight: bold; -fx-text-fill: #000000;" text="Filter berdasarkan Posisi" />
+                                                <Label style="-fx-font-weight: bold; -fx-text-fill: #000000;" text="Filter berdasarkan Jenis Play Station" />
                                                 <ComboBox fx:id="cbFilterJenisPlayStation" prefWidth="200">
                                                     <items>
                                                         <FXCollections fx:factory="observableArrayList">

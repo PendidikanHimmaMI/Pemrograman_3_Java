@@ -53,7 +53,7 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
     public MetodePembayaranCtrl() {}
 
     public void initialize() {
-        lbActiveUser.setText(Session.getCurrentUser().getPosisi());
+        lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
         handleClick();
         loadData(null,"Aktif", "mpb_id", "ASC");
     }
@@ -224,7 +224,7 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
 
         @FXML
         public void initialize() {
-            lbActiveUser.setText(Session.getCurrentUser().getPosisi());
+            lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
             handleClickBack();
             v.setLetters(tfNama);
         }
@@ -278,8 +278,9 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
 
         @FXML
         public void initialize() {
-            lbActiveUser.setText(Session.getCurrentUser().getPosisi());
+            lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
             loadData();
+            handleClickBack();
             v.setLetters(tfNama);
         }
 
