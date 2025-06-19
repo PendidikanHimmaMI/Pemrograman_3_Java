@@ -98,6 +98,8 @@ public class Menu {
                     list.add(new MenuItem("Jenis Play Station", "/himma/pendidikan/views/master_jenis_play_station/index.fxml"));
                     list.add(new MenuItem("Karyawan", "/himma/pendidikan/views/master_karyawan/index.fxml"));
                     list.add(new MenuItem("Metode Pembayaran", "/himma/pendidikan/views/master_metode_pembayaran/index.fxml"));
+//                    list.add(new MenuItem("Transaksi Penyewaan", "/himma/pendidikan/views/transaksi_penyewaan_play_station/index.fxml"));
+                    
                 }
                 case "kasir" -> {
                     list.add(new MenuItem("Transaksi Penyewaan", "/himma/pendidikan/views/transaksi_penyewaan_play_station/index.fxml"));
