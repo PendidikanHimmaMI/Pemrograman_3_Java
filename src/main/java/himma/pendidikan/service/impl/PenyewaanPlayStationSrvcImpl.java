@@ -2,14 +2,15 @@ package himma.pendidikan.service.impl;
 
 import himma.pendidikan.connection.DBConnect;
 
-import himma.pendidikan.model.JenisPlayStation;
-import himma.pendidikan.model.MetodePembayaran;
+import himma.pendidikan.model.*;
 
-import himma.pendidikan.model.PenyewaanPlaystation;
-import himma.pendidikan.model.PlayStation;
 import himma.pendidikan.service.PenyewaanPlayStationSrvc;
 import himma.pendidikan.util.SwalAlert;
 import himma.pendidikan.util.Validation;
+
+import com.microsoft.sqlserver.jdbc.SQLServerCallableStatement;
+import com.microsoft.sqlserver.jdbc.SQLServerDataTable;
+
 
 import java.util.List;
 import java.sql.*;
@@ -90,10 +91,51 @@ public class PenyewaanPlayStationSrvcImpl implements PenyewaanPlayStationSrvc {
         return penyewaanPlaystations;
     }
 
+
     @Override
-    public boolean saveData(PenyewaanPlaystation penyewaanPlaystation) {
-        return false;
+    public boolean saveData(PenyewaanPlaystation penyewaanPlaystation, List<DetailPenyewaanPlaystation> detailList) {
+        try {
+            String sql = "{call rps_createTransaksiPenyewaan(?, ?, ?, ?, ?, ?, ?)}";
+
+            SQLServerDataTable tvp = new SQLServerDataTable();
+            tvp.addColumnMetadata("pst_id", java.sql.Types.INTEGER);
+            tvp.addColumnMetadata("dps_waktu_mulai", java.sql.Types.TIMESTAMP);
+            tvp.addColumnMetadata("dps_waktu_selesai", java.sql.Types.TIMESTAMP);
+            tvp.addColumnMetadata("dps_jumlah_harga", java.sql.Types.DECIMAL);
+
+            for (DetailPenyewaanPlaystation detail : detailList) {
+                System.out.println(detail.getPst_id() + " ini id");
+                System.out.println(detail.getDurasi()+"durasi");
+                tvp.addRow(
+                        detail.getId(),
+                        Timestamp.valueOf(String.valueOf(detail.getWaktu_mulai())),
+                        Timestamp.valueOf(String.valueOf(detail.getWaktu_selesai())),
+                        detail.getJumlah_harga()
+                );
+            }
+
+            SQLServerCallableStatement stmt = (SQLServerCallableStatement) connect.conn.prepareCall(sql);
+            stmt.setInt(1, penyewaanPlaystation.getKryId());
+            stmt.setInt(2, penyewaanPlaystation.getMpbId());
+            stmt.setString(3, penyewaanPlaystation.getNamaPenyewa());
+            stmt.setString(4, penyewaanPlaystation.getNoTeleponPenyewa());
+            stmt.setDouble(5, penyewaanPlaystation.getTotalHarga());
+            stmt.setString(6, penyewaanPlaystation.getCreatedby());
+            stmt.setStructured(7, "DetailPenyewaanType", tvp); // TVP!
+
+            stmt.execute();
+            stmt.close();
+
+            swal.showAlert(INFORMATION, "Berhasil", "Data berhasil disimpan!", false);
+            return true;
+
+        } catch (SQLException e) {
+            swal.showAlert(ERROR, "Gagal", e.getMessage(), false);
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
+
 
 
 }

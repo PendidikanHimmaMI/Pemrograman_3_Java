@@ -246,7 +246,7 @@ public class KaryawanCtrl extends EvenListenerIndex {
         @FXML
         public void initialize() {
             lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
-            Dropdown.setDropdown(cbPosisi, List.of("Admin", "Manager", "Staff"));
+            Dropdown.setDropdown(cbPosisi, List.of("Admin", "Manager", "Kasir"));
             v.setNumbers(tfNoTelepon);
             v.setLetters(tfNama);
         }

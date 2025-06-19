@@ -40,7 +40,7 @@ public class PlayStationSrvcImpl implements PlayStationSrvc {
 
 
     @Override
-    public List<PlayStation> getAllData(String search, String status, Integer idJenisPlayStation, String sortColumn, String sortOrder) {
+    public List<PlayStation> getAllData(String search, String status, String idJenisPlayStation, String sortColumn, String sortOrder) {
         List<PlayStation> playStationList = new ArrayList<>();
         try {
             String query = "EXEC rps_getListPlayStation ?, ?, ?, ?, ?";
@@ -107,7 +107,6 @@ public class PlayStationSrvcImpl implements PlayStationSrvc {
 
     @Override
     public boolean saveData(PlayStation playStation) {
-
         try {
             String query = "{call rps_createPlayStation(?, ?, ?, ?, ?)}";
             connect.cstat = connect.conn.prepareCall(query);
@@ -165,7 +164,6 @@ public class PlayStationSrvcImpl implements PlayStationSrvc {
             connect.cstat = connect.conn.prepareCall(query);
             connect.cstat.setInt(1, id);
             connect.cstat.executeUpdate();
-
             connect.cstat.close();
             swal.showAlert(INFORMATION,"Berhasil", "Status berhasil diubah",false);
             return true;
