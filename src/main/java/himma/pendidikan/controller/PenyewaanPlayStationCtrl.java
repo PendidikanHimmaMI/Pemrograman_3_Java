@@ -79,7 +79,7 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
         flowCards.getChildren().clear();
         PlayStationSrvc srv = new PlayStationSrvcImpl();
 
-        List<PlayStation> list = srv.getAllData(search, status, (Integer) null, "pst_id", "ASC");
+        List<PlayStation> list = srv.getAllData(search, status, null, "pst_id", "ASC");
         System.out.println("Data loaded: " + list.size());
 
         for (PlayStation ps : list) {

@@ -44,8 +44,8 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
     @FXML
     TableColumn<MetodePembayaran, String> clNama, clDeskripsi, clStatus;
 
-    public static MetodePembayaranSrvcImpl metodePembayaranSrvc = new MetodePembayaranSrvcImpl();
     AppCtrl app = AppCtrl.getInstance();
+    public static MetodePembayaranSrvcImpl metodePembayaranSrvc = new MetodePembayaranSrvcImpl();
     private final int rowsPerPage = 15;
     private List<MetodePembayaran> fullDataList;
     private String lastSearch, lastStatus, lastPosisi, lastSortColumn, lastSortOrder;
@@ -53,7 +53,7 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
     public MetodePembayaranCtrl() {}
 
     public void initialize() {
-        lbActiveUser.setText(Session.getCurrentUser().getPosisi());
+        lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
         handleClick();
         loadData(null,"Aktif", "mpb_id", "ASC");
     }
@@ -118,7 +118,7 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
         List<MetodePembayaran> pageData = fullDataList.subList(fromIndex, toIndex);
         ObservableList<MetodePembayaran> data = FXCollections.observableArrayList(pageData);
 
-        clNo.setCellValueFactory(col -> new ReadOnlyObjectWrapper<>(tbMetodePembayaran.getItems().indexOf(col.getValue()) + 1));
+        clNo.setCellValueFactory(col -> new ReadOnlyObjectWrapper<>(tbMetodePembayaran.getItems().indexOf(col.getValue()) + 1 + (pageIndex * rowsPerPage)));
         clNama.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNama()));
         clDeskripsi.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDeskripsi()));
         clStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
@@ -160,7 +160,7 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
                 deleteIcon.setIconColor(Color.WHITE);
 
                 btnDelete.setGraphic(deleteIcon);
-                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green")+";");
+                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green") + "; -fx-text-fill: white;");
                 btnEdit.setOnAction(e -> loadSubPage("edit", metodePembayaran.getId()));
                 if(currentStatus.equals("Tidak Aktif")) {
                     btnEdit.setVisible(false);
@@ -224,7 +224,7 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
 
         @FXML
         public void initialize() {
-            lbActiveUser.setText(Session.getCurrentUser().getPosisi());
+            lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
             handleClickBack();
             v.setLetters(tfNama);
         }
@@ -278,8 +278,9 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
 
         @FXML
         public void initialize() {
-            lbActiveUser.setText(Session.getCurrentUser().getPosisi());
+            lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
             loadData();
+            handleClickBack();
             v.setLetters(tfNama);
         }
 
@@ -315,6 +316,7 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
         public void handleBack() {
             super.handleBack();
         }
+
         public void handleClickBack(){
             btnBack.setOnAction(event -> {
                 metodePembayaranCtrl.loadSubPage("index",null);
