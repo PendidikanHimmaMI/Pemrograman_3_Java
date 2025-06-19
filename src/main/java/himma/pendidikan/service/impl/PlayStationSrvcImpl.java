@@ -36,7 +36,7 @@ public class PlayStationSrvcImpl implements PlayStationSrvc {
 
 
     @Override
-    public List<PlayStation> getAllData(String search, String status, Integer idJenisPlayStation, String sortColumn, String sortOrder) {
+    public List<PlayStation> getAllData(String search, String status, String idJenisPlayStation, String sortColumn, String sortOrder) {
         List<PlayStation> playStationList = new ArrayList<>();
         try {
             String query = "EXEC rps_getListPlayStation ?, ?, ?, ?, ?";
