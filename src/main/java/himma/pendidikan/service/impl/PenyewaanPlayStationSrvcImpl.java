@@ -25,9 +25,11 @@ public class PenyewaanPlayStationSrvcImpl implements PenyewaanPlayStationSrvc {
     SwalAlert swal = new SwalAlert();
     @Override
     public PenyewaanPlaystation resultPenyewaan(ResultSet rs) throws SQLException {
+        JenisPlayStation jenis = new JenisPlayStation();
+        jenis.setNama(v.getString(rs, "jps_nama"));
         PlayStation playStation = new PlayStation(
                 v.getInt(rs, "pst_id"),
-                v.getString(rs, "jps_nama"),
+                jenis,
                 v.getString(rs, "pst_serial_number"),
                 v.getString(rs, "pst_merk"),
                 v.getDouble(rs, "pst_harga_per_jam"),
