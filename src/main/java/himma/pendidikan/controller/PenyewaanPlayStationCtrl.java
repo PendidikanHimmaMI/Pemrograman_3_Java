@@ -11,6 +11,7 @@ import himma.pendidikan.service.impl.PenyewaanPlayStationSrvcImpl;
 import himma.pendidikan.service.impl.PlayStationSrvcImpl;
 import himma.pendidikan.util.Session;
 import himma.pendidikan.util.Validation;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
@@ -63,6 +64,25 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
         btnBayar.setOnAction(this::handleAddData);
         tfUangBayar.setOnAction(e -> updateTotal());
     }
+
+    private HBox createTimePicker(ComboBox<String> cbJam, ComboBox<String> cbMenit) {
+        cbJam.setPromptText("Jam");
+        cbMenit.setPromptText("Menit");
+
+        for (int i = 0; i < 24; i++) {
+            cbJam.getItems().add(String.format("%02d", i));
+        }
+
+        for (int i = 0; i < 60; i += 5) {
+            cbMenit.getItems().add(String.format("%02d", i));
+        }
+
+        cbJam.setPrefWidth(60);
+        cbMenit.setPrefWidth(60);
+
+        return new HBox(5, cbJam, cbMenit);
+    }
+
 
     public void handleSearch() {
         String search = tfSearch.getText().trim();
@@ -130,10 +150,14 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
             Label lblTitle = new Label(ps.getSerialNumber());
             lblTitle.setStyle("-fx-font-size:16; -fx-text-fill:white; -fx-font-weight:bold;");
 
-            TextField tfMulai = new TextField();
-            TextField tfSelesai = new TextField();
-            tfMulai.setPromptText("HH:mm");
-            tfSelesai.setPromptText("HH:mm");
+            ComboBox<String> cbJamMulai = new ComboBox<>();
+            ComboBox<String> cbMenitMulai = new ComboBox<>();
+            ComboBox<String> cbJamSelesai = new ComboBox<>();
+            ComboBox<String> cbMenitSelesai = new ComboBox<>();
+
+            HBox timePickerMulai = createTimePicker(cbJamMulai, cbMenitMulai);
+            HBox timePickerSelesai = createTimePicker(cbJamSelesai, cbMenitSelesai);
+
 
             Label lblPrice = new Label("Rp. 0");
             lblPrice.setId("priceLabel");
@@ -143,26 +167,46 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
 
             Runnable updateCartDetail = () -> {
                 try {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-                    LocalTime startTime = LocalTime.parse(tfMulai.getText(), formatter);
-                    LocalTime endTime = LocalTime.parse(tfSelesai.getText(), formatter);
+                    if (cbJamMulai.getValue() == null || cbMenitMulai.getValue() == null ||
+                            cbJamSelesai.getValue() == null || cbMenitSelesai.getValue() == null) {
+                        throw new IllegalArgumentException("Waktu belum lengkap");
+                    }
+
+                    LocalTime startTime = LocalTime.of(
+                            Integer.parseInt(cbJamMulai.getValue()),
+                            Integer.parseInt(cbMenitMulai.getValue())
+                    );
+                    LocalTime endTime = LocalTime.of(
+                            Integer.parseInt(cbJamSelesai.getValue()),
+                            Integer.parseInt(cbMenitSelesai.getValue())
+                    );
+
+                    if (endTime.isBefore(startTime)) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Waktu Tidak Valid");
+                        alert.setHeaderText("Jam selesai tidak boleh lebih awal dari jam mulai");
+                        alert.setContentText("Silakan pilih waktu selesai yang benar.");
+                        alert.showAndWait();
+
+                        cartDetails.removeIf(d -> d.getPst_id() == ps.getIdPS());
+                        lblPrice.setText(rupiahFormat.format(0));
+                        updateTotal();
+                        return;
+                    }
+
+
                     LocalDateTime mulai = LocalDateTime.of(today, startTime);
                     LocalDateTime selesai = LocalDateTime.of(today, endTime);
 
                     long minutes = Duration.between(mulai, selesai).toMinutes();
-                    if (minutes < 0) minutes = 0;
 
                     double hours = minutes / 60.0;
                     double price = hours * ps.getHargaPS();
 
                     lblPrice.setText(rupiahFormat.format(price));
 
-                    // Update or replace the detail in cartDetails
-//                    System.out.println(ps.getIdPS());
-//                    System.out.println(mulai);
                     cartDetails.removeIf(d -> d.getPst_id() == ps.getIdPS());
                     cartDetails.add(new DetailPenyewaanPlaystation(ps.getIdPS(), mulai, selesai, price));
-                    System.out.println(cartDetails.get(0).getId()+" ID");
                 } catch (Exception e) {
                     lblPrice.setText(rupiahFormat.format(0));
                     cartDetails.removeIf(d -> d.getPst_id() == ps.getIdPS());
@@ -171,8 +215,13 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
                 }
             };
 
-            tfMulai.textProperty().addListener((obs, oldVal, newVal) -> updateCartDetail.run());
-            tfSelesai.textProperty().addListener((obs, oldVal, newVal) -> updateCartDetail.run());
+
+            ChangeListener<String> listener = (obs, oldVal, newVal) -> updateCartDetail.run();
+            cbJamMulai.valueProperty().addListener(listener);
+            cbMenitMulai.valueProperty().addListener(listener);
+            cbJamSelesai.valueProperty().addListener(listener);
+            cbMenitSelesai.valueProperty().addListener(listener);
+
 
             Label lblMulai = new Label("Mulai");
             lblMulai.setStyle("-fx-text-fill: white;");
@@ -180,8 +229,8 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
             lblSelesai.setStyle("-fx-text-fill: white;");
 
             HBox timeBox = new HBox(10,
-                    new VBox(lblMulai, tfMulai),
-                    new VBox(lblSelesai, tfSelesai),
+                    new VBox(lblMulai, timePickerMulai),
+                    new VBox(lblSelesai, timePickerSelesai),
                     new Button("–") {{
                         setStyle("-fx-background-color:#FC1F1F; -fx-text-fill: #020A7A; -fx-font-size: 14px; -fx-background-radius: 6;");
                         setOnAction(ev -> {
@@ -272,6 +321,12 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
                 showAlert("Penyewaan berhasil!");
                 cart.clear();
                 updateCartUI();
+                cbMetodePembayaran.setValue("");
+                tfCustomerName.setText("");
+                tfPhone.setText("");
+                metodePembayaranMap.isEmpty();
+                tfUangBayar.setText("");
+                tfKembalian.setText("");
             }
 
         } catch (Exception ex) {

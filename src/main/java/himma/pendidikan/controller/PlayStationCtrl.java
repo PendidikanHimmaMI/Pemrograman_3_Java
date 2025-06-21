@@ -147,7 +147,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
         lastSortColumn = sortColumn;
         lastSortOrder = sortOrder;
 
-        fullDataList = playStationSrvc.getAllData(search, status, idJeniPlayStation, sortColumn, sortOrder);
+        fullDataList = playStationSrvc.getAllData(search, status, String.valueOf(idJeniPlayStation), sortColumn, sortOrder);
         int pageCount = (int) Math.ceil((double) fullDataList.size() / rowsPerPage);
         pgTabel.setPageCount(pageCount == 0 ? 1 : pageCount);
         pgTabel.setCurrentPageIndex(0);
