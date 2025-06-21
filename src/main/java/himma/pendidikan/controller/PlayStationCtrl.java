@@ -78,7 +78,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
     private TextField tfSearch;
 
     private String lastSearch, lastStatus, lastSortColumn, lastSortOrder;
-    private Integer lastidJeniPlayStation;
+    private String lastidJeniPlayStation;
     private List<PlayStation> fullDataList;
     public static PlayStationSrvcImpl playStationSrvc = new PlayStationSrvcImpl();
     public JenisPlayStationSrvcImpl jenisPlayStationSrvc = new JenisPlayStationSrvcImpl();
@@ -140,7 +140,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
         }
     }
 
-    public void loadData(String search, String status, Integer idJeniPlayStation, String sortColumn, String sortOrder) {
+    public void loadData(String search, String status, String idJeniPlayStation, String sortColumn, String sortOrder) {
         lastSearch = search;
         lastStatus = status;
         lastidJeniPlayStation = idJeniPlayStation;

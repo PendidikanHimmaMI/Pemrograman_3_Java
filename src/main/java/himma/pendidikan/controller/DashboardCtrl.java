@@ -18,11 +18,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.view.JasperViewer;
+//import net.sf.jasperreports.engine.JasperFillManager;
+//import net.sf.jasperreports.engine.JasperPrint;
+//import net.sf.jasperreports.engine.JasperReport;
+//import net.sf.jasperreports.engine.util.JRLoader;
+//import net.sf.jasperreports.view.JasperViewer;
 
 import java.io.File;
 import java.io.IOException;
@@ -432,20 +432,6 @@ public class DashboardCtrl {
             txtTotalPendapatan.setText(String.valueOf(rekapTransaksi.getTotalPendapatan()));
         }
 
-        @FXML
-        public void cetakLaporan(){
-            try {
-                String url = "jdbc:sqlserver://127.0.0.4:9210;databaseName=Db_RentalPlayStation";
-                String user = "Pendidikan";
-                String password = "123";
-                Connection conn = DriverManager.getConnection(url, user, password);
-                JasperReport report = (JasperReport) JRLoader.loadObject(new File("src/main/java/himma/pendidikan/report/rr.jasper"));
-                HashMap<String, Object> parameters = new HashMap<>();
-                JasperPrint print = JasperFillManager.fillReport(report, parameters, conn);
-                JasperViewer.viewReport(print, false);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
+
     }
 }
