@@ -19,11 +19,20 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+//import net.sf.jasperreports.engine.JasperFillManager;
+//import net.sf.jasperreports.engine.JasperPrint;
+//import net.sf.jasperreports.engine.JasperReport;
+//import net.sf.jasperreports.engine.util.JRLoader;
+//import net.sf.jasperreports.view.JasperViewer;
 
+import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class DashboardCtrl {
@@ -326,10 +335,13 @@ public class DashboardCtrl {
     public static class DashboardKasirCtrl{
         @FXML
         PieChart pcTopPs, pcPembayaran;
+
         @FXML
         VBox vbTopPs, vbPembayaran;
+
         @FXML
         Text txtTotalPendapatan, txtTotalPenyewaan;
+
         @FXML
         DatePicker dpKasir;
         @FXML
@@ -426,5 +438,7 @@ public class DashboardCtrl {
             txtTotalPenyewaan.setText(String.valueOf(rekapTransaksi.getTotalPenyewaan()));
             txtTotalPendapatan.setText(String.valueOf(rekapTransaksi.getTotalPendapatan()));
         }
+
+
     }
 }

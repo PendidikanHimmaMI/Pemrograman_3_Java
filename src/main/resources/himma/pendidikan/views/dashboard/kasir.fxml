@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.chart.PieChart?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1260.0" style="-fx-background-color: white;" stylesheets="@../../assets/styles/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
@@ -71,7 +59,8 @@
                                     <rowConstraints>
                                         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="200.0" vgrow="ALWAYS" />
                                         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" vgrow="ALWAYS" />
-                                        <RowConstraints minHeight="200.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" vgrow="ALWAYS" />
+                              <RowConstraints minHeight="200.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <children>
                                         <Pane prefHeight="200.0" prefWidth="534.0" style="-fx-background-color: #020a7a; -fx-background-radius: 12;">
@@ -115,13 +104,13 @@
                                                 </ImageView>
                                             </children>
                                         </Pane>
-                                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
                                             <children>
                                                 <PieChart fx:id="pcTopPs" />
                                                 <VBox fx:id="vbTopPs" prefHeight="200.0" prefWidth="100.0" />
                                             </children>
                                         </HBox>
-                                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                             <children>
                                                 <PieChart fx:id="pcPembayaran" />
                                                 <VBox fx:id="vbPembayaran" prefHeight="200.0" prefWidth="100.0" />

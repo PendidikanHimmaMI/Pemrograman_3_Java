@@ -19,6 +19,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
 import java.util.*;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import static javafx.scene.control.Alert.AlertType.*;
 

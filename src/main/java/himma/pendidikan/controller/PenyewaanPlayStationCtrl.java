@@ -18,10 +18,14 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.geometry.Pos;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.File;
+import java.sql.*;
 import java.text.NumberFormat;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -32,6 +36,7 @@ import java.util.*;
 
 public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
 
+    @FXML private Button btnCetakLaporan;
     @FXML private VBox cartContent;
     @FXML private Label labelTotalBayar;
     @FXML private ComboBox<String> cbFilterStatus;
@@ -279,6 +284,22 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
             showAlert("Terjadi error saat menyimpan data.");
         }
     }
+    @FXML
+    public void cetakLaporan(){
+        try {
+            String url = "jdbc:sqlserver://127.0.0.4:9210;databaseName=Db_RentalPlayStation;encrypt=true;trustServerCertificate=true";
+            String user = "Pendidikan";
+            String password = "123";
+            Connection conn = DriverManager.getConnection(url, user, password);
+            JasperReport report = (JasperReport) JRLoader.loadObject(new File("src/main/java/himma/pendidikan/report/rr.jasper"));
+            HashMap<String, Object> parameters = new HashMap<>();
+            JasperPrint print = JasperFillManager.fillReport(report, parameters, conn);
+            JasperViewer.viewReport(print, false);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
     private void showAlert(String msg) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
