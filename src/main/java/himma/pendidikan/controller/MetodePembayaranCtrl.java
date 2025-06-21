@@ -155,7 +155,7 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
                 String currentStatus = metodePembayaran.getStatus();
                 boolean isAktif = "Aktif".equals(currentStatus);
 
-                FontIcon deleteIcon = new FontIcon(isAktif ? "fas-toggle-on" : "fas-toggle-off");
+                FontIcon deleteIcon = new FontIcon(isAktif ? "fas-toggle-off" : "fas-toggle-on");
                 deleteIcon.setIconSize(16);
                 deleteIcon.setIconColor(Color.WHITE);
 
