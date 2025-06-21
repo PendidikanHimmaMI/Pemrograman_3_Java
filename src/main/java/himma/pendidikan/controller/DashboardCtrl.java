@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.chart.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 //import net.sf.jasperreports.engine.JasperFillManager;
@@ -38,13 +39,16 @@ public class DashboardCtrl {
     @FXML
     Text txtTotalKaryawan, txtTotalPlaystation, txtTotalMetodePembayaran, txtTotalJenisPlaystation;
 
+    @FXML
+    private Label lbActiveUser;
+
     DBConnect connect = new DBConnect();
 
     AppCtrl app = AppCtrl.getInstance();
 
     public void initialize(){
         List<SummaryTabel> summaryTabelList = getSummaryTabel();
-
+        lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
         txtTotalJenisPlaystation.setText(summaryTabelList.get(0).getTotal().toString());
         txtTotalPlaystation.setText(summaryTabelList.get(1).getTotal().toString());
         txtTotalKaryawan.setText(summaryTabelList.get(2).getTotal().toString());
@@ -122,6 +126,8 @@ public class DashboardCtrl {
         DatePicker dpManager;
         @FXML
         Text txtTotalPendapatan, txtTotalPenyewaan;
+        @FXML
+        private Label lbActiveUser;
 
         DBConnect connect = new DBConnect();
         PlayStationSrvcImpl playStationSrvc = new PlayStationSrvcImpl();
@@ -135,7 +141,7 @@ public class DashboardCtrl {
             LocalDate today = LocalDate.now();
             int tahun = today.getYear();
             int bulan = today.getMonthValue();
-
+            lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
             PenyewaanPlaystation.RekapTransaksiBulanan rekapTransaksi = getRekapPenyewaanBulanan(tahun, bulan);
 
             List<TopMasterData> top5Ps = playStationSrvc.getTop5PlayStation(tahun, bulan);
@@ -338,6 +344,8 @@ public class DashboardCtrl {
 
         @FXML
         DatePicker dpKasir;
+        @FXML
+        private Label lbActiveUser;
 
         DBConnect connect = new DBConnect();
         PlayStationSrvcImpl playStationSrvc = new PlayStationSrvcImpl();
@@ -347,12 +355,11 @@ public class DashboardCtrl {
         @FXML
         public void initialize() {
             LocalDate today = LocalDate.now();
+            lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
             int tahun = today.getYear();
             int bulan = today.getMonthValue();
 
             PenyewaanPlaystation.RekapTransaksiBulanan rekapTransaksi = getRekapPenyewaanBulanan(tahun, bulan);
-            System.out.println(tahun);
-            System.out.println(bulan);
 
             List<TopMasterData> top5Ps = playStationSrvc.getTop5PlayStation(tahun, bulan);
             Chart.pieChart(pcTopPs, top5Ps, "Top 5 Playstation", vbTopPs);

@@ -1,6 +1,7 @@
 package himma.pendidikan.service.impl;
 
 import himma.pendidikan.connection.DBConnect;
+import himma.pendidikan.model.JenisPlayStation;
 import himma.pendidikan.model.PlayStation;
 import himma.pendidikan.model.TopMasterData;
 import himma.pendidikan.service.PlayStationSrvc;
@@ -17,11 +18,14 @@ public class PlayStationSrvcImpl implements PlayStationSrvc {
     DBConnect connect = new DBConnect();
     Validation v = new Validation();
     SwalAlert swal = new SwalAlert();
+    JenisPlayStation jenisPlayStation = new JenisPlayStation();
     @Override
     public PlayStation resultPlayStation(ResultSet rs) throws SQLException {
+        JenisPlayStation jenis = new JenisPlayStation();
+        jenis.setNama(v.getString(rs, "jps_nama"));
         return new PlayStation(
                 v.getInt(rs,"pst_id"),
-                v.getString(rs,"jps_nama"),
+                jenis,
                 v.getString(rs,"pst_serial_number"),
                 v.getString(rs,"pst_merk"),
                 v.getDouble(rs,"pst_harga_per_jam"),
@@ -109,7 +113,11 @@ public class PlayStationSrvcImpl implements PlayStationSrvc {
             connect.cstat.setInt(1, playStation.getIdJenisPlaystation());
             connect.cstat.setString(2, playStation.getSerialNumber());
             connect.cstat.setString(3, playStation.getMerkPs());
-            connect.cstat.setDouble(4, playStation.getHargaPS());
+            if(playStation.getHargaPS() != null){
+                connect.cstat.setDouble(4, playStation.getHargaPS());
+            }else{
+                connect.cstat.setNull(4, java.sql.Types.DOUBLE);
+            }
             connect.cstat.setString(5, playStation.getCreatedby());
             connect.cstat.execute();
             connect.cstat.close();
@@ -133,7 +141,11 @@ public class PlayStationSrvcImpl implements PlayStationSrvc {
             connect.cstat.setInt(2, playStation.getIdJenisPlaystation());
             connect.cstat.setString(3, playStation.getSerialNumber());
             connect.cstat.setString(4, playStation.getMerkPs());
-            connect.cstat.setDouble(5, playStation.getHargaPS());
+            if(playStation.getHargaPS() != null){
+                connect.cstat.setDouble(5, playStation.getHargaPS());
+            }else{
+                connect.cstat.setNull(5, java.sql.Types.DOUBLE);
+            }
             connect.cstat.setString(6, playStation.getModifby());
             connect.cstat.execute();
             connect.cstat.close();

@@ -23,19 +23,16 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1260.0" style="-fx-background-color: white;" stylesheets="@../../assets/styles/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-border-color: #020A7A; -fx-border-width: 0 0 2 0;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <padding>
             <Insets bottom="10" left="10" right="10" top="10" />
         </padding>
-        <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Beranda" />
+        <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Dashboard" />
         <Region HBox.hgrow="ALWAYS" />
-        <Label fx:id="lbActiveUser" style="-fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Manager" />
-        <ImageView fitHeight="24" fitWidth="24">
-            <image>
-                <Image url="@../../assets/image/himma_logo.png" />
-            </image>
-        </ImageView>
+        <Label fx:id="lbActiveUser" style="-fx-font-weight: bold; -fx-text-fill: #020A7A;" text="Administrator" />
+        <FontIcon iconLiteral="fas-user-circle" iconSize="16" />
     </HBox>
     <VBox layoutY="58.4" prefHeight="832.0" prefWidth="1260.0" spacing="10" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="58.0">
         <AnchorPane prefHeight="839.0" prefWidth="1260.0" style="-fx-background-color: transparent;">
@@ -49,7 +46,7 @@
                   </DatePicker>
                   <HBox prefHeight="43.0" prefWidth="1260.0">
                      <children>
-                        <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#apply" prefHeight="20.0" prefWidth="85.0" style="-fx-background-color: #020a7a; -fx-text-fill: #FFFFFF; -fx-background-radius: 6px;" text="Apply">
+                        <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#apply" prefHeight="20.0" prefWidth="85.0" style="-fx-background-color: #020a7a; -fx-text-fill: #FFFFFF; -fx-background-radius: 6px;" text="Terapkan">
                            <HBox.margin>
                               <Insets left="12.0" top="6.0" />
                            </HBox.margin>
@@ -57,7 +54,7 @@
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#reset" prefHeight="20.0" prefWidth="85.0" style="-fx-background-color: #020a7a; -fx-text-fill: #FFFFFF; -fx-background-radius: 6px;" text="Reset">
+                        <Button mnemonicParsing="false" onAction="#reset" prefHeight="30.0" prefWidth="87.0" style="-fx-background-color: #020a7a; -fx-text-fill: #FFFFFF; -fx-background-radius: 6px;" text="Atur Ulang">
                            <HBox.margin>
                               <Insets left="5.0" top="6.0" />
                            </HBox.margin>
