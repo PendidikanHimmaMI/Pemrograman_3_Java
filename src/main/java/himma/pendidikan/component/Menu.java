@@ -105,7 +105,7 @@ public class Menu {
                     list.add(new MenuItem("Transaksi Penyewaan", "/himma/pendidikan/views/transaksi_penyewaan_play_station/index.fxml"));
                 }
                 case "manager" -> {
-                    list.add(new MenuItem("Laporan Penyewaan", "/himma/pendidikan/views/Laporan.fxml"));
+//                    list.add(new MenuItem("Laporan Penyewaan", "/himma/pendidikan/views/Laporan.fxml"));
                 }
             }
             list.add(new MenuItem("Logout", "/himma/pendidikan/views/login/index.fxml"));
