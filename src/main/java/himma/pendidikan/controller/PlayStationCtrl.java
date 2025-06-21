@@ -4,9 +4,8 @@ import himma.pendidikan.component.Dropdown;
 import himma.pendidikan.connection.DBConnect;
 import himma.pendidikan.controller.event.EvenListener;
 import himma.pendidikan.model.JenisPlayStation;
-import himma.pendidikan.model.Karyawan;
 import himma.pendidikan.model.PlayStation;
-import himma.pendidikan.service.PlayStationSrvc;
+import himma.pendidikan.service.impl.JenisPlayStationSrvcImpl;
 import himma.pendidikan.service.impl.PlayStationSrvcImpl;
 import himma.pendidikan.util.Session;
 import himma.pendidikan.util.SwalAlert;
@@ -34,20 +33,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.*;
 
 import static javafx.scene.control.Alert.AlertType.CONFIRMATION;
 
 public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
-
     @FXML
     Pagination pgTabel;
-
     @FXML
     private Button btnTambahData;
 
     @FXML
-    ComboBox<String> cbFilterStatus, cbFilterPosisi;
+    ComboBox<String> cbFilterStatus;
+
+    @FXML
+    ComboBox<JenisPlayStation> cbFilterJenisPlayStation;
 
     @FXML
     private TableColumn<PlayStation, Void> clAksi;
@@ -59,7 +58,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
     private TableColumn<PlayStation, Integer> clNo;
 
     @FXML
-    private TableColumn<PlayStation, String> clMerk;
+    private TableColumn<PlayStation, String > clMerk;
 
     @FXML
     private TableColumn<PlayStation, String> clHarga;
@@ -78,20 +77,23 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
     @FXML
     private TextField tfSearch;
 
-    public static PlayStationSrvcImpl playStationSrvc = new PlayStationSrvcImpl();
-    AppCtrl app = AppCtrl.getInstance();
-    private final int rowsPerPage = 15;
+    private String lastSearch, lastStatus, lastSortColumn, lastSortOrder;
+    private Integer lastidJeniPlayStation;
     private List<PlayStation> fullDataList;
-    private String lastSearch, lastStatus, lastPosisi, lastSortColumn, lastSortOrder;
+    public static PlayStationSrvcImpl playStationSrvc = new PlayStationSrvcImpl();
+    public JenisPlayStationSrvcImpl jenisPlayStationSrvc = new JenisPlayStationSrvcImpl();
+    AppCtrl app = AppCtrl.getInstance();
 
+    private final int rowsPerPage = 15;
 
-    public PlayStationCtrl() {
-    }
+    public PlayStationCtrl(){}
 
     public void initialize() {
         lbActiveUser.setText(Session.getCurrentUser().getPosisi());
+        List<JenisPlayStation> jenisPlayStationList = jenisPlayStationSrvc.getAllData(null, "Aktif", "jps_id", "ASC");
+        Dropdown.setDropdown(cbFilterJenisPlayStation, jenisPlayStationList, JenisPlayStation::getNama);
         handleClick();
-        loadData(null, "Aktif", null, "pst_id", "ASC");
+        loadData(null,"Aktif", null, "pst_id", "ASC");
     }
 
     private <T> void setAlignmentByType(TableColumn<PlayStation, T> column, Pos alignment) {
@@ -105,11 +107,12 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
         });
     }
 
-    public void handleClick() {
+
+    public void handleClick(){
         btnTambahData.setOnAction(event -> {
-            loadSubPage("add", null);
-        });
-    }
+            loadSubPage("add",null);
+        });}
+
 
 
     public void loadSubPage(String page, Integer id) {
@@ -122,7 +125,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
             } else if ("edit".equals(page)) {
                 loader = new FXMLLoader(getClass().getResource("/himma/pendidikan/views/master_play_station/edit.fxml"));
                 PlaytationEditCtrl controller = new PlaytationEditCtrl();// Buat controller
-                System.out.println("id" + id);
+                System.out.println("id"+id);
                 controller.setId(id);
                 loader.setController(controller);
             } else {
@@ -137,14 +140,14 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
         }
     }
 
-    public void loadData(String search, String status, String posisi, String sortColumn, String sortOrder) {
+    public void loadData(String search, String status, Integer idJeniPlayStation, String sortColumn, String sortOrder) {
         lastSearch = search;
         lastStatus = status;
-        lastPosisi = posisi;
+        lastidJeniPlayStation = idJeniPlayStation;
         lastSortColumn = sortColumn;
         lastSortOrder = sortOrder;
 
-        fullDataList = playStationSrvc.getAllData(search, status, posisi, sortColumn, sortOrder);
+        fullDataList = playStationSrvc.getAllData(search, status, idJeniPlayStation, sortColumn, sortOrder);
         int pageCount = (int) Math.ceil((double) fullDataList.size() / rowsPerPage);
         pgTabel.setPageCount(pageCount == 0 ? 1 : pageCount);
         pgTabel.setCurrentPageIndex(0);
@@ -231,7 +234,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
                     );
                     if (confirmed) {
                         playStationSrvc.setStatus(playStation.getIdPS());
-                        loadData(lastSearch, lastStatus, lastPosisi, lastSortColumn, lastSortOrder);
+                        loadData(lastSearch, lastStatus, lastidJeniPlayStation, lastSortColumn, lastSortOrder);
                     }
                 });
                 setGraphic(pane);
@@ -250,7 +253,6 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
         }
         return new Label("");
     }
-
     @Override
     public void handleSearch() {
         String search = tfSearch.getText();

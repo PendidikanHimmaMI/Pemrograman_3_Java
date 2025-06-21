@@ -182,6 +182,10 @@ public class JenisPlayStationCtrl extends EvenListenerIndex  {
                 btnEdit.setManaged(isAktif);   // Hide dari layout (tidak menyisakan space)
 
                 btnEdit.setOnAction(e -> loadSubPage("edit", jenisPlayStation.getId()));
+                if(currentStatus.equals("Tidak Aktif")) {
+                    btnEdit.setVisible(false);
+                    btnDelete.setAlignment(Pos.CENTER);
+                }
                 btnDelete.setOnAction(e -> {
                     String actionText = isAktif ? "menonaktifkan" : "mengaktifkan";
                     boolean confirmed = new SwalAlert().showAlert(

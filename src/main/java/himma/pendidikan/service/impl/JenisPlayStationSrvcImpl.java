@@ -64,7 +64,7 @@ public class JenisPlayStationSrvcImpl implements JenisPlayStationSrvc {
     public List<TopMasterData> getTop5JenisPlayStation(Integer tahun, Integer bulan) {
         List<TopMasterData> jenisPlayStationList = new ArrayList<>();
         try{
-            String query = "SELECT * FROM fn_Top5JenisPlayStationPalingSeringTransaksi(?, ?)";
+            String query = "SELECT * FROM fn_Top5JenisPlayStationPalingSeringDisewa(?, ?)";
             connect.pstat = connect.conn.prepareStatement(query);
             connect.pstat.setInt(1, tahun);
             connect.pstat.setInt(2, bulan);
@@ -72,7 +72,7 @@ public class JenisPlayStationSrvcImpl implements JenisPlayStationSrvc {
             while (connect.result.next()) {
                 jenisPlayStationList.add(new TopMasterData(
                         connect.result.getString("jps_nama"),
-                        connect.result.getInt("jumlah_transaksi"),
+                        connect.result.getInt("jumlah_disewa"),
                         connect.result.getDouble("persen")
                 ));
             }
