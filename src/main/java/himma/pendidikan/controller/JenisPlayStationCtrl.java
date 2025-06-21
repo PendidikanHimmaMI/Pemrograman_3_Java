@@ -174,7 +174,7 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
                 deleteIcon.setIconColor(Color.WHITE);
 
                 btnDelete.setGraphic(deleteIcon);
-                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green")+";");
+                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "green" : "red")+";");
                 btnEdit.setOnAction(e -> loadSubPage("edit", jenisPlayStation.getId()));
                 if(currentStatus.equals("Tidak Aktif")) {
                     btnEdit.setVisible(false);
@@ -217,7 +217,8 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
     //    @Override
     public void handleSearch() {
         String search = tfSearch.getText();
-        String status = cbFilterStatus.getSelectionModel().getSelectedItem();
+        String selectedStatus = cbFilterStatus.getSelectionModel().getSelectedItem();
+        String status = (selectedStatus == null || selectedStatus.isEmpty()) ? "Aktif" : selectedStatus;
         loadData(search,status,"jps_id","ASC");
     }
 

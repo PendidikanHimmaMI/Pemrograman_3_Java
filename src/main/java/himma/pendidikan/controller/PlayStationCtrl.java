@@ -179,7 +179,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
         clStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
 
         tbPlayStation.setItems(data);
-        setAlignmentByType(clNo, Pos.CENTER);
+        setAlignmentByType(clNo, Pos.CENTER_LEFT);
         setAlignmentByType(clMerk, Pos.CENTER_LEFT);
         setAlignmentByType(clSerialNumber, Pos.CENTER_LEFT);
         setAlignmentByType(clJnsPS, Pos.CENTER_LEFT);
@@ -222,8 +222,12 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
                 deleteIcon.setIconColor(Color.WHITE);
 
                 btnDelete.setGraphic(deleteIcon);
-                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green") + ";");
+                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "green" : "red") + ";");
                 btnEdit.setOnAction(e -> loadSubPage("edit", playStation.getIdPS()));
+                if(currentStatus.equals("Tidak Aktif")) {
+                    btnEdit.setVisible(false);
+                    btnDelete.setAlignment(Pos.CENTER);
+                }
                 btnDelete.setOnAction(e -> {
                     String actionText = isAktif ? "menonaktifkan" : "mengaktifkan";
                     boolean confirmed = new SwalAlert().showAlert(
@@ -256,14 +260,21 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
     @Override
     public void handleSearch() {
         String search = tfSearch.getText();
-        String status = cbFilterStatus.getSelectionModel().getSelectedItem();
+        String selectedStatus = cbFilterStatus.getSelectionModel().getSelectedItem();
+        String status = (selectedStatus == null || selectedStatus.isEmpty()) ? "Aktif" : selectedStatus;
+        JenisPlayStation jenisPlayStationId = cbFilterJenisPlayStation.getSelectionModel().getSelectedItem();
+        Integer idJenisPS = (jenisPlayStationId != null && jenisPlayStationId.getId() != null)
+                ? jenisPlayStationId.getId()
+                : null;
 
-        loadData(search,status,null,"pst_id","ASC");
+        loadData(search, status, idJenisPS, "pst_id", "ASC");
+
     }
 
     @Override
     public void handleClear() {
         cbFilterStatus.setValue("");
+        cbFilterJenisPlayStation.setValue(null);
     }
 
     public static class PlaytationCreateCtrl extends EvenListenerCreate {

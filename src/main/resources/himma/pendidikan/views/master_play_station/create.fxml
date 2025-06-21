@@ -37,7 +37,7 @@
                     <padding>
                         <Insets bottom="10" left="10" right="10" top="10" />
                     </padding>
-                    <Label text="Form Tambah PlayStation" textFill="#020a7a">
+                    <Label text="Form Tambah Play Station" textFill="#020a7a">
                         <font>
                             <Font name="Arial Bold" size="24.0" />
                         </font>

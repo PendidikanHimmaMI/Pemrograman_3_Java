@@ -160,7 +160,7 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
                 deleteIcon.setIconColor(Color.WHITE);
 
                 btnDelete.setGraphic(deleteIcon);
-                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green") + "; -fx-text-fill: white;");
+                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "green" : "red") + "; -fx-text-fill: white;");
                 btnEdit.setOnAction(e -> loadSubPage("edit", metodePembayaran.getId()));
                 if(currentStatus.equals("Tidak Aktif")) {
                     btnEdit.setVisible(false);
@@ -200,7 +200,8 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
     //    @Override
     public void handleSearch() {
         String search = tfSearch.getText();
-        String status = cbFilterStatus.getSelectionModel().getSelectedItem();
+        String selectedStatus = cbFilterStatus.getSelectionModel().getSelectedItem();
+        String status = (selectedStatus == null || selectedStatus.isEmpty()) ? "Aktif" : selectedStatus;
         loadData(search,status,"mpb_id","ASC");
     }
 
