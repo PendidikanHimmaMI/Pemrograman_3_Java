@@ -19,6 +19,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
 import java.util.*;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import static javafx.scene.control.Alert.AlertType.*;
 
@@ -164,7 +165,7 @@ public class KaryawanCtrl extends EvenListenerIndex {
                 Karyawan karyawan = getTableView().getItems().get(getIndex());
                 String nama = karyawan.getNama();
                 String currentStatus = karyawan.getStatus();
-                boolean isAktif = "Aktif".equals(currentStatus);
+                boolean isAktif = "Aktif".equalsIgnoreCase(currentStatus);
 
                 FontIcon deleteIcon = new FontIcon(isAktif ? "fas-toggle-on" : "fas-toggle-off");
                 deleteIcon.setIconSize(16);
@@ -172,11 +173,10 @@ public class KaryawanCtrl extends EvenListenerIndex {
 
                 btnDelete.setGraphic(deleteIcon);
                 btnDelete.setStyle("-fx-background-color: " + (isAktif ? "green" : "red")+";");
+                btnEdit.setVisible(isAktif);
+                btnEdit.setManaged(isAktif);
                 btnEdit.setOnAction(e -> loadSubPage("edit", karyawan.getId()));
-                if(currentStatus.equals("Tidak Aktif")) {
-                    btnEdit.setVisible(false);
-                    btnDelete.setAlignment(Pos.CENTER);
-                }
+
                 btnDelete.setOnAction(e -> {
                     String actionText = isAktif ? "menonaktifkan" : "mengaktifkan";
                     boolean confirmed = new SwalAlert().showAlert(
@@ -216,11 +216,9 @@ public class KaryawanCtrl extends EvenListenerIndex {
 
     //    @Override
     public void handleSearch() {
-        String search = tfSearch.getText().isEmpty() ? null : tfSearch.getText();
-        String selectedStatus = cbFilterStatus.getSelectionModel().getSelectedItem();
-        String status = (selectedStatus == null || selectedStatus.isEmpty()) ? "Aktif" : selectedStatus;
-        String selectedPosisi = cbFilterPosisi.getSelectionModel().getSelectedItem();
-        String posisi = (selectedPosisi == null || selectedPosisi.isEmpty()) ? null : selectedPosisi;
+        String search = tfSearch.getText();
+        String status = cbFilterStatus.getSelectionModel().getSelectedItem();
+        String posisi = cbFilterPosisi.getSelectionModel().getSelectedItem();
 
         loadData(search,status,posisi,"kry_id","ASC");
     }
@@ -229,6 +227,8 @@ public class KaryawanCtrl extends EvenListenerIndex {
     public void handleClear() {
         cbFilterStatus.setValue("");
         cbFilterPosisi.setValue("");
+        tfSearch.clear();
+        loadData(null,"Aktif", null, "kry_id", "ASC");
     }
 
     public static class KaryawanCreateCtrl extends EvenListenerCreate {

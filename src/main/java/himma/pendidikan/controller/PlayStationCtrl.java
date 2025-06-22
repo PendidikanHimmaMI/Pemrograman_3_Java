@@ -121,7 +121,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
             Parent pane;
             if ("add".equals(page)) {
                 loader = new FXMLLoader(getClass().getResource("/himma/pendidikan/views/master_play_station/create.fxml"));
-                loader.setController(new PlayStationCtrl.PlaytationCreateCtrl());
+                loader.setController(new PlaytationCreateCtrl());
             } else if ("edit".equals(page)) {
                 loader = new FXMLLoader(getClass().getResource("/himma/pendidikan/views/master_play_station/edit.fxml"));
                 PlaytationEditCtrl controller = new PlaytationEditCtrl();// Buat controller
@@ -215,7 +215,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
                 PlayStation playStation = getTableView().getItems().get(getIndex());
                 String serialNumber = playStation.getSerialNumber();
                 String currentStatus = playStation.getStatus();
-                boolean isAktif = "Aktif".equals(currentStatus);
+                boolean isAktif = "Aktif".equalsIgnoreCase(currentStatus);
 
                 FontIcon deleteIcon = new FontIcon(isAktif ? "fas-toggle-on" : "fas-toggle-off");
                 deleteIcon.setIconSize(16);
@@ -223,11 +223,10 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
 
                 btnDelete.setGraphic(deleteIcon);
                 btnDelete.setStyle("-fx-background-color: " + (isAktif ? "green" : "red") + ";");
+                btnEdit.setVisible(isAktif);
+                btnEdit.setManaged(isAktif);
+
                 btnEdit.setOnAction(e -> loadSubPage("edit", playStation.getIdPS()));
-                if(currentStatus.equals("Tidak Aktif")) {
-                    btnEdit.setVisible(false);
-                    btnDelete.setAlignment(Pos.CENTER);
-                }
                 btnDelete.setOnAction(e -> {
                     String actionText = isAktif ? "menonaktifkan" : "mengaktifkan";
                     boolean confirmed = new SwalAlert().showAlert(
@@ -260,8 +259,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
     @Override
     public void handleSearch() {
         String search = tfSearch.getText();
-        String selectedStatus = cbFilterStatus.getSelectionModel().getSelectedItem();
-        String status = (selectedStatus == null || selectedStatus.isEmpty()) ? "Aktif" : selectedStatus;
+        String status = cbFilterStatus.getSelectionModel().getSelectedItem();
         JenisPlayStation jenisPlayStationId = cbFilterJenisPlayStation.getSelectionModel().getSelectedItem();
         Integer idJenisPS = (jenisPlayStationId != null && jenisPlayStationId.getId() != null)
                 ? jenisPlayStationId.getId()
@@ -273,8 +271,10 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
 
     @Override
     public void handleClear() {
+        tfSearch.clear();
         cbFilterStatus.setValue("");
         cbFilterJenisPlayStation.setValue(null);
+        loadData(null,"Aktif", null, "pst_id", "ASC");
     }
 
     public static class PlaytationCreateCtrl extends EvenListenerCreate {

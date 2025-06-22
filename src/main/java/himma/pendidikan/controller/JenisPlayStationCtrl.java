@@ -19,12 +19,13 @@ import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 
 import static javafx.scene.control.Alert.AlertType.*;
 
 
-public class JenisPlayStationCtrl extends EvenListenerIndex {
+public class JenisPlayStationCtrl extends EvenListenerIndex  {
     @FXML
     Pagination pgTabel;
     @FXML
@@ -167,19 +168,21 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
                 JenisPlayStation jenisPlayStation = getTableView().getItems().get(getIndex());
                 String nama = jenisPlayStation.getNama();
                 String currentStatus = jenisPlayStation.getStatus();
-                boolean isAktif = "Aktif".equals(currentStatus);
+                boolean isAktif = "Aktif".equalsIgnoreCase(currentStatus);
 
+                // Ikon dan tombol delete
                 FontIcon deleteIcon = new FontIcon(isAktif ? "fas-toggle-on" : "fas-toggle-off");
                 deleteIcon.setIconSize(16);
                 deleteIcon.setIconColor(Color.WHITE);
-
                 btnDelete.setGraphic(deleteIcon);
                 btnDelete.setStyle("-fx-background-color: " + (isAktif ? "green" : "red")+";");
+                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "green" : "red") + ";");
+
+                // Aktifkan/hilangkan tombol edit
+                btnEdit.setVisible(isAktif);   // Hide dari tampilan
+                btnEdit.setManaged(isAktif);   // Hide dari layout (tidak menyisakan space)
+
                 btnEdit.setOnAction(e -> loadSubPage("edit", jenisPlayStation.getId()));
-                if(currentStatus.equals("Tidak Aktif")) {
-                    btnEdit.setVisible(false);
-                    btnDelete.setAlignment(Pos.CENTER);
-                }
                 btnDelete.setOnAction(e -> {
                     String actionText = isAktif ? "menonaktifkan" : "mengaktifkan";
                     boolean confirmed = new SwalAlert().showAlert(
@@ -190,12 +193,13 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
                     );
                     if (confirmed) {
                         jenisPlayStationSrvc.setStatus(jenisPlayStation.getId());
-                        loadData(lastSearch, lastStatus,  lastSortColumn, lastSortOrder);
+                        loadData(lastSearch, lastStatus, lastSortColumn, lastSortOrder);
                     }
                 });
 
                 setGraphic(pane);
             }
+
         });
 
         tbJenisPlayStation.setItems(data);
@@ -225,8 +229,12 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
 
     @Override
     public void handleClear() {
+        tfSearch.clear();
+        loadData(null, "Aktif", "jps_id", "ASC");
         cbFilterStatus.setValue("");
     }
+
+
 
 
     public static class JenisPlayStationCreateCtrl extends EvenListenerCreate {
@@ -239,7 +247,6 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
         Validation v = new Validation();
         JenisPlayStationCtrl jenisPlayStationCtrl = new JenisPlayStationCtrl();
 
-        @FXML
         public void initialize() {
             v.setNumbers(tfTahunRilis);
             v.setNumbers(tfMaxPemain);
@@ -256,6 +263,7 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
 
         @Override
         public void handleAddData(ActionEvent e) {
+            initialize();
             String nama = tfNama.getText();
             String tahunRilisStr = tfTahunRilis.getText();
             String maxPemainStr = tfMaxPemain.getText();
@@ -313,7 +321,6 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
             this.id = id;
         }
 
-        @FXML
         public void initialize() {
             v.setNumbers(tfTahunRilis);
             v.setNumbers(tfMaxPemain);
@@ -332,11 +339,11 @@ public class JenisPlayStationCtrl extends EvenListenerIndex {
                     tfDeskripsi.setText(jpls.getDeskripsi());
                 }
             }
+
         }
 
         @Override
         public void handleClear() {
-            tfNama.setText("");
             tfTahunRilis.setText("");
             tfMaxPemain.setText("");
             tfDeskripsi.setText("");
