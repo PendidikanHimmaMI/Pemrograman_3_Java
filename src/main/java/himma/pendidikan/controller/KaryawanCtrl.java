@@ -217,8 +217,10 @@ public class KaryawanCtrl extends EvenListenerIndex {
     //    @Override
     public void handleSearch() {
         String search = tfSearch.getText();
-        String status = cbFilterStatus.getSelectionModel().getSelectedItem();
-        String posisi = cbFilterPosisi.getSelectionModel().getSelectedItem();
+        String selectedStatus = cbFilterStatus.getSelectionModel().getSelectedItem();
+        String status = (selectedStatus == null || selectedStatus.isEmpty()) ? "Aktif" : selectedStatus;
+        String selectedPosisi = cbFilterPosisi.getSelectionModel().getSelectedItem();
+        String posisi = (selectedPosisi == null || selectedPosisi.isEmpty()) ? null : selectedPosisi;
 
         loadData(search,status,posisi,"kry_id","ASC");
     }

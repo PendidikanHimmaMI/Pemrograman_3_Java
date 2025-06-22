@@ -155,7 +155,7 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
                 String currentStatus = metodePembayaran.getStatus();
                 boolean isAktif = "Aktif".equalsIgnoreCase(currentStatus);
 
-                FontIcon deleteIcon = new FontIcon(isAktif ? "fas-toggle-on" : "fas-toggle-off");
+                FontIcon deleteIcon = new FontIcon(isAktif ? "fas-toggle-off" : "fas-toggle-on");
                 deleteIcon.setIconSize(16);
                 deleteIcon.setIconColor(Color.WHITE);
 
@@ -199,7 +199,8 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
     //    @Override
     public void handleSearch() {
         String search = tfSearch.getText();
-        String status = cbFilterStatus.getSelectionModel().getSelectedItem();
+        String selectedStatus = cbFilterStatus.getSelectionModel().getSelectedItem();
+        String status = (selectedStatus == null || selectedStatus.isEmpty()) ? "Aktif" : selectedStatus;
         loadData(search,status,"mpb_id","ASC");
     }
 

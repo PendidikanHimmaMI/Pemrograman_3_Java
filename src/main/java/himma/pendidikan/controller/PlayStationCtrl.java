@@ -259,14 +259,14 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
     @Override
     public void handleSearch() {
         String search = tfSearch.getText();
-        String status = cbFilterStatus.getSelectionModel().getSelectedItem();
+        String selectedStatus = cbFilterStatus.getSelectionModel().getSelectedItem();
+        String status = (selectedStatus == null || selectedStatus.isEmpty()) ? "Aktif" : selectedStatus;
         JenisPlayStation jenisPlayStationId = cbFilterJenisPlayStation.getSelectionModel().getSelectedItem();
         Integer idJenisPS = (jenisPlayStationId != null && jenisPlayStationId.getId() != null)
                 ? jenisPlayStationId.getId()
                 : null;
 
         loadData(search, status, idJenisPS, "pst_id", "ASC");
-
     }
 
     @Override
