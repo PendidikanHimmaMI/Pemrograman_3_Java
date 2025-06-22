@@ -308,32 +308,61 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
 
     @FXML
     private void handleAddData(ActionEvent e) {
+        String totalHargaText = labelTotalBayar.getText().replaceAll("[^\\d,]", "").replace(",", ".");
+        String tunaiText = tfUangBayar.getText().replaceAll("[^\\d,]", "").replace(",", ".");
+        String selectedNama = cbMetodePembayaran.getValue();
+        String nama = tfCustomerName.getText();
+        String telepon = tfPhone.getText();
+
+        if (selectedNama == null || selectedNama.trim().isEmpty() ||
+                nama == null || nama.trim().isEmpty() ||
+                telepon == null || telepon.trim().isEmpty() ||
+                totalHargaText.isEmpty() || tunaiText.isEmpty()) {
+            showAlert("Data tidak boleh ada yang kosong");
+            return;
+        }
+
+        if (!metodePembayaranMap.containsKey(selectedNama)) {
+            showAlert("Metode pembayaran tidak valid");
+            return;
+        }
+
+        double totalHarga;
+        double tunai;
         try {
-            String TotalHarga = labelTotalBayar.getText().replaceAll("[^\\d,]", "").replace(",", ".");
+            totalHarga = Double.parseDouble(totalHargaText);
+            tunai = Double.parseDouble(tunaiText);
+        } catch (NumberFormatException ex) {
+            showAlert("Format angka tidak valid");
+            return;
+        }
+
+        if (tunai < totalHarga) {
+            showAlert("Uang yang dimasukkan kurang dari total harga yang harus dibayar");
+            return;
+        }
+
+        try {
             int karId = Session.getCurrentUser().getId();
-            String selectedNama = cbMetodePembayaran.getValue();
             int mpbId = metodePembayaranMap.get(selectedNama);
-            String nama = tfCustomerName.getText();
-            String telepon = tfPhone.getText();
-            Double totalHarga = Double.parseDouble(TotalHarga) ;
             java.sql.Date tanggal = java.sql.Date.valueOf(LocalDate.now());
             String createdBy = Session.getCurrentUser().getPosisi();
             java.sql.Date createDate = tanggal;
 
-            PenyewaanPlaystation pps = new PenyewaanPlaystation(karId, mpbId, nama, telepon,tanggal, totalHarga, createdBy, createDate);
-//            System.out.println(cartDetails.);
-            if(penyewaanPlayStationSrvc.saveData(pps, cartDetails)){
+            PenyewaanPlaystation pps = new PenyewaanPlaystation(
+                    karId, mpbId, nama, telepon, tanggal, totalHarga, createdBy, createDate
+            );
+
+            if (penyewaanPlayStationSrvc.saveData(pps, cartDetails)) {
                 showAlert("Penyewaan berhasil!");
                 cart.clear();
                 updateCartUI();
                 cbMetodePembayaran.setValue("");
                 tfCustomerName.setText("");
                 tfPhone.setText("");
-                metodePembayaranMap.isEmpty();
                 tfUangBayar.setText("");
                 tfKembalian.setText("");
             }
-
         } catch (Exception ex) {
             ex.printStackTrace();
             showAlert("Terjadi error saat menyimpan data.");
@@ -354,6 +383,7 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
             ex.printStackTrace();
         }
     }
+
 
 
     private void showAlert(String msg) {
