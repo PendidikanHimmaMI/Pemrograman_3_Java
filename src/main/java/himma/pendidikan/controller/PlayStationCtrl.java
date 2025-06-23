@@ -179,7 +179,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
         clStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
 
         tbPlayStation.setItems(data);
-        setAlignmentByType(clNo, Pos.CENTER_LEFT);
+        setAlignmentByType(clNo, Pos.CENTER_RIGHT);
         setAlignmentByType(clMerk, Pos.CENTER_LEFT);
         setAlignmentByType(clSerialNumber, Pos.CENTER_LEFT);
         setAlignmentByType(clJnsPS, Pos.CENTER_LEFT);
