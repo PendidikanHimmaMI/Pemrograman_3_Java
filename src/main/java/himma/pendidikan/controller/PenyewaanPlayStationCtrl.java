@@ -68,6 +68,8 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
         loadDataMetodePembayaran();
         btnBayar.setOnAction(this::handleAddData);
         tfUangBayar.setOnAction(e -> updateTotal());
+        v.setNumbers(tfPhone);
+        v.setNumbers(tfUangBayar);
     }
 
     private HBox createTimePicker(ComboBox<String> cbJam, ComboBox<String> cbMenit) {

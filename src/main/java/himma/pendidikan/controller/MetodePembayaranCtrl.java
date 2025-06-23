@@ -153,19 +153,18 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
                 MetodePembayaran metodePembayaran = getTableView().getItems().get(getIndex());
                 String nama = metodePembayaran.getNama();
                 String currentStatus = metodePembayaran.getStatus();
-                boolean isAktif = "Aktif".equals(currentStatus);
+                boolean isAktif = "Aktif".equalsIgnoreCase(currentStatus);
 
                 FontIcon deleteIcon = new FontIcon(isAktif ? "fas-toggle-off" : "fas-toggle-on");
                 deleteIcon.setIconSize(16);
                 deleteIcon.setIconColor(Color.WHITE);
 
                 btnDelete.setGraphic(deleteIcon);
-                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green") + "; -fx-text-fill: white;");
+                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "green" : "red") + "; -fx-text-fill: white;");
+                btnEdit.setVisible(isAktif);
+                btnEdit.setManaged(isAktif);
+
                 btnEdit.setOnAction(e -> loadSubPage("edit", metodePembayaran.getId()));
-                if(currentStatus.equals("Tidak Aktif")) {
-                    btnEdit.setVisible(false);
-                    btnDelete.setAlignment(Pos.CENTER);
-                }
                 btnDelete.setOnAction(e -> {
                     String actionText = isAktif ? "menonaktifkan" : "mengaktifkan";
                     boolean confirmed = new SwalAlert().showAlert(
@@ -200,13 +199,16 @@ public class MetodePembayaranCtrl extends EvenListenerIndex {
     //    @Override
     public void handleSearch() {
         String search = tfSearch.getText();
-        String status = cbFilterStatus.getSelectionModel().getSelectedItem();
+        String selectedStatus = cbFilterStatus.getSelectionModel().getSelectedItem();
+        String status = (selectedStatus == null || selectedStatus.isEmpty()) ? "Aktif" : selectedStatus;
         loadData(search,status,"mpb_id","ASC");
     }
 
     @Override
     public void handleClear() {
+        tfSearch.clear();
         cbFilterStatus.setValue("");
+        loadData(null,"Aktif", "mpb_id", "ASC");
     }
 
     public static class MetodePembayaranCreateCtrl extends EvenListenerCreate {

@@ -78,7 +78,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
     private TextField tfSearch;
 
     private String lastSearch, lastStatus, lastSortColumn, lastSortOrder;
-    private String lastidJeniPlayStation;
+    private Integer lastidJeniPlayStation;
     private List<PlayStation> fullDataList;
     public static PlayStationSrvcImpl playStationSrvc = new PlayStationSrvcImpl();
     public static JenisPlayStationSrvcImpl jenisPlayStationSrvc = new JenisPlayStationSrvcImpl();
@@ -121,7 +121,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
             Parent pane;
             if ("add".equals(page)) {
                 loader = new FXMLLoader(getClass().getResource("/himma/pendidikan/views/master_play_station/create.fxml"));
-                loader.setController(new PlayStationCtrl.PlaytationCreateCtrl());
+                loader.setController(new PlaytationCreateCtrl());
             } else if ("edit".equals(page)) {
                 loader = new FXMLLoader(getClass().getResource("/himma/pendidikan/views/master_play_station/edit.fxml"));
                 PlaytationEditCtrl controller = new PlaytationEditCtrl();// Buat controller
@@ -140,14 +140,14 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
         }
     }
 
-    public void loadData(String search, String status, String idJeniPlayStation, String sortColumn, String sortOrder) {
+    public void loadData(String search, String status, Integer idJeniPlayStation, String sortColumn, String sortOrder) {
         lastSearch = search;
         lastStatus = status;
         lastidJeniPlayStation = idJeniPlayStation;
         lastSortColumn = sortColumn;
         lastSortOrder = sortOrder;
 
-        fullDataList = playStationSrvc.getAllData(search, status, String.valueOf(idJeniPlayStation), sortColumn, sortOrder);
+        fullDataList = playStationSrvc.getAllData(search, status, idJeniPlayStation, sortColumn, sortOrder);
         int pageCount = (int) Math.ceil((double) fullDataList.size() / rowsPerPage);
         pgTabel.setPageCount(pageCount == 0 ? 1 : pageCount);
         pgTabel.setCurrentPageIndex(0);
@@ -179,7 +179,7 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
         clStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
 
         tbPlayStation.setItems(data);
-        setAlignmentByType(clNo, Pos.CENTER);
+        setAlignmentByType(clNo, Pos.CENTER_RIGHT);
         setAlignmentByType(clMerk, Pos.CENTER_LEFT);
         setAlignmentByType(clSerialNumber, Pos.CENTER_LEFT);
         setAlignmentByType(clJnsPS, Pos.CENTER_LEFT);
@@ -215,14 +215,17 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
                 PlayStation playStation = getTableView().getItems().get(getIndex());
                 String serialNumber = playStation.getSerialNumber();
                 String currentStatus = playStation.getStatus();
-                boolean isAktif = "Aktif".equals(currentStatus);
+                boolean isAktif = "Aktif".equalsIgnoreCase(currentStatus);
 
                 FontIcon deleteIcon = new FontIcon(isAktif ? "fas-toggle-on" : "fas-toggle-off");
                 deleteIcon.setIconSize(16);
                 deleteIcon.setIconColor(Color.WHITE);
 
                 btnDelete.setGraphic(deleteIcon);
-                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "red" : "green") + ";");
+                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "green" : "red") + ";");
+                btnEdit.setVisible(isAktif);
+                btnEdit.setManaged(isAktif);
+
                 btnEdit.setOnAction(e -> loadSubPage("edit", playStation.getIdPS()));
                 btnDelete.setOnAction(e -> {
                     String actionText = isAktif ? "menonaktifkan" : "mengaktifkan";
@@ -256,14 +259,22 @@ public class PlayStationCtrl extends EvenListener.EvenListenerIndex {
     @Override
     public void handleSearch() {
         String search = tfSearch.getText();
-        String status = cbFilterStatus.getSelectionModel().getSelectedItem();
+        String selectedStatus = cbFilterStatus.getSelectionModel().getSelectedItem();
+        String status = (selectedStatus == null || selectedStatus.isEmpty()) ? "Aktif" : selectedStatus;
+        JenisPlayStation jenisPlayStationId = cbFilterJenisPlayStation.getSelectionModel().getSelectedItem();
+        Integer idJenisPS = (jenisPlayStationId != null && jenisPlayStationId.getId() != null)
+                ? jenisPlayStationId.getId()
+                : null;
 
-        loadData(search,status,null,"pst_id","ASC");
+        loadData(search, status, idJenisPS, "pst_id", "ASC");
     }
 
     @Override
     public void handleClear() {
+        tfSearch.clear();
         cbFilterStatus.setValue("");
+        cbFilterJenisPlayStation.setValue(null);
+        loadData(null,"Aktif", null, "pst_id", "ASC");
     }
 
     public static class PlaytationCreateCtrl extends EvenListenerCreate {

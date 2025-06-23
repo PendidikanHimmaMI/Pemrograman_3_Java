@@ -168,13 +168,14 @@ public class JenisPlayStationCtrl extends EvenListenerIndex  {
                 JenisPlayStation jenisPlayStation = getTableView().getItems().get(getIndex());
                 String nama = jenisPlayStation.getNama();
                 String currentStatus = jenisPlayStation.getStatus();
-                boolean isAktif = "Aktif".equalsIgnoreCase(currentStatus); // case-insensitive
+                boolean isAktif = "Aktif".equalsIgnoreCase(currentStatus);
 
                 // Ikon dan tombol delete
                 FontIcon deleteIcon = new FontIcon(isAktif ? "fas-toggle-on" : "fas-toggle-off");
                 deleteIcon.setIconSize(16);
                 deleteIcon.setIconColor(Color.WHITE);
                 btnDelete.setGraphic(deleteIcon);
+                btnDelete.setStyle("-fx-background-color: " + (isAktif ? "green" : "red")+";");
                 btnDelete.setStyle("-fx-background-color: " + (isAktif ? "green" : "red") + ";");
 
                 // Aktifkan/hilangkan tombol edit
@@ -182,10 +183,6 @@ public class JenisPlayStationCtrl extends EvenListenerIndex  {
                 btnEdit.setManaged(isAktif);   // Hide dari layout (tidak menyisakan space)
 
                 btnEdit.setOnAction(e -> loadSubPage("edit", jenisPlayStation.getId()));
-                if(currentStatus.equals("Tidak Aktif")) {
-                    btnEdit.setVisible(false);
-                    btnDelete.setAlignment(Pos.CENTER);
-                }
                 btnDelete.setOnAction(e -> {
                     String actionText = isAktif ? "menonaktifkan" : "mengaktifkan";
                     boolean confirmed = new SwalAlert().showAlert(
@@ -224,16 +221,16 @@ public class JenisPlayStationCtrl extends EvenListenerIndex  {
     //    @Override
     public void handleSearch() {
         String search = tfSearch.getText();
-        String status = cbFilterStatus.getSelectionModel().getSelectedItem();
+        String selectedStatus = cbFilterStatus.getSelectionModel().getSelectedItem();
+        String status = (selectedStatus == null || selectedStatus.isEmpty()) ? "Aktif" : selectedStatus;
         loadData(search,status,"jps_id","ASC");
     }
 
 
     @Override
     public void handleClear() {
-        tfSearch.clear(); // Bersihkan kolom pencarian
-        cbFilterStatus.setValue("Aktif"); // Set ulang ke filter default
-        loadData(null, "Aktif", "jps_id", "ASC"); // Muat ulang data default
+        tfSearch.clear();
+        loadData(null, "Aktif", "jps_id", "ASC");
         cbFilterStatus.setValue("");
     }
 
