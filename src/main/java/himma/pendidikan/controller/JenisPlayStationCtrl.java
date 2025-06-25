@@ -204,9 +204,6 @@ public class JenisPlayStationCtrl extends EvenListenerIndex  {
             }
 
         });
-//        for (TableColumn<Karyawan, ?> col : tbKaryawan.getColumns()) {
-//            col.setText(col.getText() + " ▲");
-//        }
 
         tbJenisPlayStation.setItems(data);
         clTahunRilis.setSortType(TableColumn.SortType.DESCENDING);
@@ -254,9 +251,9 @@ public class JenisPlayStationCtrl extends EvenListenerIndex  {
         JenisPlayStationCtrl jenisPlayStationCtrl = new JenisPlayStationCtrl();
 
         public void initialize() {
-            lbActiveUser.setText(Session.getCurrentUser().getPosisi());
             v.setNumbers(tfTahunRilis);
             v.setNumbers(tfMaxPemain);
+            lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
         }
 
         @Override
@@ -328,10 +325,10 @@ public class JenisPlayStationCtrl extends EvenListenerIndex  {
         }
 
         public void initialize() {
-            lbActiveUser.setText(Session.getCurrentUser().getStatus());
-            loadData();
             v.setNumbers(tfTahunRilis);
             v.setNumbers(tfMaxPemain);
+            lbActiveUser.setText(Session.getCurrentUser().getNama()+" | "+Session.getCurrentUser().getPosisi());
+            loadData();
         }
 
         @Override

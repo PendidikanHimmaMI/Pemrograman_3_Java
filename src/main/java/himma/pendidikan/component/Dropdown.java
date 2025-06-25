@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.function.Function;
 
 public class Dropdown {
-    public static void setDropdown(ComboBox<String> comboBox, List<String> list) {
-        ObservableList<String> items = FXCollections.observableArrayList(list);
+    public static <T> void setDropdown(ComboBox<T> comboBox, List<T> list) {
+        ObservableList<T> items = FXCollections.observableArrayList(list);
         comboBox.setItems(items);
     }
     public static <T> void setDropdown(ComboBox<T> comboBox, List<T> list, Function<T, String> labelFunction) {
