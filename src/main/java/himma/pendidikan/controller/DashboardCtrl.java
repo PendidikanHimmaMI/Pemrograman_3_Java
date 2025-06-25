@@ -18,11 +18,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-//import net.sf.jasperreports.engine.JasperFillManager;
-//import net.sf.jasperreports.engine.JasperPrint;
-//import net.sf.jasperreports.engine.JasperReport;
-//import net.sf.jasperreports.engine.util.JRLoader;
-//import net.sf.jasperreports.view.JasperViewer;
+
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.fill.*;
 
 import java.io.File;
 import java.io.IOException;

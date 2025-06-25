@@ -18,13 +18,13 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.geometry.Pos;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.engine.util.JRSaver;
 import net.sf.jasperreports.view.JasperViewer;
 
 import java.io.File;
+import java.io.InputStream;
 import java.sql.*;
 import java.text.NumberFormat;
 import java.time.Duration;
@@ -33,6 +33,16 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
+import static net.sf.jasperreports.engine.JasperFillManager.fillReport;
+
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.fill.*;
 
 public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
 
@@ -284,21 +294,157 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
             showAlert("Terjadi error saat menyimpan data.");
         }
     }
+
     @FXML
-    public void cetakLaporan(){
+    public void cetakLaporan() {
         try {
-            String url = "jdbc:sqlserver://127.0.0.4:9210;databaseName=Db_RentalPlayStation;encrypt=true;trustServerCertificate=true";
-            String user = "Pendidikan";
-            String password = "123";
-            Connection conn = DriverManager.getConnection(url, user, password);
-            JasperReport report = (JasperReport) JRLoader.loadObject(new File("src/main/java/himma/pendidikan/report/rr.jasper"));
-            HashMap<String, Object> parameters = new HashMap<>();
-            JasperPrint print = JasperFillManager.fillReport(report, parameters, conn);
-            JasperViewer.viewReport(print, false);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            InputStream input = getClass().getResourceAsStream("/himma/pendidikan/report/file.jrxml");
+            if (input == null) {
+                showAlert("File .jrxml tidak ditemukan di classpath!");
+                System.out.println("Not found");
+
+                return;
+            }
+
+            JasperReport jasperReport = JasperCompileManager.compileReport(input);
+            Map<String, Object> param = new HashMap<>();
+            JasperPrint print = JasperFillManager.fillReport(jasperReport, param, connect.conn);
+
+            // Simpan sebagai PDF di folder Downloads (misalnya)
+            String userHome = System.getProperty("user.home");
+            String outputPath = userHome + "/Downloads/LaporanPenyewaan.pdf";
+            JasperExportManager.exportReportToPdfFile(print, outputPath);
+
+            showAlert("Laporan berhasil disimpan di: " + outputPath);
+            System.out.println("Laporan berhasil disimpan di: " + outputPath);
+
+
+        } catch (JRException e) {
+            showAlert("Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
+
+
+//        try {
+//            // Path untuk file .jrxml dan .jasper
+//            String jrxmlPath = "/himma/pendidikan/report/rr.jrxml";
+//            String jasperPath = "src/main/resources/himma/pendidikan/report/rr.jasper";
+//
+//            JasperReport jasperReport = null;
+//
+//            // 1. Cek apakah file .jasper sudah ada
+//            File jasperFile = new File(jasperPath);
+//
+//            if (jasperFile.exists()) {
+//                // Jika .jasper sudah ada, load langsung
+//                System.out.println("Loading pre-compiled .jasper file...");
+//                jasperReport = (JasperReport) JRLoader.loadObject(jasperFile);
+//            } else {
+//                // Jika belum ada, compile dan simpan
+//                System.out.println("Compiling .jrxml to .jasper...");
+//
+//                // Compile dari resource stream
+//                InputStream jrxmlStream = getClass().getResourceAsStream(jrxmlPath);
+//                if (jrxmlStream == null) {
+//                    throw new JRException("File .jrxml tidak ditemukan: " + jrxmlPath);
+//                }
+//
+//                jasperReport = JasperCompileManager.compileReport(jrxmlStream);
+//
+//                // Simpan hasil compile sebagai .jasper file
+//                JRSaver.saveObject(jasperReport, jasperPath);
+//                System.out.println("File .jasper berhasil disimpan: " + jasperPath);
+//            }
+//
+//            // 2. Ambil path gambar dari resources
+//            String imagePath = getClass().getResource("/himma/pendidikan/assets/image/LogoLaporan.png").getPath();
+//
+//            // 3. Siapkan parameter
+//            Map<String, Object> param = new HashMap<>();
+//            param.put("IMAGE_PATH", imagePath);
+//
+//            // 4. Fill report dengan data
+//            JasperPrint print = JasperFillManager.fillReport(jasperReport, param, connect.conn);
+//
+//            // 5. Tampilkan viewer
+//            JasperViewer viewer = new JasperViewer(print, false);
+//            viewer.setVisible(true);
+//
+//        } catch (JRException e) {
+//            System.err.println("JasperReports Error: " + e.getMessage());
+//            e.printStackTrace();
+//        } catch (Exception e) {
+//            System.err.println("General Error: " + e.getMessage());
+//            e.printStackTrace();
+//        }
+//    }
+
+    // Method alternatif: Force compile ulang
+    public void forceCompileReport() {
+        try {
+            String jrxmlPath = "/himma/pendidikan/report/rr.jrxml";
+            String jasperPath = "src/main/resources/himma/pendidikan/report/rr.jasper";
+
+            System.out.println("Force compiling .jrxml to .jasper...");
+
+            // Compile dari resource
+            InputStream jrxmlStream = getClass().getResourceAsStream(jrxmlPath);
+            JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlStream);
+
+            // Simpan hasil compile
+            JRSaver.saveObject(jasperReport, jasperPath);
+            System.out.println("File .jasper berhasil di-compile ulang: " + jasperPath);
+
+        } catch (JRException e) {
+            System.err.println("Compile Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Method untuk hanya tampilkan (jika .jasper sudah ada)
+    public void tampilkanLaporanSaja() {
+        try {
+            String jasperPath = "src/main/resources/himma/pendidikan/report/rr.jasper";
+
+            // Load .jasper yang sudah di-compile
+            File jasperFile = new File(jasperPath);
+            if (!jasperFile.exists()) {
+                throw new JRException("File .jasper tidak ditemukan. Compile dulu dengan forceCompileReport()");
+            }
+
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperFile);
+
+            // Ambil path gambar
+            String imagePath = getClass().getResource("/himma/pendidikan/assets/image/LogoLaporan.png").getPath();
+
+            // Parameter
+            Map<String, Object> param = new HashMap<>();
+            param.put("IMAGE_PATH", imagePath);
+
+            // Fill dan tampilkan
+            JasperPrint print = JasperFillManager.fillReport(jasperReport, param, connect.conn);
+            JasperViewer viewer = new JasperViewer(print, false);
+            viewer.setVisible(true);
+
+        } catch (JRException e) {
+            System.err.println("Error menampilkan laporan: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    //        try {
+//            String url = "jdbc:sqlserver://127.0.0.4:9210;databaseName=Db_RentalPlayStation;encrypt=true;trustServerCertificate=true";
+//            String user = "Pendidikan";
+//            String password = "123";
+//            Connection conn = DriverManager.getConnection(url, user, password);
+//            JasperReport report = (JasperReport) JRLoader.loadObject(new File("src/main/java/himma/pendidikan/report/rr.jrxml"));
+//            HashMap<String, Object> parameters = new HashMap<>();
+//            JasperPrint print = JasperFillManager.fillReport(report, parameters, conn);
+//            JasperViewer.viewReport(print, false);
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//
 
 
     private void showAlert(String msg) {
