@@ -18,6 +18,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.geometry.Pos;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -285,20 +286,23 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
         }
     }
     @FXML
-    public void cetakLaporan(){
+    public void cetakLaporan() {
         try {
             String url = "jdbc:sqlserver://127.0.0.4:9210;databaseName=Db_RentalPlayStation;encrypt=true;trustServerCertificate=true";
             String user = "Pendidikan";
             String password = "123";
             Connection conn = DriverManager.getConnection(url, user, password);
-            JasperReport report = (JasperReport) JRLoader.loadObject(new File("src/main/java/himma/pendidikan/report/rr.jasper"));
+            String reportPath = "src/main/java/himma/pendidikan/report/rr.jrxml";
+            JasperReport report = JasperCompileManager.compileReport(reportPath);
             HashMap<String, Object> parameters = new HashMap<>();
             JasperPrint print = JasperFillManager.fillReport(report, parameters, conn);
             JasperViewer.viewReport(print, false);
+            conn.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+
 
 
     private void showAlert(String msg) {

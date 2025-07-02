@@ -9,7 +9,8 @@ module pendidikan.pemrograman_3_java {
     requires org.kordamp.ikonli.core;
     requires org.kordamp.ikonli.fontawesome5;
     requires com.microsoft.sqlserver.jdbc;
-    requires net.sf.jasperreports.core;
+    requires jasperreports;
+//    requires net.sf.jasperreports.core;
 
 
     opens himma.pendidikan to javafx.fxml;
