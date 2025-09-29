@@ -11,7 +11,6 @@ import himma.pendidikan.service.impl.PenyewaanPlayStationSrvcImpl;
 import himma.pendidikan.service.impl.PlayStationSrvcImpl;
 import himma.pendidikan.util.Session;
 import himma.pendidikan.util.Validation;
-import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
@@ -19,6 +18,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.geometry.Pos;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -68,28 +68,7 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
         loadDataMetodePembayaran();
         btnBayar.setOnAction(this::handleAddData);
         tfUangBayar.setOnAction(e -> updateTotal());
-        v.setNumbers(tfPhone);
-        v.setNumbers(tfUangBayar);
     }
-
-    private HBox createTimePicker(ComboBox<String> cbJam, ComboBox<String> cbMenit) {
-        cbJam.setPromptText("Jam");
-        cbMenit.setPromptText("Menit");
-
-        for (int i = 0; i < 24; i++) {
-            cbJam.getItems().add(String.format("%02d", i));
-        }
-
-        for (int i = 0; i < 60; i += 5) {
-            cbMenit.getItems().add(String.format("%02d", i));
-        }
-
-        cbJam.setPrefWidth(60);
-        cbMenit.setPrefWidth(60);
-
-        return new HBox(5, cbJam, cbMenit);
-    }
-
 
     public void handleSearch() {
         String search = tfSearch.getText().trim();
@@ -157,14 +136,10 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
             Label lblTitle = new Label(ps.getSerialNumber());
             lblTitle.setStyle("-fx-font-size:16; -fx-text-fill:white; -fx-font-weight:bold;");
 
-            ComboBox<String> cbJamMulai = new ComboBox<>();
-            ComboBox<String> cbMenitMulai = new ComboBox<>();
-            ComboBox<String> cbJamSelesai = new ComboBox<>();
-            ComboBox<String> cbMenitSelesai = new ComboBox<>();
-
-            HBox timePickerMulai = createTimePicker(cbJamMulai, cbMenitMulai);
-            HBox timePickerSelesai = createTimePicker(cbJamSelesai, cbMenitSelesai);
-
+            TextField tfMulai = new TextField();
+            TextField tfSelesai = new TextField();
+            tfMulai.setPromptText("HH:mm");
+            tfSelesai.setPromptText("HH:mm");
 
             Label lblPrice = new Label("Rp. 0");
             lblPrice.setId("priceLabel");
@@ -174,46 +149,26 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
 
             Runnable updateCartDetail = () -> {
                 try {
-                    if (cbJamMulai.getValue() == null || cbMenitMulai.getValue() == null ||
-                            cbJamSelesai.getValue() == null || cbMenitSelesai.getValue() == null) {
-                        throw new IllegalArgumentException("Waktu belum lengkap");
-                    }
-
-                    LocalTime startTime = LocalTime.of(
-                            Integer.parseInt(cbJamMulai.getValue()),
-                            Integer.parseInt(cbMenitMulai.getValue())
-                    );
-                    LocalTime endTime = LocalTime.of(
-                            Integer.parseInt(cbJamSelesai.getValue()),
-                            Integer.parseInt(cbMenitSelesai.getValue())
-                    );
-
-                    if (endTime.isBefore(startTime)) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Waktu Tidak Valid");
-                        alert.setHeaderText("Jam selesai tidak boleh lebih awal dari jam mulai");
-                        alert.setContentText("Silakan pilih waktu selesai yang benar.");
-                        alert.showAndWait();
-
-                        cartDetails.removeIf(d -> d.getPst_id() == ps.getIdPS());
-                        lblPrice.setText(rupiahFormat.format(0));
-                        updateTotal();
-                        return;
-                    }
-
-
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                    LocalTime startTime = LocalTime.parse(tfMulai.getText(), formatter);
+                    LocalTime endTime = LocalTime.parse(tfSelesai.getText(), formatter);
                     LocalDateTime mulai = LocalDateTime.of(today, startTime);
                     LocalDateTime selesai = LocalDateTime.of(today, endTime);
 
                     long minutes = Duration.between(mulai, selesai).toMinutes();
+                    if (minutes < 0) minutes = 0;
 
                     double hours = minutes / 60.0;
                     double price = hours * ps.getHargaPS();
 
                     lblPrice.setText(rupiahFormat.format(price));
 
+                    // Update or replace the detail in cartDetails
+//                    System.out.println(ps.getIdPS());
+//                    System.out.println(mulai);
                     cartDetails.removeIf(d -> d.getPst_id() == ps.getIdPS());
                     cartDetails.add(new DetailPenyewaanPlaystation(ps.getIdPS(), mulai, selesai, price));
+                    System.out.println(cartDetails.get(0).getId()+" ID");
                 } catch (Exception e) {
                     lblPrice.setText(rupiahFormat.format(0));
                     cartDetails.removeIf(d -> d.getPst_id() == ps.getIdPS());
@@ -222,13 +177,8 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
                 }
             };
 
-
-            ChangeListener<String> listener = (obs, oldVal, newVal) -> updateCartDetail.run();
-            cbJamMulai.valueProperty().addListener(listener);
-            cbMenitMulai.valueProperty().addListener(listener);
-            cbJamSelesai.valueProperty().addListener(listener);
-            cbMenitSelesai.valueProperty().addListener(listener);
-
+            tfMulai.textProperty().addListener((obs, oldVal, newVal) -> updateCartDetail.run());
+            tfSelesai.textProperty().addListener((obs, oldVal, newVal) -> updateCartDetail.run());
 
             Label lblMulai = new Label("Mulai");
             lblMulai.setStyle("-fx-text-fill: white;");
@@ -236,8 +186,8 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
             lblSelesai.setStyle("-fx-text-fill: white;");
 
             HBox timeBox = new HBox(10,
-                    new VBox(lblMulai, timePickerMulai),
-                    new VBox(lblSelesai, timePickerSelesai),
+                    new VBox(lblMulai, tfMulai),
+                    new VBox(lblSelesai, tfSelesai),
                     new Button("–") {{
                         setStyle("-fx-background-color:#FC1F1F; -fx-text-fill: #020A7A; -fx-font-size: 14px; -fx-background-radius: 6;");
                         setOnAction(ev -> {
@@ -310,77 +260,44 @@ public class PenyewaanPlayStationCtrl extends EvenListenerIndex {
 
     @FXML
     private void handleAddData(ActionEvent e) {
-        String totalHargaText = labelTotalBayar.getText().replaceAll("[^\\d,]", "").replace(",", ".");
-        String tunaiText = tfUangBayar.getText().replaceAll("[^\\d,]", "").replace(",", ".");
-        String selectedNama = cbMetodePembayaran.getValue();
-        String nama = tfCustomerName.getText();
-        String telepon = tfPhone.getText();
-
-        if (selectedNama == null || selectedNama.trim().isEmpty() ||
-                nama == null || nama.trim().isEmpty() ||
-                telepon == null || telepon.trim().isEmpty() ||
-                totalHargaText.isEmpty() || tunaiText.isEmpty()) {
-            showAlert("Data tidak boleh ada yang kosong");
-            return;
-        }
-
-        if (!metodePembayaranMap.containsKey(selectedNama)) {
-            showAlert("Metode pembayaran tidak valid");
-            return;
-        }
-
-        double totalHarga;
-        double tunai;
         try {
-            totalHarga = Double.parseDouble(totalHargaText);
-            tunai = Double.parseDouble(tunaiText);
-        } catch (NumberFormatException ex) {
-            showAlert("Format angka tidak valid");
-            return;
-        }
-
-        if (tunai < totalHarga) {
-            showAlert("Uang yang dimasukkan kurang dari total harga yang harus dibayar");
-            return;
-        }
-
-        try {
+            String TotalHarga = labelTotalBayar.getText().replaceAll("[^\\d,]", "").replace(",", ".");
             int karId = Session.getCurrentUser().getId();
+            String selectedNama = cbMetodePembayaran.getValue();
             int mpbId = metodePembayaranMap.get(selectedNama);
+            String nama = tfCustomerName.getText();
+            String telepon = tfPhone.getText();
+            Double totalHarga = Double.parseDouble(TotalHarga) ;
             java.sql.Date tanggal = java.sql.Date.valueOf(LocalDate.now());
             String createdBy = Session.getCurrentUser().getPosisi();
             java.sql.Date createDate = tanggal;
 
-            PenyewaanPlaystation pps = new PenyewaanPlaystation(
-                    karId, mpbId, nama, telepon, tanggal, totalHarga, createdBy, createDate
-            );
-
-            if (penyewaanPlayStationSrvc.saveData(pps, cartDetails)) {
+            PenyewaanPlaystation pps = new PenyewaanPlaystation(karId, mpbId, nama, telepon,tanggal, totalHarga, createdBy, createDate);
+//            System.out.println(cartDetails.);
+            if(penyewaanPlayStationSrvc.saveData(pps, cartDetails)){
                 showAlert("Penyewaan berhasil!");
                 cart.clear();
                 updateCartUI();
-                cbMetodePembayaran.setValue("");
-                tfCustomerName.setText("");
-                tfPhone.setText("");
-                tfUangBayar.setText("");
-                tfKembalian.setText("");
             }
+
         } catch (Exception ex) {
             ex.printStackTrace();
             showAlert("Terjadi error saat menyimpan data.");
         }
     }
     @FXML
-    public void cetakLaporan(){
+    public void cetakLaporan() {
         try {
             String url = "jdbc:sqlserver://127.0.0.4:9210;databaseName=Db_RentalPlayStation;encrypt=true;trustServerCertificate=true";
             String user = "Pendidikan";
             String password = "123";
             Connection conn = DriverManager.getConnection(url, user, password);
-            JasperReport report = (JasperReport) JRLoader.loadObject(new File("src/main/java/himma/pendidikan/report/rr.jasper"));
+            String reportPath = "src/main/java/himma/pendidikan/report/rr.jrxml";
+            JasperReport report = JasperCompileManager.compileReport(reportPath);
             HashMap<String, Object> parameters = new HashMap<>();
             JasperPrint print = JasperFillManager.fillReport(report, parameters, conn);
             JasperViewer.viewReport(print, false);
+            conn.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
