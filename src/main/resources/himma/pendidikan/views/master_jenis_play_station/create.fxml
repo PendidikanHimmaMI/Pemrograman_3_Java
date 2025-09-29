@@ -145,7 +145,7 @@
                                     <Cursor fx:constant="HAND" />
                                 </cursor>
                             </Button>
-                            <Button mnemonicParsing="false" onAction="#handleAddData" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #020A7A; -fx-text-fill: #FFFFFF; -fx-background-radius: 12px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);" text="Tambah">
+                            <Button mnemonicParsing="false" onAction="#handleAddData" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #020A7A; -fx-text-fill: #FFFFFF; -fx-background-radius: 12px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);" text="Simpan">
                                 <font>
                                     <Font name="System Bold" size="18.0" />
                                 </font>

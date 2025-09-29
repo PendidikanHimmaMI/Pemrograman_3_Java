@@ -149,15 +149,15 @@
                         <children>
                             <Button fx:id="btnBack" alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #8FBCDE; -fx-text-fill: #FFFFFF; -fx-background-radius: 12px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);" text="Kembali">
                                 <font>
-                                    <Font size="18.0" />
+                                    <Font name="System Bold" size="18.0" />
                                 </font>
                                 <cursor>
                                     <Cursor fx:constant="HAND" />
                                 </cursor>
                                 </Button>
-                            <Button alignment="CENTER" mnemonicParsing="false" onAction="#handleClear" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #8FBCDE; -fx-text-fill: #808080; -fx-background-radius: 12px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);" text="Bersihkan">
+                            <Button alignment="CENTER" mnemonicParsing="false" onAction="#handleClear" prefHeight="40.0" prefWidth="164.0" style="-fx-background-color: #4F96CB; -fx-text-fill: #FFFFFF; -fx-background-radius: 12px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);" text="Bersihkan">
                                 <font>
-                                    <Font size="18.0" />
+                                    <Font name="System Bold" size="18.0" />
                                 </font>
                                 <cursor>
                                     <Cursor fx:constant="HAND" />
@@ -165,7 +165,7 @@
                             </Button>
                             <Button mnemonicParsing="false" onAction="#handleAddData" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #020A7A; -fx-text-fill: #FFFFFF; -fx-background-radius: 12px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);" text="Simpan">
                                 <font>
-                                    <Font size="18.0" />
+                                    <Font name="System Bold" size="18.0" />
                                 </font>
                                 <cursor>
                                     <Cursor fx:constant="HAND" />

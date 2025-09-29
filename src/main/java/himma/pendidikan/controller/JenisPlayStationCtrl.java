@@ -344,6 +344,7 @@ public class JenisPlayStationCtrl extends EvenListenerIndex  {
 
         @Override
         public void handleClear() {
+            tfNama.setText("");
             tfTahunRilis.setText("");
             tfMaxPemain.setText("");
             tfDeskripsi.setText("");
